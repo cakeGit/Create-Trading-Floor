@@ -14,6 +14,24 @@ loom {
         convertAccessWideners = true
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
     }
+
+    runs {
+        create("datagen") {
+            name = "Minecraft Data"
+            data()
+            programArgs "--all", "--mod", "trading_floor"
+            programArgs "--output", project(":common").file("src/generated/resources").absolutePath
+            programArgs "--existing", file("src/main/resources").absolutePath
+
+            environmentVariable("DATAGEN", "TRUE")
+            //
+//            // example of overriding the workingDirectory set in configureEach above
+//            workingDirectory project.file('run-data')
+//
+//            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+//            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+        }
+    }
 }
 
 configurations {

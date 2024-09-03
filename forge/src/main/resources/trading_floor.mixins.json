@@ -1,11 +1,12 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.cak.trading_floor.forge.mixins",
+  "package": "com.cak.trading_floor.forge.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
   ],
   "mixins": [
+    "WorkAtPoiMixin"
   ],
   "injectors": {
     "defaultRequire": 1

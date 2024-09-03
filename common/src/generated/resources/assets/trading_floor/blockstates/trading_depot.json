@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "trading_floor:block/trading_depot",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "trading_floor:block/trading_depot"
+    },
+    "facing=south": {
+      "model": "trading_floor:block/trading_depot",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "trading_floor:block/trading_depot",
+      "y": 270
+    }
+  }
+}
