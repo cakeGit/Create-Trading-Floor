@@ -1,4 +1,4 @@
-package net.examplemod;
+package com.cak.trading_floor;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
 
