@@ -61,12 +61,12 @@ public class TradingDepotBlockEntityRenderer extends SmartBlockEntityRenderer<Tr
                     .rotateY(90 - blockEntity.getBlockState().getValue(TradingDepotBlock.FACING).get2DDataValue() * 90)
                     .rotateZ(22.5);
 
-            renderItem(blockEntity.getLevel(), ms, buffer, light, overlay, itemStack, 0, r, new Vec3(0, 0, 0));
+            renderItem(blockEntity.getLevel(), ms, buffer, light, overlay, itemStack, angle, r, itemPosition);
             ms.popPose();
         }
 
-//        if (transported != null)
-//            blockEntity.tradingDepotBehaviour.incoming.remove(transported);
+        if (transported != null)
+            blockEntity.tradingDepotBehaviour.incoming.remove(transported);
 //
 //        ItemStack visibleStack = blockEntity.tradingDepotBehaviour.getHeldItemStack();
 //

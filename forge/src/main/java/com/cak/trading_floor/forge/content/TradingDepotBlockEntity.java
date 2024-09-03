@@ -48,9 +48,9 @@ public class TradingDepotBlockEntity extends SmartBlockEntity {
     }
     
     public void tryTradeWith(Villager villager) {
-        if (!tradingDepotBehaviour.itemHandler.behaviour.output.isEmpty()) return;
+        if (!tradingDepotBehaviour.output.isEmpty()) return;
         
-        ItemStack offering = tradingDepotBehaviour.getHeldItemStack();
+        ItemStack offering = tradingDepotBehaviour.getInputStack();
         
         MerchantOffer selectedOffer = villager.getOffers().getRecipeFor(offering, ItemStack.EMPTY, 0);
         if (selectedOffer == null) return;
@@ -59,12 +59,12 @@ public class TradingDepotBlockEntity extends SmartBlockEntity {
         while (ittr < 100) {
             ittr ++;
             
-            offering = tradingDepotBehaviour.getHeldItemStack();
+            offering = tradingDepotBehaviour.getInputStack();
             ItemStack cost = selectedOffer.getBaseCostA();
             
             if (offering.getCount() < cost.getCount()) break;
             
-            tradingDepotBehaviour.setHeldItem(new TransportedItemStack(offering.copyWithCount(offering.getCount() - cost.getCount())));
+            tradingDepotBehaviour.setInputStack(new TransportedItemStack(offering.copyWithCount(offering.getCount() - cost.getCount())));
             tradingDepotBehaviour.output.add(selectedOffer.assemble());
         }
         

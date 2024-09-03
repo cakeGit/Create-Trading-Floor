@@ -2,7 +2,6 @@ package com.cak.trading_floor.forge.content;
 
 import com.simibubi.create.content.kinetics.belt.BeltHelper;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
-import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
@@ -14,17 +13,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -74,16 +71,20 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
             iterator.remove();
             blockEntity.notifyUpdate();
         }
+
+        if (input == null)
+            return;
+        tick(input);
     }
 
-    protected boolean tick(TransportedItemStack heldItem) {
-        heldItem.prevBeltPosition = heldItem.beltPosition;
-        heldItem.prevSideOffset = heldItem.sideOffset;
-        float diff = .5f - heldItem.beltPosition;
+    protected boolean tick(TransportedItemStack input) {
+        input.prevBeltPosition = input.beltPosition;
+        input.prevSideOffset = input.sideOffset;
+        float diff = .5f - input.beltPosition;
         if (diff > 1 / 512f) {
-            if (diff > 1 / 32f && !BeltHelper.isItemUpright(heldItem.stack))
-                heldItem.angle += 1;
-            heldItem.beltPosition += diff / 4f;
+            if (diff > 1 / 32f && !BeltHelper.isItemUpright(input.stack))
+                input.angle += 1;
+            input.beltPosition += diff / 4f;
         }
         return diff < 1 / 16f;
     }
@@ -92,9 +93,85 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
         behaviours.add(new DirectBeltInputBehaviour(blockEntity)
                 .allowingBeltFunnels()
                 .onlyInsertWhen(side -> blockEntity.getBlockState().getValue(FACING).getOpposite() == side)
-                .setInsertionHandler(itemHandler::insertItem));
+                .setInsertionHandler(this::tryInsertingFromSide));
     }
-    
+
+    private ItemStack tryInsertingFromSide(TransportedItemStack transportedStack, Direction side, boolean simulate) {
+        ItemStack inserted = transportedStack.stack;
+
+        int size = transportedStack.stack.getCount();
+        transportedStack = transportedStack.copy();
+        transportedStack.beltPosition = side.getAxis()
+                .isVertical() ? .5f : 0;
+        transportedStack.insertedFrom = side;
+        transportedStack.prevSideOffset = transportedStack.sideOffset;
+        transportedStack.prevBeltPosition = transportedStack.beltPosition;
+        ItemStack remainder = insert(transportedStack, simulate);
+        if (remainder.getCount() != size)
+            blockEntity.notifyUpdate();
+
+        return remainder;
+    }
+
+    public int getPresentStackSize() {
+        int cumulativeStackSize = 0;
+        cumulativeStackSize += getInputStack().getCount();
+        for (ItemStack stack : output)
+            cumulativeStackSize += stack
+                    .getCount();
+        return cumulativeStackSize;
+    }
+
+    public int getRemainingSpace() {
+        int cumulativeStackSize = getPresentStackSize();
+        for (TransportedItemStack transportedItemStack : incoming)
+            cumulativeStackSize += transportedItemStack.stack.getCount();
+        return 64 - cumulativeStackSize;
+    }
+
+    public ItemStack insert(TransportedItemStack input, boolean simulate) {
+            int remainingSpace = getRemainingSpace();
+            ItemStack inserted = input.stack;
+            if (remainingSpace <= 0)
+                return inserted;
+            if (this.input != null && !ItemHelper.canItemStackAmountsStack(this.input.stack, inserted))
+                return inserted;
+
+            ItemStack returned = ItemStack.EMPTY;
+            if (remainingSpace < inserted.getCount()) {
+                returned = ItemHandlerHelper.copyStackWithSize(input.stack, inserted.getCount() - remainingSpace);
+                if (!simulate) {
+                    TransportedItemStack copy = input.copy();
+                    copy.stack.setCount(remainingSpace);
+                    if (this.input != null)
+                        incoming.add(copy);
+                    else
+                        this.input = copy;
+                }
+            } else {
+                if (!simulate) {
+                    if (this.input != null)
+                        incoming.add(input);
+                    else
+                        this.input = input;
+                }
+            }
+            return returned;
+    }
+
+    public boolean isEmpty() {
+        return input == null && isOutputEmpty();
+    }
+
+    public boolean isOutputEmpty() {
+        for (int i = 0; i < output.size(); i++)
+            if (!output.get(i)
+                    .isEmpty())
+                return false;
+        return true;
+    }
+
+
     @Override
     public void destroy() {
         super.destroy();
@@ -144,15 +221,15 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
         return itemHandlerLazyOptional;
     }
 
-    public ItemStack getHeldItemStack() {
+    public ItemStack getInputStack() {
         return input == null ? ItemStack.EMPTY : input.stack;
     }
 
-    public void setHeldItem(TransportedItemStack heldItem) {
-        this.input = heldItem;
+    public void setInputStack(TransportedItemStack input) {
+        this.input = input;
     }
 
-    public void removeHeldItem() {
+    public void removeInputStack() {
         this.input = null;
     }
 

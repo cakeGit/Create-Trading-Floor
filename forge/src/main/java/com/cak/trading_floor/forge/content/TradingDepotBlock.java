@@ -3,12 +3,9 @@ package com.cak.trading_floor.forge.content;
 import com.cak.trading_floor.forge.TFRegistry;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllSoundEvents;
-import com.simibubi.create.Create;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
-import com.simibubi.create.content.logistics.depot.DepotBehaviour;
-import com.simibubi.create.content.logistics.depot.SharedDepotBlockMethods;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
@@ -25,7 +22,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,7 +30,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE<TradingDepotBlockEntity>, IWrenchable {
@@ -74,11 +69,11 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
         boolean wasEmptyHanded = heldItem.isEmpty();
         boolean shouldntPlaceItem = AllBlocks.MECHANICAL_ARM.isIn(heldItem);
 
-        ItemStack mainItemStack = behaviour.getHeldItemStack();
+        ItemStack mainItemStack = behaviour.getInputStack();
         if (!mainItemStack.isEmpty()) {
             player.getInventory()
                     .placeItemBackInInventory(mainItemStack);
-            behaviour.removeHeldItem();
+            behaviour.removeInputStack();
             world.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, .2f,
                     1f + world.random.nextFloat());
         }
@@ -91,7 +86,7 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
             transported.insertedFrom = player.getDirection();
             transported.prevBeltPosition = .25f;
             transported.beltPosition = .25f;
-            behaviour.setHeldItem(transported);
+            behaviour.setInputStack(transported);
             player.setItemInHand(hand, ItemStack.EMPTY);
             AllSoundEvents.DEPOT_SLIDE.playOnServer(world, pos);
         }
