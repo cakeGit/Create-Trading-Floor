@@ -22,23 +22,23 @@ public class TradingDepotItemHandler implements IItemHandler {
     
     @Override
     public @NotNull ItemStack getStackInSlot(int i) {
-        return i == 0 ? behaviour.input : behaviour.output.get(i - 1);
+        return i == 0 ? behaviour.getHeldItemStack() : behaviour.output.get(i - 1);
     }
     
     @Override
     public @NotNull ItemStack insertItem(int i, @NotNull ItemStack arg, boolean bl) {
         if (i != 0) return arg;
         
-        if (!behaviour.input.isEmpty() && !ItemHandlerHelper.canItemStacksStack(behaviour.input, arg)) return arg;
+        if (!behaviour.getHeldItemStack().isEmpty() && !ItemHandlerHelper.canItemStacksStack(behaviour.getHeldItemStack(), arg)) return arg;
         
-        ItemStack currentStack = behaviour.input;
-        
+        ItemStack currentStack = behaviour.getHeldItemStack();
+
         int newCount = Math.min(currentStack.getMaxStackSize(), currentStack.getCount() + arg.getCount());
         int added = newCount - currentStack.getCount();
         int remaining = arg.getCount() - added;
         
         if (!bl) {
-            behaviour.input = arg.copyWithCount(newCount);
+            behaviour.setHeldItem(new TransportedItemStack(arg.copyWithCount(newCount)));
             behaviour.blockEntity.sendData();
         }
         

@@ -1,5 +1,6 @@
 package com.cak.trading_floor.forge.content;
 
+import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.content.logistics.depot.DepotBehaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
@@ -49,7 +50,7 @@ public class TradingDepotBlockEntity extends SmartBlockEntity {
     public void tryTradeWith(Villager villager) {
         if (!tradingDepotBehaviour.itemHandler.behaviour.output.isEmpty()) return;
         
-        ItemStack offering = tradingDepotBehaviour.input;
+        ItemStack offering = tradingDepotBehaviour.getHeldItemStack();
         
         MerchantOffer selectedOffer = villager.getOffers().getRecipeFor(offering, ItemStack.EMPTY, 0);
         if (selectedOffer == null) return;
@@ -58,12 +59,12 @@ public class TradingDepotBlockEntity extends SmartBlockEntity {
         while (ittr < 100) {
             ittr ++;
             
-            offering = tradingDepotBehaviour.input;
+            offering = tradingDepotBehaviour.getHeldItemStack();
             ItemStack cost = selectedOffer.getBaseCostA();
             
             if (offering.getCount() < cost.getCount()) break;
             
-            tradingDepotBehaviour.input  = offering.copyWithCount(offering.getCount() - cost.getCount());
+            tradingDepotBehaviour.setHeldItem(new TransportedItemStack(offering.copyWithCount(offering.getCount() - cost.getCount())));
             tradingDepotBehaviour.output.add(selectedOffer.assemble());
         }
         
