@@ -1,6 +1,7 @@
 package com.cak.trading_floor.forge.mixin;
 
 import com.cak.trading_floor.forge.TFRegistry;
+import com.cak.trading_floor.forge.content.TradingDepotBehaviour;
 import com.cak.trading_floor.forge.content.TradingDepotBlock;
 import com.cak.trading_floor.forge.content.TradingDepotBlockEntity;
 import com.simibubi.create.foundation.utility.Iterate;
@@ -23,12 +24,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Mixin(WorkAtPoi.class)
 public class WorkAtPoiMixin {
     
-    @Shadow private long lastCheck;
+    @Shadow
+    private long lastCheck;
     
     @Inject(method = "checkExtraStartConditions(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/npc/Villager;)Z", at = @At("TAIL"))
     public void checkExtraStartConditions(ServerLevel level, Villager owner, CallbackInfoReturnable<Boolean> cir) {
@@ -63,15 +66,19 @@ public class WorkAtPoiMixin {
         if (jobSite.isEmpty()) return;
         
         BlockPos jobSitePos = jobSite.get().pos();
-
-        List<BlockPos> tradingDepots = lookForTradingDepots(level, jobSitePos);
-
-        tradingDepots.forEach(pos -> {
-            TradingDepotBlockEntity depot = (TradingDepotBlockEntity) level.getBlockEntity(pos);
-            if (!depot.tryTradeWith(villager)) {
-                depot.tryTradeWithMultiple(villager, tradingDepots);
-            }
-        });
+        
+        List<BlockPos> tradingDepotPositions = lookForTradingDepots(level, jobSitePos);
+        
+        List<TradingDepotBlockEntity> tradingDepots = tradingDepotPositions.stream()
+            .map(pos -> (TradingDepotBlockEntity) level.getBlockEntity(pos))
+            .filter(Objects::nonNull)
+            .filter(TradingDepotBlockEntity::hasInputStack)
+            .toList();
+        List<TradingDepotBehaviour> tradingDepotBehaviours = tradingDepots.stream()
+            .map(be -> be.getBehaviour(TradingDepotBehaviour.TYPE))
+            .toList();
+        
+        tradingDepots.forEach(depot -> depot.tryTradeWith(villager, tradingDepotBehaviours));
     }
     
     @Unique
