@@ -2,8 +2,8 @@ package com.cak.trading_floor.forge.content;
 
 import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.simibubi.create.content.kinetics.belt.BeltHelper;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
-import com.simibubi.create.content.logistics.depot.DepotRenderer;
 import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
 import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -67,6 +67,32 @@ public class TradingDepotBlockEntityRenderer extends SmartBlockEntityRenderer<Tr
 
         if (transported != null)
             blockEntity.tradingDepotBehaviour.incoming.remove(transported);
+
+        // Render output items
+        for (int i = 0; i < blockEntity.tradingDepotBehaviour.itemHandler.behaviour.output.size(); i++) {
+            ItemStack stack = blockEntity.tradingDepotBehaviour.itemHandler.behaviour.output.get(i);
+            if (stack.isEmpty())
+                continue;
+            ms.pushPose();
+
+
+            TransformStack.cast(ms)
+                    .rotateY(90 - blockEntity.getBlockState().getValue(TradingDepotBlock.FACING).get2DDataValue() * 90)
+                    .rotateZ(22.5);
+
+            msr.nudge(i);
+
+            boolean renderUpright = BeltHelper.isItemUpright(stack);
+            msr.rotateY(360 / 8f * i);
+            ms.translate(.35, .01/(i+1), 0);
+            if (renderUpright)
+                msr.rotateY(-(360 / 8f * i));
+            Random r = new Random(i + 1);
+            int angle = (int) (360 * r.nextFloat());
+
+            renderItem(blockEntity.getLevel(), ms, buffer, light, overlay, stack, renderUpright ? angle + 90 : angle, r, itemPosition);
+            ms.popPose();
+        }
 //
 //        ItemStack visibleStack = blockEntity.tradingDepotBehaviour.getHeldItemStack();
 //

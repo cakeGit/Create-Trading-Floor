@@ -47,7 +47,7 @@ public class WorkAtPoiMixin {
         }
         
         if (hasReducedCooldown) {
-            lastCheck -= 250;
+            lastCheck -= 2000;
         }
     }
     
@@ -63,13 +63,15 @@ public class WorkAtPoiMixin {
         if (jobSite.isEmpty()) return;
         
         BlockPos jobSitePos = jobSite.get().pos();
-        
-        for (BlockPos pos : lookForTradingDepots(level, jobSitePos)) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof TradingDepotBlockEntity tbe) {
-                tbe.tryTradeWith(villager);
+
+        List<BlockPos> tradingDepots = lookForTradingDepots(level, jobSitePos);
+
+        tradingDepots.forEach(pos -> {
+            TradingDepotBlockEntity depot = (TradingDepotBlockEntity) level.getBlockEntity(pos);
+            if (!depot.tryTradeWith(villager)) {
+                depot.tryTradeWithMultiple(villager, tradingDepots);
             }
-        }
+        });
     }
     
     @Unique

@@ -164,9 +164,8 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
     }
 
     public boolean isOutputEmpty() {
-        for (int i = 0; i < output.size(); i++)
-            if (!output.get(i)
-                    .isEmpty())
+        for (ItemStack stack : output)
+            if (!stack.isEmpty())
                 return false;
         return true;
     }

@@ -1,7 +1,6 @@
 package com.cak.trading_floor.forge.content;
 
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
-import com.simibubi.create.content.logistics.depot.DepotBehaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
@@ -9,7 +8,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -46,28 +44,51 @@ public class TradingDepotBlockEntity extends SmartBlockEntity {
         super.invalidateCaps();
         tradingDepotBehaviour.itemHandlerLazyOptional.invalidate();
     }
-    
-    public void tryTradeWith(Villager villager) {
-        if (!tradingDepotBehaviour.output.isEmpty()) return;
+
+    public boolean tryTradeWith(Villager villager) {
+        if (!tradingDepotBehaviour.isOutputEmpty()) return false;
         
         ItemStack offering = tradingDepotBehaviour.getInputStack();
         
         MerchantOffer selectedOffer = villager.getOffers().getRecipeFor(offering, ItemStack.EMPTY, 0);
-        if (selectedOffer == null) return;
-        
-        int ittr = 0;
-        while (ittr < 100) {
-            ittr ++;
-            
-            offering = tradingDepotBehaviour.getInputStack();
-            ItemStack cost = selectedOffer.getBaseCostA();
-            
-            if (offering.getCount() < cost.getCount()) break;
-            
-            tradingDepotBehaviour.setInputStack(new TransportedItemStack(offering.copyWithCount(offering.getCount() - cost.getCount())));
-            tradingDepotBehaviour.output.add(selectedOffer.assemble());
-        }
-        
+        if (selectedOffer == null) return false;
+
+        ItemStack cost = selectedOffer.getBaseCostA();
+
+        tradingDepotBehaviour.setInputStack(new TransportedItemStack(offering.copyWithCount(offering.getCount() - cost.getCount())));
+        tradingDepotBehaviour.output.add(selectedOffer.assemble());
+        villager.playWorkSound();
+        villager.playCelebrateSound();
+        tradingDepotBehaviour.blockEntity.notifyUpdate();
+        return true;
     }
-    
+
+    public void tryTradeWithMultiple(Villager villager, List<BlockPos> depotPositions) {
+        MerchantOffer selectedOffer = null;
+        ItemStack offeringA = tradingDepotBehaviour.getInputStack();
+        ItemStack offeringB = ItemStack.EMPTY;
+        TradingDepotBlockEntity depotB = null;
+        for (BlockPos pos : depotPositions) {
+            if (pos != getBlockPos()) {
+                depotB = (TradingDepotBlockEntity) level.getBlockEntity(pos);
+                offeringB = depotB.tradingDepotBehaviour.getInputStack();
+            }
+            selectedOffer = (villager.getOffers().getRecipeFor(offeringA, offeringB, 0));
+            if (selectedOffer != null) break;
+        }
+
+        if (selectedOffer == null) return;
+
+        ItemStack costA = selectedOffer.getBaseCostA();
+        ItemStack costB = selectedOffer.getCostB();
+
+        tradingDepotBehaviour.setInputStack(new TransportedItemStack(offeringA.copyWithCount(offeringA.getCount() - costA.getCount())));
+        depotB.tradingDepotBehaviour.setInputStack(new TransportedItemStack(offeringB.copyWithCount(offeringB.getCount() - costB.getCount())));
+
+        tradingDepotBehaviour.output.add(selectedOffer.assemble());
+        villager.playWorkSound();
+        villager.playCelebrateSound();
+        tradingDepotBehaviour.blockEntity.notifyUpdate();
+        depotB.tradingDepotBehaviour.blockEntity.notifyUpdate();
+    }
 }

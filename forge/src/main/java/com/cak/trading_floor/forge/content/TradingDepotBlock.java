@@ -77,9 +77,12 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
             world.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, .2f,
                     1f + world.random.nextFloat());
         }
-        for (int i = 0; i < behaviour.output.size(); i++)
-            player.getInventory()
-                    .placeItemBackInInventory(behaviour.output.get(i));
+        if (!behaviour.isOutputEmpty()) {
+            for (int i = 0; i < behaviour.output.size(); i++)
+                player.getInventory().placeItemBackInInventory(behaviour.output.get(i));
+            world.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, .2f,
+                    1f + world.random.nextFloat());
+        }
 
         if (!wasEmptyHanded && !shouldntPlaceItem) {
             TransportedItemStack transported = new TransportedItemStack(heldItem);

@@ -1,7 +1,6 @@
 package net.examplemod.fabric;
 
 import com.cak.trading_floor.TradingFloor;
-import io.github.fabricators_of_create.porting_lib.util.EnvExecutor;
 import net.fabricmc.api.ModInitializer;
 
 public class ExampleModFabric implements ModInitializer {
