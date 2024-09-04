@@ -1,8 +1,10 @@
 package com.cak.trading_floor.forge.content;
 
+import com.simibubi.create.content.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.npc.Villager;
@@ -21,7 +23,8 @@ import java.util.List;
 public class TradingDepotBlockEntity extends SmartBlockEntity {
     
     TradingDepotBehaviour tradingDepotBehaviour;
-    
+    FilteringBehaviour filtering;
+
     public TradingDepotBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
     }

@@ -3,9 +3,14 @@ package com.cak.trading_floor.forge.content;
 import com.simibubi.create.content.kinetics.belt.BeltHelper;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import com.simibubi.create.content.logistics.chute.SmartChuteFilterSlotPositioning;
+import com.simibubi.create.content.logistics.funnel.FunnelFilterSlotPositioning;
+import com.simibubi.create.content.redstone.FilteredDetectorFilterSlot;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.inventory.VersionedInventoryTrackerBehaviour;
 import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.utility.NBTHelper;
 import com.simibubi.create.foundation.utility.VecHelper;
@@ -37,7 +42,9 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
 
     TradingDepotItemHandler itemHandler;
     LazyOptional<TradingDepotItemHandler> itemHandlerLazyOptional;
-    
+
+    VersionedInventoryTrackerBehaviour invVersionTracker;
+
     public TradingDepotBehaviour(SmartBlockEntity be) {
         super(be);
         itemHandler = new TradingDepotItemHandler(this);
@@ -94,6 +101,9 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
                 .allowingBeltFunnels()
                 .onlyInsertWhen(side -> blockEntity.getBlockState().getValue(FACING).getOpposite() == side)
                 .setInsertionHandler(this::tryInsertingFromSide));
+        behaviours.add(new FilteringBehaviour(blockEntity, new TradingDepotFilterSlotPositioning())
+                .withCallback($ -> invVersionTracker.reset()));
+        behaviours.add(invVersionTracker = new VersionedInventoryTrackerBehaviour(blockEntity));
     }
 
     private ItemStack tryInsertingFromSide(TransportedItemStack transportedStack, Direction side, boolean simulate) {
