@@ -1,9 +1,9 @@
 package com.cak.trading_floor.forge.mixin;
 
 import com.cak.trading_floor.forge.TFRegistry;
-import com.cak.trading_floor.forge.content.TradingDepotBehaviour;
-import com.cak.trading_floor.forge.content.TradingDepotBlock;
-import com.cak.trading_floor.forge.content.TradingDepotBlockEntity;
+import com.cak.trading_floor.forge.content.depot.TradingDepotBehaviour;
+import com.cak.trading_floor.forge.content.depot.TradingDepotBlock;
+import com.cak.trading_floor.forge.content.depot.TradingDepotBlockEntity;
 import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -7,7 +7,7 @@ license = "MIT"
 modId = "trading_floor"
 version = "${version}"
 displayName = "Create: Trading Floor"
-authors = "Cak"
+authors = "Tazer & Cak"
 description = '''
 This is an example description! Tell everyone what your mod is about!
 '''

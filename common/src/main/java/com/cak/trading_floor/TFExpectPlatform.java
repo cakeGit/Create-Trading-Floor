@@ -2,7 +2,7 @@ package com.cak.trading_floor;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
 
-public class ExampleExpectPlatform {
+public class TFExpectPlatform {
     /**
      * an example of {@link ExpectPlatform}.
      * <p>

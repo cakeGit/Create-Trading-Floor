@@ -1,27 +1,28 @@
 {
   "schemaVersion": 1,
-  "id": "examplemod",
+  "id": "trading_floor",
   "version": "${version}",
-  "name": "Example Mod",
+  "name": "Create: Trading Floor",
   "description": "This is an example description! Tell everyone what your mod is about!",
   "authors": [
-    "Me!"
+    "Tazer",
+    "Cak"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "https://github.com/cakeGit/Create-Trading-Floor"
   },
   "license": "Insert License Here",
-  "icon": "assets/examplemod/icon.png",
+  "icon": "assets/trading_floor/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.examplemod.fabric.ExampleModFabric"
+      "com.cak.trading_floor.fabric.TradingFloorFabric"
     ]
   },
   "mixins": [
-    "examplemod.mixins.json",
-    "examplemod-common.mixins.json"
+    "trading_floor.mixins.json",
+    "trading_floor-common.mixins.json"
   ],
   "depends": {
     "minecraft": "${minecraft_version}",

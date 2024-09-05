@@ -1,9 +1,9 @@
-package net.examplemod.fabric;
+package com.cak.trading_floor.fabric;
 
 import com.cak.trading_floor.TradingFloor;
 import net.fabricmc.api.ModInitializer;
 
-public class ExampleModFabric implements ModInitializer {
+public class TradingFloorFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         TradingFloor.init();

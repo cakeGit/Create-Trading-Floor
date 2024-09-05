@@ -1,11 +1,8 @@
-package com.cak.trading_floor.forge.content;
+package com.cak.trading_floor.forge.content.depot;
 
 import com.simibubi.create.content.kinetics.belt.BeltHelper;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
-import com.simibubi.create.content.logistics.chute.SmartChuteFilterSlotPositioning;
-import com.simibubi.create.content.logistics.funnel.FunnelFilterSlotPositioning;
-import com.simibubi.create.content.redstone.FilteredDetectorFilterSlot;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
@@ -26,7 +23,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,8 +35,8 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
     public static final BehaviourType<TradingDepotBehaviour> TYPE = new BehaviourType<>();
     public FilteringBehaviour filtering;
     
-    TransportedItemStack input;
-    List<ItemStack> output;
+    TransportedItemStack offer;
+    List<ItemStack> result;
     List<TransportedItemStack> incoming;
 
     TradingDepotItemHandler itemHandler;
@@ -52,7 +48,7 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
         super(be);
         itemHandler = new TradingDepotItemHandler(this);
         itemHandlerLazyOptional = LazyOptional.of(() -> itemHandler);
-        output = new ArrayList<>();
+        result = new ArrayList<>();
         incoming = new ArrayList<>();
     }
 
@@ -68,23 +64,23 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
                 continue;
             if (world.isClientSide && !blockEntity.isVirtual())
                 continue;
-            if (input == null) {
-                input = ts;
+            if (offer == null) {
+                offer = ts;
             } else {
-                if (!ItemHelper.canItemStackAmountsStack(input.stack, ts.stack)) {
+                if (!ItemHelper.canItemStackAmountsStack(offer.stack, ts.stack)) {
                     Vec3 vec = VecHelper.getCenterOf(blockEntity.getBlockPos());
                     Containers.dropItemStack(blockEntity.getLevel(), vec.x, vec.y + .5f, vec.z, ts.stack);
                 } else {
-                    input.stack.grow(ts.stack.getCount());
+                    offer.stack.grow(ts.stack.getCount());
                 }
             }
             iterator.remove();
             blockEntity.notifyUpdate();
         }
 
-        if (input == null)
+        if (offer == null)
             return;
-        tick(input);
+        tick(offer);
     }
 
     protected boolean tick(TransportedItemStack input) {
@@ -126,8 +122,8 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
 
     public int getPresentStackSize() {
         int cumulativeStackSize = 0;
-        cumulativeStackSize += getInputStack().getCount();
-        for (ItemStack stack : output)
+        cumulativeStackSize += getOfferStack().getCount();
+        for (ItemStack stack : result)
             cumulativeStackSize += stack
                     .getCount();
         return cumulativeStackSize;
@@ -145,7 +141,7 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
             ItemStack inserted = input.stack;
             if (remainingSpace <= 0)
                 return inserted;
-            if (this.input != null && !this.input.stack.isEmpty() && !ItemHandlerHelper.canItemStacksStack(this.input.stack, inserted))
+            if (this.offer != null && !this.offer.stack.isEmpty() && !ItemHandlerHelper.canItemStacksStack(this.offer.stack, inserted))
                 return inserted;
 
             ItemStack returned = ItemStack.EMPTY;
@@ -154,28 +150,28 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
                 if (!simulate) {
                     TransportedItemStack copy = input.copy();
                     copy.stack.setCount(remainingSpace);
-                    if (this.input != null && !this.input.stack.isEmpty())
+                    if (this.offer != null && !this.offer.stack.isEmpty())
                         incoming.add(copy);
                     else
-                        this.input = copy;
+                        this.offer = copy;
                 }
             } else {
                 if (!simulate) {
-                    if (this.input != null && !this.input.stack.isEmpty())
+                    if (this.offer != null && !this.offer.stack.isEmpty())
                         incoming.add(input);
                     else
-                        this.input = input;
+                        this.offer = input;
                 }
             }
             return returned;
     }
 
     public boolean isEmpty() {
-        return input == null && isOutputEmpty();
+        return offer == null && isOutputEmpty();
     }
 
     public boolean isOutputEmpty() {
-        for (ItemStack stack : output)
+        for (ItemStack stack : result)
             if (!stack.isEmpty())
                 return false;
         return true;
@@ -198,15 +194,15 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
     
     @Override
     public void read(CompoundTag nbt, boolean clientPacket) {
-        input = null;
+        offer = null;
         if (nbt.contains("Input"))
-            input = TransportedItemStack.read(nbt.getCompound("Input"));
+            offer = TransportedItemStack.read(nbt.getCompound("Input"));
         
         int outputCount = nbt.getInt("OutputCount");
-        output = new ArrayList<>(outputCount);
+        result = new ArrayList<>(outputCount);
         
         for (int i = 0; i < outputCount; i++) {
-            output.add(ItemStack.of(nbt.getCompound("Output" + i)));
+            result.add(ItemStack.of(nbt.getCompound("Output" + i)));
         }
 
         ListTag list = nbt.getList("Incoming", Tag.TAG_COMPOUND);
@@ -215,12 +211,12 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
     
     @Override
     public void write(CompoundTag nbt, boolean clientPacket) {
-        if (input != null)
-            nbt.put("Input", input.serializeNBT());
+        if (offer != null)
+            nbt.put("Input", offer.serializeNBT());
         
-        nbt.putInt("OutputCount", output.size());
-        for (int i = 0; i < output.size(); i++) {
-            nbt.put("Output" + i, output.get(i).save(new CompoundTag()));
+        nbt.putInt("OutputCount", result.size());
+        for (int i = 0; i < result.size(); i++) {
+            nbt.put("Output" + i, result.get(i).save(new CompoundTag()));
         }
 
         if (!incoming.isEmpty())
@@ -231,16 +227,16 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
         return itemHandlerLazyOptional;
     }
 
-    public ItemStack getInputStack() {
-        return input == null ? ItemStack.EMPTY : input.stack;
+    public ItemStack getOfferStack() {
+        return offer == null ? ItemStack.EMPTY : offer.stack;
     }
 
-    public void setInputStack(TransportedItemStack input) {
-        this.input = input;
+    public void setOfferStack(TransportedItemStack input) {
+        this.offer = input;
     }
 
-    public void removeInputStack() {
-        this.input = null;
+    public void removeOfferStack() {
+        this.offer = null;
     }
 
     @Override
@@ -251,7 +247,7 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
     public void combineOutputs() {
         List<ItemStack> result = new ArrayList<>();
         
-        for (ItemStack stack : output) {
+        for (ItemStack stack : this.result) {
             
             for (ItemStack other : result) {
                 if (!ItemHandlerHelper.canItemStacksStack(stack, other)) continue;
@@ -267,7 +263,7 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
                 result.add(stack);
         }
         
-        this.output = result;
+        this.result = result;
     }
     
     public boolean canBeUsedFor(MerchantOffer offer) {
