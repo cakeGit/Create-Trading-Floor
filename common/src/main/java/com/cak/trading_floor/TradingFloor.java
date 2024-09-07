@@ -12,7 +12,7 @@ public class TradingFloor {
     public static final Logger LOGGER = LoggerFactory.getLogger(NAME);
 
     public static void init() {
-        LOGGER.info("{} initializing! Create version: {} on platform: {}", NAME, Create.VERSION, ExampleExpectPlatform.platformName());
+        LOGGER.info("{} initializing! Create version: {} on platform: {}", NAME, Create.VERSION, TFExpectPlatform.platformName());
     }
     
     public static ResourceLocation asResource(String id) {

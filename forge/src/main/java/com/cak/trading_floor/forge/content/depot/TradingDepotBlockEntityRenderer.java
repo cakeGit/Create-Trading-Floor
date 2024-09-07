@@ -1,4 +1,4 @@
-package com.cak.trading_floor.forge.content;
+package com.cak.trading_floor.forge.content.depot;
 
 import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -27,7 +27,7 @@ public class TradingDepotBlockEntityRenderer extends SmartBlockEntityRenderer<Tr
     protected void renderSafe(TradingDepotBlockEntity blockEntity, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
         super.renderSafe(blockEntity, partialTicks, ms, buffer, light, overlay);
 
-        TransportedItemStack transported = blockEntity.tradingDepotBehaviour.input;
+        TransportedItemStack transported = blockEntity.tradingDepotBehaviour.offer;
         TransformStack msr = TransformStack.cast(ms);
         Vec3 itemPosition = VecHelper.getCenterOf(blockEntity.getBlockPos());
 
@@ -69,8 +69,8 @@ public class TradingDepotBlockEntityRenderer extends SmartBlockEntityRenderer<Tr
             blockEntity.tradingDepotBehaviour.incoming.remove(transported);
 
         // Render output items
-        for (int i = 0; i < blockEntity.tradingDepotBehaviour.itemHandler.behaviour.output.size(); i++) {
-            ItemStack stack = blockEntity.tradingDepotBehaviour.itemHandler.behaviour.output.get(i);
+        for (int i = 0; i < blockEntity.tradingDepotBehaviour.itemHandler.behaviour.result.size(); i++) {
+            ItemStack stack = blockEntity.tradingDepotBehaviour.itemHandler.behaviour.result.get(i);
             if (stack.isEmpty())
                 continue;
             ms.pushPose();

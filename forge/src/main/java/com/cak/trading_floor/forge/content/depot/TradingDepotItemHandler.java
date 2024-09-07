@@ -1,4 +1,4 @@
-package com.cak.trading_floor.forge.content;
+package com.cak.trading_floor.forge.content.depot;
 
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import net.minecraft.core.Direction;
@@ -17,28 +17,28 @@ public class TradingDepotItemHandler implements IItemHandler {
     
     @Override
     public int getSlots() {
-        return 1 + behaviour.output.size();
+        return 1 + behaviour.result.size();
     }
     
     @Override
     public @NotNull ItemStack getStackInSlot(int i) {
-        return i == 0 ? behaviour.getInputStack() : behaviour.output.get(i - 1);
+        return i == 0 ? behaviour.getOfferStack() : behaviour.result.get(i - 1);
     }
     
     @Override
     public @NotNull ItemStack insertItem(int i, @NotNull ItemStack arg, boolean bl) {
         if (i != 0) return arg;
         
-        if (!behaviour.getInputStack().isEmpty() && !ItemHandlerHelper.canItemStacksStack(behaviour.getInputStack(), arg)) return arg;
+        if (!behaviour.getOfferStack().isEmpty() && !ItemHandlerHelper.canItemStacksStack(behaviour.getOfferStack(), arg)) return arg;
         
-        ItemStack incomingStack = behaviour.getInputStack();
+        ItemStack incomingStack = behaviour.getOfferStack();
 
         int newCount = Math.min(incomingStack.getMaxStackSize(), incomingStack.getCount() + arg.getCount());
         int added = newCount - incomingStack.getCount();
         int remaining = arg.getCount() - added;
         
         if (!bl) {
-            behaviour.setInputStack(new TransportedItemStack(arg.copyWithCount(newCount)));
+            behaviour.setOfferStack(new TransportedItemStack(arg.copyWithCount(newCount)));
             behaviour.blockEntity.sendData();
         }
         
@@ -49,7 +49,7 @@ public class TradingDepotItemHandler implements IItemHandler {
     public @NotNull ItemStack extractItem(int i, int j, boolean bl) {
         if (i == 0) return ItemStack.EMPTY;
         
-        ItemStack currentStack = behaviour.output.get(i - 1);
+        ItemStack currentStack = behaviour.result.get(i - 1);
         
         int extractedCount = Math.min(currentStack.getCount(), j);
         
@@ -58,9 +58,9 @@ public class TradingDepotItemHandler implements IItemHandler {
         
         if (!bl) {
             if (remainderStack.isEmpty())
-                this.behaviour.output.remove(i - 1);
+                this.behaviour.result.remove(i - 1);
             else
-                this.behaviour.output.set(i, remainderStack);
+                this.behaviour.result.set(i, remainderStack);
             behaviour.blockEntity.sendData();
         }
         

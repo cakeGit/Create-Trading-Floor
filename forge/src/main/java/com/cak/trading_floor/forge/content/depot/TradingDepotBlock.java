@@ -1,4 +1,4 @@
-package com.cak.trading_floor.forge.content;
+package com.cak.trading_floor.forge.content.depot;
 
 import com.cak.trading_floor.forge.registry.TFRegistry;
 import com.simibubi.create.AllBlocks;
@@ -69,17 +69,17 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
         boolean wasEmptyHanded = heldItem.isEmpty();
         boolean shouldntPlaceItem = AllBlocks.MECHANICAL_ARM.isIn(heldItem);
 
-        ItemStack mainItemStack = behaviour.getInputStack();
+        ItemStack mainItemStack = behaviour.getOfferStack();
         if (!mainItemStack.isEmpty()) {
             player.getInventory()
                     .placeItemBackInInventory(mainItemStack);
-            behaviour.removeInputStack();
+            behaviour.removeOfferStack();
             world.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, .2f,
                     1f + world.random.nextFloat());
         }
         if (!behaviour.isOutputEmpty()) {
-            for (int i = 0; i < behaviour.output.size(); i++)
-                player.getInventory().placeItemBackInInventory(behaviour.output.get(i));
+            for (int i = 0; i < behaviour.result.size(); i++)
+                player.getInventory().placeItemBackInInventory(behaviour.result.get(i));
             world.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, .2f,
                     1f + world.random.nextFloat());
         }
@@ -89,7 +89,7 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
             transported.insertedFrom = player.getDirection();
             transported.prevBeltPosition = .25f;
             transported.beltPosition = .25f;
-            behaviour.setInputStack(transported);
+            behaviour.setOfferStack(transported);
             player.setItemInHand(hand, ItemStack.EMPTY);
             AllSoundEvents.DEPOT_SLIDE.playOnServer(world, pos);
         }

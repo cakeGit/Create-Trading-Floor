@@ -1,4 +1,4 @@
-package com.cak.trading_floor.forge.content;
+package com.cak.trading_floor.forge.content.depot;
 
 import com.cak.trading_floor.forge.foundation.AttachedTradingDepotFinder;
 import com.cak.trading_floor.forge.foundation.MerchantOfferInfo;
@@ -14,6 +14,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentContents;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -108,7 +110,7 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         behaviours.add(tradingDepotBehaviour = new TradingDepotBehaviour(this));
-        behaviours.add(filtering = new FilteringBehaviour(this, new TradingDepotFilterSlotPositioning())
+        behaviours.add(filtering = new FilteringBehaviour(this, new TradingDepotValueBox())
             .withCallback($ -> tradingDepotBehaviour.invVersionTracker.reset()));
         tradingDepotBehaviour.filtering = filtering;
         tradingDepotBehaviour.addAdditionalBehaviours(behaviours);
@@ -144,40 +146,40 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
     }
     
     /**
-     * Try perform for the offer, return false if it was not completed (due to not having enough money), and put the
+     * Try to perform for the offer, return false if it was not completed (due to not having enough money), and put the
      * output into the cost A depot
      */
     protected boolean tryTakeMerchantOffer(MerchantOffer offer, TradingDepotBehaviour costASource, List<TradingDepotBehaviour> costBSources) {
         //Quickly check if the A cost matches, if not dont bother with anything else
-        if (!ItemStack.isSameItem(offer.getBaseCostA(), costASource.input.stack)) return false;
+        if (!ItemStack.isSameItem(offer.getBaseCostA(), costASource.offer.stack)) return false;
         
         //Check the second cost if it's there
         ItemStack totalCostBSource = ItemStack.EMPTY;
         if (!offer.getCostB().isEmpty()) {
             costBSources = costBSources.stream()
-                .filter(depot -> ItemStack.isSameItem(offer.getCostB(), depot.input.stack))
+                .filter(depot -> ItemStack.isSameItem(offer.getCostB(), depot.offer.stack))
                 .toList();
             
             if (costBSources.isEmpty()) return false;
             
             int totalCostB = 0;
             for (TradingDepotBehaviour depot : costBSources)
-                totalCostB += depot.input.stack.getCount();
+                totalCostB += depot.offer.stack.getCount();
             
             if (offer.getCostB().getCount() > totalCostB) return false;
             
-            totalCostBSource = costBSources.get(0).input.stack.copyWithCount(totalCostB);
+            totalCostBSource = costBSources.get(0).offer.stack.copyWithCount(totalCostB);
         }
         
         //Check both match
-        if (!satisfiedBaseCostBy(offer, costASource.input.stack, totalCostBSource)) return false;
+        if (!satisfiedBaseCostBy(offer, costASource.offer.stack, totalCostBSource)) return false;
         
         //Perform transaction
-        costASource.input.stack = costASource.input.stack
-            .copyWithCount(costASource.input.stack.getCount() - offer.getBaseCostA().getCount());
+        costASource.offer.stack = costASource.offer.stack
+            .copyWithCount(costASource.offer.stack.getCount() - offer.getBaseCostA().getCount());
         takeTotalFromSources(costBSources, offer.getCostB().getCount());
         
-        costASource.output.add(offer.assemble());
+        costASource.result.add(offer.assemble());
         
         return true;
     }
@@ -190,10 +192,10 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
             
             TradingDepotBehaviour costSource = costBSources.get(i);
             
-            int currentCount = costSource.input.stack.getCount();
+            int currentCount = costSource.offer.stack.getCount();
             int extractCount = Math.min(totalExtractCount, currentCount);
             
-            costSource.input.stack = costSource.input.stack.copyWithCount(currentCount - extractCount);
+            costSource.offer.stack = costSource.offer.stack.copyWithCount(currentCount - extractCount);
             
             totalExtractCount -= extractCount;
             i++;
@@ -221,9 +223,9 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
             
             boolean trading = true;
             while (trading) {
-                if (tradingDepotBehaviour.output.size() >= 8) {
+                if (tradingDepotBehaviour.result.size() >= 8) {
                     tradingDepotBehaviour.combineOutputs();
-                    if (tradingDepotBehaviour.output.size() >= 8) {
+                    if (tradingDepotBehaviour.result.size() >= 8) {
                         hasSpace = false;
                         break;
                     }
@@ -271,7 +273,7 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
     }
     
     public boolean hasInputStack() {
-        return tradingDepotBehaviour.input != null && !tradingDepotBehaviour.input.stack.isEmpty();
+        return tradingDepotBehaviour.offer != null && !tradingDepotBehaviour.offer.stack.isEmpty();
     }
     
 }

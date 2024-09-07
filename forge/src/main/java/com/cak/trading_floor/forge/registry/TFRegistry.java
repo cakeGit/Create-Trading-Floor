@@ -1,9 +1,9 @@
 package com.cak.trading_floor.forge.registry;
 
 import com.cak.trading_floor.TradingFloor;
-import com.cak.trading_floor.forge.content.TradingDepotBlock;
-import com.cak.trading_floor.forge.content.TradingDepotBlockEntity;
-import com.cak.trading_floor.forge.content.TradingDepotBlockEntityRenderer;
+import com.cak.trading_floor.forge.content.depot.TradingDepotBlock;
+import com.cak.trading_floor.forge.content.depot.TradingDepotBlockEntity;
+import com.cak.trading_floor.forge.content.depot.TradingDepotBlockEntityRenderer;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
