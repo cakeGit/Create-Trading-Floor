@@ -5,13 +5,11 @@ import com.cak.trading_floor.forge.foundation.TFLang;
 import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
 import com.simibubi.create.content.redstone.displayLink.source.DisplaySource;
 import com.simibubi.create.content.redstone.displayLink.target.DisplayTargetStats;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class TradeProductSumDisplay extends DisplaySource {
+public class CurrentTradeCompletedCountDisplay extends DisplaySource {
     
     @Override
     public List<MutableComponent> provideText(DisplayLinkContext context, DisplayTargetStats stats) {
@@ -21,9 +19,8 @@ public class TradeProductSumDisplay extends DisplaySource {
         if (depot.getLastTrade() == null)
             return List.of(TFLang.translate("display_link.trading_depot.no_trade").component());
         
-        ItemStack stack = depot.getLastTrade().getResult().copyWithCount(depot.getTradeOutputSum());
-        
-        return List.of(TFLang.itemStack(stack).component());
+        return List.of(TFLang.translate("display_link.trading_depot.trades_completed")
+            .text(" " + depot.getCurrentTradeCompletedCount()).component());
     }
     
 }

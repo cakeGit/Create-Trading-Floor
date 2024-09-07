@@ -3,11 +3,9 @@ package com.cak.trading_floor.forge.content.depot;
 import com.cak.trading_floor.forge.foundation.AttachedTradingDepotFinder;
 import com.cak.trading_floor.forge.foundation.MerchantOfferInfo;
 import com.cak.trading_floor.forge.foundation.TFLang;
-import com.cak.trading_floor.forge.foundation.advancement.TFAdvancement;
 import com.cak.trading_floor.forge.foundation.advancement.TFAdvancementBehaviour;
 import com.cak.trading_floor.forge.foundation.advancement.TFAdvancements;
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
@@ -55,7 +53,7 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
     
     //Tracking data for displays
     int tradeOutputSum = 0;
-    int currentTradeCount = 0;
+    int currentTradeCompletedCount = 0;
     
     /**
      * Advancement only
@@ -156,7 +154,7 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
         
         emeraldsProduced = tag.getInt("EmeraldsProduced");
         tradeOutputSum = tag.getInt("TradeOutputSum");
-        currentTradeCount = tag.getInt("CurrentTradeCount");
+        currentTradeCompletedCount = tag.getInt("CurrentTradeCompletedCount");
     }
     
     @Override
@@ -171,7 +169,7 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
             tag.putInt("EmeraldsProduced", emeraldsProduced);
         
         tag.putInt("TradeOutputSum", tradeOutputSum);
-        tag.putInt("CurrentTradeCount", currentTradeCount);
+        tag.putInt("CurrentTradeCompletedCount", currentTradeCompletedCount);
     }
     
     /**
@@ -282,12 +280,12 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
         
         if (!(lastTrade == null || latestTrade == null) && !Objects.equals(lastTrade, latestTrade)) {
             lastTrade = latestTrade;
-            currentTradeCount = 0;
+            currentTradeCompletedCount = 0;
             tradeOutputSum = 0;
         }
         
         if (latestTrade != null) {
-            currentTradeCount += latestTradeCount;
+            currentTradeCompletedCount += latestTradeCount;
             tradeOutputSum += latestTradeCount * latestTrade.getResult().getCount();
             
             lastTradeCount = latestTradeCount;
@@ -336,8 +334,8 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
         return emeraldsProduced;
     }
     
-    public int getCurrentTradeCount() {
-        return currentTradeCount;
+    public int getCurrentTradeCompletedCount() {
+        return currentTradeCompletedCount;
     }
     
     public int getTradeOutputSum() {

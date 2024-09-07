@@ -4,6 +4,7 @@ import com.cak.trading_floor.TradingFloor;
 import com.cak.trading_floor.forge.content.depot.TradingDepotBlock;
 import com.cak.trading_floor.forge.content.depot.TradingDepotBlockEntity;
 import com.cak.trading_floor.forge.content.depot.TradingDepotBlockEntityRenderer;
+import com.cak.trading_floor.forge.content.depot.displays.CurrentTradeCompletedCountDisplay;
 import com.cak.trading_floor.forge.content.depot.displays.TradeProductSumDisplay;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -23,6 +24,7 @@ public class TFRegistry {
 		.properties(BlockBehaviour.Properties::noOcclusion)
 		.blockstate((ctx, prov) -> prov.horizontalBlock(ctx.getEntry(), AssetLookup.standardModel(ctx, prov)))
 		.onRegister(assignDataBehaviour(new TradeProductSumDisplay(), "trade_product_sum"))
+		.onRegister(assignDataBehaviour(new CurrentTradeCompletedCountDisplay(), "trade_completed_count"))
 		.simpleItem()
 		.register();
 	

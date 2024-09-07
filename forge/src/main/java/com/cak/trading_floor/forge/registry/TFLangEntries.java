@@ -1,6 +1,7 @@
 package com.cak.trading_floor.forge.registry;
 
 import com.cak.trading_floor.TradingFloor;
+import com.cak.trading_floor.forge.foundation.advancement.TFAdvancements;
 
 import java.util.Map;
 
@@ -17,6 +18,8 @@ public class TFLangEntries {
             "tooltip.trading_depot.other_trading_depot", "other Trading Depot",
             "tooltip.trading_depot.other_trading_depots", "other Trading Depots"
         ));
+        
+        TFAdvancements.provideLang(TFRegistry.REGISTRATE::addRawLang);
     }
 
     public static void addIdLangEntries(Map<String, String> entries) {
