@@ -1,5 +1,6 @@
 package com.cak.trading_floor.forge.content;
 
+import com.cak.trading_floor.forge.foundation.TFLang;
 import com.simibubi.create.content.kinetics.belt.BeltHelper;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
@@ -14,11 +15,13 @@ import com.simibubi.create.foundation.blockEntity.behaviour.inventory.VersionedI
 import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.utility.NBTHelper;
 import com.simibubi.create.foundation.utility.VecHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -272,6 +275,33 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
     
     public boolean canBeUsedFor(MerchantOffer offer) {
         return filtering.test(offer.getResult());
+    }
+    
+    public void addContentsToTooltip(List<Component> tooltip) {
+        TFLang.translate("tooltip.trading_depot.contents")
+            .forGoggles(tooltip);
+        
+        if (!input.stack.isEmpty()) {
+            TFLang.translate("tooltip.trading_depot.contents.input")
+                .style(ChatFormatting.GRAY)
+                .forGoggles(tooltip, 1);
+            
+            TFLang.itemStack(input.stack)
+                .style(ChatFormatting.GRAY)
+                .forGoggles(tooltip, 2);
+        }
+        
+        if (!output.isEmpty()) {
+            TFLang.translate("tooltip.trading_depot.contents.output")
+                .style(ChatFormatting.GRAY)
+                .forGoggles(tooltip, 1);
+            
+            for (ItemStack stack : output) {
+                TFLang.itemStack(stack)
+                    .style(ChatFormatting.GRAY)
+                    .forGoggles(tooltip, 2);
+            }
+        }
     }
     
 }

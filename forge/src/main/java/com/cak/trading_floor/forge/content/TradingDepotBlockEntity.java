@@ -1,16 +1,23 @@
 package com.cak.trading_floor.forge.content;
 
-import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import com.cak.trading_floor.forge.foundation.AttachedTradingDepotFinder;
+import com.cak.trading_floor.forge.foundation.MerchantOfferInfo;
+import com.cak.trading_floor.forge.foundation.TFLang;
+import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
+import com.simibubi.create.foundation.utility.LangBuilder;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
-import net.minecraft.world.item.trading.MerchantOffers;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -19,15 +26,83 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class TradingDepotBlockEntity extends SmartBlockEntity {
+public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
     
     TradingDepotBehaviour tradingDepotBehaviour;
     FilteringBehaviour filtering;
     
     public TradingDepotBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
+    }
+    
+    List<BlockEntity> tradingDepotsForDisplay = new ArrayList<>();
+    
+    /**
+     * Note that last trade is not set to null after a failed trade, only the count changes
+     */
+    @Nullable
+    MerchantOfferInfo lastTrade;
+    int lastTradeCount = 0;
+    
+    @Override
+    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        BlockPos attachedWorkstationPosition = getBlockPos().relative(
+            getBlockState().getValue(TradingDepotBlock.FACING).getOpposite()
+        );
+        updateOtherSourcesForTooltip(attachedWorkstationPosition);
+        
+        tradingDepotBehaviour.addContentsToTooltip(tooltip);
+        
+        if (lastTrade != null) {
+            TFLang.translate("tooltip.trading_depot.last_trade")
+                .add(TFLang.text(" (x" + lastTradeCount + ")").color(lastTradeCount == 0 ? 0xFF5555 : 0x55FFFF))
+                .forGoggles(tooltip);
+            
+            addTradeToGoggles(tooltip, lastTrade);
+        }
+        
+        int tradingDepotOtherSourceCount = tradingDepotsForDisplay.size() - 1;
+        
+        if (tradingDepotOtherSourceCount > 0) {
+            TFLang.text("").forGoggles(tooltip);
+            TFLang.translate("tooltip.trading_depot.connected_to_other")
+                .add(TFLang.text(" " + tradingDepotOtherSourceCount + " ").style(ChatFormatting.AQUA))
+                .translate("tooltip.trading_depot.other_trading_depot" + (tradingDepotOtherSourceCount > 1 ? "s" : ""))
+                .style(ChatFormatting.DARK_GRAY)
+                .forGoggles(tooltip);
+        }
+        return true;
+    }
+    
+    private void addTradeToGoggles(List<Component> tooltip, MerchantOfferInfo trade) {
+        LangBuilder costText = TFLang.itemStack(trade.getCostA());
+        
+        if (!trade.getCostB().isEmpty())
+            costText.text(" + ")
+                .add(TFLang.itemStack(trade.getCostB()))
+                .style(ChatFormatting.GRAY);
+        
+        costText.forGoggles(tooltip, 1);
+        
+        TFLang.text("→ ")
+            .add(TFLang.itemStack(trade.getResult()))
+            .style(ChatFormatting.WHITE)
+            .forGoggles(tooltip, 2);
+    }
+    
+    private void updateOtherSourcesForTooltip(BlockPos attachedWorkstationPosition) {
+        if (level == null) {
+            tradingDepotsForDisplay = new ArrayList<>();
+            return;
+        }
+        
+        tradingDepotsForDisplay = AttachedTradingDepotFinder.lookForTradingDepots(level, attachedWorkstationPosition).stream()
+            .map(blockPos -> level.getBlockEntity(blockPos))
+            .filter(blockEntity -> blockEntity instanceof TradingDepotBlockEntity)
+            .toList();
     }
     
     @Override
@@ -50,6 +125,22 @@ public class TradingDepotBlockEntity extends SmartBlockEntity {
     public void invalidateCaps() {
         super.invalidateCaps();
         tradingDepotBehaviour.itemHandlerLazyOptional.invalidate();
+    }
+    
+    @Override
+    protected void read(CompoundTag tag, boolean clientPacket) {
+        super.read(tag, clientPacket);
+        if (tag.contains("LastTrade"))
+            lastTrade = MerchantOfferInfo.read(tag.getCompound("LastTrade"));
+        lastTradeCount = tag.getInt("LastTradeCount");
+    }
+    
+    @Override
+    protected void write(CompoundTag tag, boolean clientPacket) {
+        super.write(tag, clientPacket);
+        if (lastTrade != null)
+            tag.put("LastTrade", lastTrade.write(new CompoundTag()));
+        tag.putInt("LastTradeCount", lastTradeCount);
     }
     
     /**
@@ -109,8 +200,8 @@ public class TradingDepotBlockEntity extends SmartBlockEntity {
         }
     }
     
-    public boolean tryTradeWith(Villager villager, List<TradingDepotBehaviour> allDepots) {
-        if (!tradingDepotBehaviour.isOutputEmpty()) return false;
+    public void tryTradeWith(Villager villager, List<TradingDepotBehaviour> allDepots) {
+        if (!tradingDepotBehaviour.isOutputEmpty()) return;
         
         //Don't use self
         List<TradingDepotBehaviour> costBSources = allDepots.stream()
@@ -119,6 +210,8 @@ public class TradingDepotBlockEntity extends SmartBlockEntity {
         
         boolean hadSuccessfulTrade = false;
         boolean hasSpace = true;
+        
+        lastTradeCount = 0;
         
         for (MerchantOffer offer : villager.getOffers()) {
             if (!hasSpace) break;
@@ -137,18 +230,26 @@ public class TradingDepotBlockEntity extends SmartBlockEntity {
                 }
                 
                 trading = tryTakeMerchantOffer(offer, tradingDepotBehaviour, filteredCostBSources);
+                
+                if (trading) {
+                    lastTrade = new MerchantOfferInfo(offer);
+                    lastTradeCount++;
+                }
+                
                 hadSuccessfulTrade = hadSuccessfulTrade || trading;
             }
+            
+            //Only do one type of trade per cycle
+            if (hadSuccessfulTrade) break;
         }
         
         if (hadSuccessfulTrade) {
             tradingDepotBehaviour.combineOutputs();
-            
             villager.playCelebrateSound();
-            tradingDepotBehaviour.blockEntity.notifyUpdate();
         }
         
-        return true;
+        notifyUpdate();
+        
     }
     
     public static boolean satisfiedBaseCostBy(MerchantOffer offer, ItemStack playerOfferA, ItemStack playerOfferB) {

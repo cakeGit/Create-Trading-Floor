@@ -1,6 +1,6 @@
 package com.cak.trading_floor.forge.content;
 
-import com.cak.trading_floor.forge.TFRegistry;
+import com.cak.trading_floor.forge.registry.TFRegistry;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;

@@ -1,6 +1,7 @@
 package com.cak.trading_floor.forge.mixin;
 
-import com.cak.trading_floor.forge.TFRegistry;
+import com.cak.trading_floor.forge.foundation.AttachedTradingDepotFinder;
+import com.cak.trading_floor.forge.registry.TFRegistry;
 import com.cak.trading_floor.forge.content.TradingDepotBehaviour;
 import com.cak.trading_floor.forge.content.TradingDepotBlock;
 import com.cak.trading_floor.forge.content.TradingDepotBlockEntity;
@@ -42,7 +43,7 @@ public class WorkAtPoiMixin {
         
         BlockPos jobSitePos = jobSite.get().pos();
         
-        for (BlockPos pos : lookForTradingDepots(level, jobSitePos)) {
+        for (BlockPos pos : AttachedTradingDepotFinder.lookForTradingDepots(level, jobSitePos)) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof TradingDepotBlockEntity tbe) {
                 hasReducedCooldown = true;
@@ -67,7 +68,7 @@ public class WorkAtPoiMixin {
         
         BlockPos jobSitePos = jobSite.get().pos();
         
-        List<BlockPos> tradingDepotPositions = lookForTradingDepots(level, jobSitePos);
+        List<BlockPos> tradingDepotPositions = AttachedTradingDepotFinder.lookForTradingDepots(level, jobSitePos);
         
         List<TradingDepotBlockEntity> tradingDepots = tradingDepotPositions.stream()
             .map(pos -> (TradingDepotBlockEntity) level.getBlockEntity(pos))
@@ -81,22 +82,5 @@ public class WorkAtPoiMixin {
         tradingDepots.forEach(depot -> depot.tryTradeWith(villager, tradingDepotBehaviours));
     }
     
-    @Unique
-    private List<BlockPos> lookForTradingDepots(ServerLevel level, BlockPos jobSitePos) {
-        List<BlockPos> foundBlockPositions = new ArrayList<>();
-        
-        for (Direction direction : Iterate.horizontalDirections) {
-            BlockPos position = jobSitePos.relative(direction);
-            
-            BlockState state = level.getBlockState(position);
-            if (state.is(TFRegistry.TRADING_DEPOT.get())) {
-                if (state.getValue(TradingDepotBlock.FACING).equals(direction)) {
-                    foundBlockPositions.add(position);
-                }
-            }
-        }
-        
-        return foundBlockPositions;
-    }
     
 }

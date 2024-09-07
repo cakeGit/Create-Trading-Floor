@@ -14,9 +14,9 @@ public class TradingFloor {
     public static void init() {
         LOGGER.info("{} initializing! Create version: {} on platform: {}", NAME, Create.VERSION, ExampleExpectPlatform.platformName());
     }
-
-    public static ResourceLocation id(String path) {
-        return new ResourceLocation(MOD_ID, path);
+    
+    public static ResourceLocation asResource(String id) {
+        return new ResourceLocation(MOD_ID, id);
     }
     
 }

@@ -1,3 +1,11 @@
 {
-  "block.trading_floor.trading_depot": "Trading Depot"
+  "block.trading_floor.trading_depot": "Trading Depot",
+  "trading_floor.tooltip.trading_depot.connected_to_other": "Connected To",
+  "trading_floor.tooltip.trading_depot.contents": "Trading Depot Contents:",
+  "trading_floor.tooltip.trading_depot.contents.input": "Input (This depot only):",
+  "trading_floor.tooltip.trading_depot.contents.output": "Output:",
+  "trading_floor.tooltip.trading_depot.last_trade": "Last Trade:",
+  "trading_floor.tooltip.trading_depot.other_trading_depot": "other Trading Depot",
+  "trading_floor.tooltip.trading_depot.other_trading_depots": "other Trading Depots",
+  "trading_floor.tooltip.trading_depot.trading_depot_info": "Trading Depot Info:"
 }

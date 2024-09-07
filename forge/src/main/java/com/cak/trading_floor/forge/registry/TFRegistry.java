@@ -1,4 +1,4 @@
-package com.cak.trading_floor.forge;
+package com.cak.trading_floor.forge.registry;
 
 import com.cak.trading_floor.TradingFloor;
 import com.cak.trading_floor.forge.content.TradingDepotBlock;
@@ -28,8 +28,8 @@ public class TFRegistry {
 		.renderer(() -> TradingDepotBlockEntityRenderer::new)
 		.register();
 	
-	
 	public static void init() {
-		TradingFloor.LOGGER.info("Registering blocks for " + TradingFloor.NAME);
+		TradingFloor.LOGGER.info("Registering all " + TradingFloor.NAME + " entries");
 	}
+	
 }
