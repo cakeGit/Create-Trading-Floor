@@ -5,6 +5,8 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 
+import java.util.Objects;
+
 public class MerchantOfferInfo {
     
     ItemStack costA;
@@ -21,6 +23,18 @@ public class MerchantOfferInfo {
         this.costA = ItemStack.of(tag.getCompound("CostA"));
         this.costB = ItemStack.of(tag.getCompound("CostB"));
         this.result = ItemStack.of(tag.getCompound("Result"));
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MerchantOfferInfo that)) return false;
+        return ItemStack.isSameItemSameTags(costA, that.costA) && ItemStack.isSameItemSameTags(costB, that.costB) && ItemStack.isSameItemSameTags(result, that.result);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(costA, costB, result);
     }
     
     public static MerchantOfferInfo read(CompoundTag tag) {

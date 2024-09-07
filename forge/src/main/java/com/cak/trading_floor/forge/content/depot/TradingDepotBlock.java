@@ -1,11 +1,13 @@
 package com.cak.trading_floor.forge.content.depot;
 
+import com.cak.trading_floor.forge.foundation.advancement.TFAdvancementBehaviour;
 import com.cak.trading_floor.forge.registry.TFRegistry;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
@@ -15,6 +17,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -141,6 +144,12 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
     @Override
     public BlockEntityType<? extends TradingDepotBlockEntity> getBlockEntityType() {
         return TFRegistry.TRADING_DEPOT_BLOCK_ENTITY.get();
+    }
+    
+    @Override
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
+        super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
+        TFAdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);
     }
     
 }

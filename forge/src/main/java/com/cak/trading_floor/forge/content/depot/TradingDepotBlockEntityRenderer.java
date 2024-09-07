@@ -13,6 +13,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static com.simibubi.create.content.logistics.depot.DepotRenderer.renderItem;
@@ -33,12 +35,14 @@ public class TradingDepotBlockEntityRenderer extends SmartBlockEntityRenderer<Tr
 
         ms.pushPose();
         ms.translate(.5, 1, .5);
-
+        
+        List<TransportedItemStack> tisStacks = new ArrayList<>();
+        tisStacks.addAll(blockEntity.tradingDepotBehaviour.incoming);
         if (transported != null)
-            blockEntity.tradingDepotBehaviour.incoming.add(transported);
-
+            tisStacks.add(transported);
+        
         // Render main items
-        for (TransportedItemStack tis : blockEntity.tradingDepotBehaviour.incoming) {
+        for (TransportedItemStack tis : tisStacks) {
             ms.pushPose();
             msr.nudge(0);
             float offset = Mth.lerp(partialTicks, tis.prevBeltPosition, tis.beltPosition);
@@ -52,21 +56,23 @@ public class TradingDepotBlockEntityRenderer extends SmartBlockEntityRenderer<Tr
                 boolean alongX = tis.insertedFrom.getClockWise()
                         .getAxis() == Direction.Axis.X;
             }
-
+            
+            boolean renderUpright = BeltHelper.isItemUpright(tis.stack);
             ItemStack itemStack = tis.stack;
             int angle = tis.angle;
             Random r = new Random(0);
 
             TransformStack.cast(ms)
-                    .rotateY(90 - blockEntity.getBlockState().getValue(TradingDepotBlock.FACING).get2DDataValue() * 90)
+                    .rotateY(90 - blockEntity.getBlockState().getValue(TradingDepotBlock.FACING).get2DDataValue() * 90);
+            if (!renderUpright)
+                TransformStack.cast(ms)
                     .rotateZ(22.5);
+            else
+                ms.translate(0, 0.025, 0);
 
             renderItem(blockEntity.getLevel(), ms, buffer, light, overlay, itemStack, angle, r, itemPosition);
             ms.popPose();
         }
-
-        if (transported != null)
-            blockEntity.tradingDepotBehaviour.incoming.remove(transported);
 
         // Render output items
         for (int i = 0; i < blockEntity.tradingDepotBehaviour.itemHandler.behaviour.result.size(); i++) {
@@ -74,7 +80,6 @@ public class TradingDepotBlockEntityRenderer extends SmartBlockEntityRenderer<Tr
             if (stack.isEmpty())
                 continue;
             ms.pushPose();
-
 
             TransformStack.cast(ms)
                     .rotateY(90 - blockEntity.getBlockState().getValue(TradingDepotBlock.FACING).get2DDataValue() * 90)
@@ -93,18 +98,6 @@ public class TradingDepotBlockEntityRenderer extends SmartBlockEntityRenderer<Tr
             renderItem(blockEntity.getLevel(), ms, buffer, light, overlay, stack, renderUpright ? angle + 90 : angle, r, itemPosition);
             ms.popPose();
         }
-//
-//        ItemStack visibleStack = blockEntity.tradingDepotBehaviour.getHeldItemStack();
-//
-//        if (visibleStack.isEmpty()) return;
-//
-//        ms.pushPose();
-//
-
-//
-
-//
-//        renderItem(blockEntity.getLevel(), ms, buffer, light, overlay, visibleStack, 0, new Random(0), new Vec3(0, 0, 0));
        
         ms.popPose();
     }

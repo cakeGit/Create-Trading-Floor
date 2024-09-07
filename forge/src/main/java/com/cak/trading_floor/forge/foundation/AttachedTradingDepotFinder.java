@@ -1,6 +1,6 @@
 package com.cak.trading_floor.forge.foundation;
 
-import com.cak.trading_floor.forge.content.TradingDepotBlock;
+import com.cak.trading_floor.forge.content.depot.TradingDepotBlock;
 import com.cak.trading_floor.forge.registry.TFRegistry;
 import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.core.BlockPos;

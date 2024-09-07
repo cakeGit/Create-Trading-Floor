@@ -4,6 +4,7 @@ import com.cak.trading_floor.TradingFloor;
 import com.cak.trading_floor.forge.content.depot.TradingDepotBlock;
 import com.cak.trading_floor.forge.content.depot.TradingDepotBlockEntity;
 import com.cak.trading_floor.forge.content.depot.TradingDepotBlockEntityRenderer;
+import com.cak.trading_floor.forge.content.depot.displays.TradeProductSumDisplay;
 import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
@@ -12,6 +13,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import java.util.List;
 
+import static com.simibubi.create.content.redstone.displayLink.AllDisplayBehaviours.assignDataBehaviour;
+
 public class TFRegistry {
 	public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(TradingFloor.MOD_ID);
 
@@ -19,6 +22,7 @@ public class TFRegistry {
 		.block("trading_depot", TradingDepotBlock::new)
 		.properties(BlockBehaviour.Properties::noOcclusion)
 		.blockstate((ctx, prov) -> prov.horizontalBlock(ctx.getEntry(), AssetLookup.standardModel(ctx, prov)))
+		.onRegister(assignDataBehaviour(new TradeProductSumDisplay(), "trade_product_sum"))
 		.simpleItem()
 		.register();
 	

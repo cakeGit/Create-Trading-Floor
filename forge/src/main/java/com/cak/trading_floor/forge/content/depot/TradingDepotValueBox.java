@@ -16,10 +16,10 @@ public class TradingDepotValueBox extends ValueBoxTransform.Sided {
         if (direction == state.getValue(FACING).getOpposite()) return false;
         return direction.getAxis().isHorizontal();
     }
-
+    
     @Override
     protected Vec3 getSouthLocation() {
-        return Vec3.ZERO;
+        return VecHelper.voxelSpace(8, 4, 16.05);
     }
 
 }

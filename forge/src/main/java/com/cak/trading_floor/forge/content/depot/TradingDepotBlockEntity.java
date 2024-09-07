@@ -3,7 +3,11 @@ package com.cak.trading_floor.forge.content.depot;
 import com.cak.trading_floor.forge.foundation.AttachedTradingDepotFinder;
 import com.cak.trading_floor.forge.foundation.MerchantOfferInfo;
 import com.cak.trading_floor.forge.foundation.TFLang;
+import com.cak.trading_floor.forge.foundation.advancement.TFAdvancement;
+import com.cak.trading_floor.forge.foundation.advancement.TFAdvancementBehaviour;
+import com.cak.trading_floor.forge.foundation.advancement.TFAdvancements;
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
@@ -14,10 +18,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentContents;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -30,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
     
@@ -48,6 +52,15 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
     @Nullable
     MerchantOfferInfo lastTrade;
     int lastTradeCount = 0;
+    
+    //Tracking data for displays
+    int tradeOutputSum = 0;
+    int currentTradeCount = 0;
+    
+    /**
+     * Advancement only
+     */
+    int emeraldsProduced = 0;
     
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
@@ -112,6 +125,11 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
         behaviours.add(tradingDepotBehaviour = new TradingDepotBehaviour(this));
         behaviours.add(filtering = new FilteringBehaviour(this, new TradingDepotValueBox())
             .withCallback($ -> tradingDepotBehaviour.invVersionTracker.reset()));
+        
+        TFAdvancementBehaviour.create(behaviours, this,
+            TFAdvancements.MONEY_MONEY_MONEY, TFAdvancements.BUDDING_CAPITALIST, TFAdvancements.HAPPY_JEFF
+        );
+        
         tradingDepotBehaviour.filtering = filtering;
         tradingDepotBehaviour.addAdditionalBehaviours(behaviours);
     }
@@ -135,14 +153,25 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
         if (tag.contains("LastTrade"))
             lastTrade = MerchantOfferInfo.read(tag.getCompound("LastTrade"));
         lastTradeCount = tag.getInt("LastTradeCount");
+        
+        emeraldsProduced = tag.getInt("EmeraldsProduced");
+        tradeOutputSum = tag.getInt("TradeOutputSum");
+        currentTradeCount = tag.getInt("CurrentTradeCount");
     }
     
     @Override
     protected void write(CompoundTag tag, boolean clientPacket) {
         super.write(tag, clientPacket);
+        
         if (lastTrade != null)
             tag.put("LastTrade", lastTrade.write(new CompoundTag()));
         tag.putInt("LastTradeCount", lastTradeCount);
+        
+        if (getBehaviour(TFAdvancementBehaviour.TYPE).isOwnerPresent())
+            tag.putInt("EmeraldsProduced", emeraldsProduced);
+        
+        tag.putInt("TradeOutputSum", tradeOutputSum);
+        tag.putInt("CurrentTradeCount", currentTradeCount);
     }
     
     /**
@@ -213,7 +242,8 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
         boolean hadSuccessfulTrade = false;
         boolean hasSpace = true;
         
-        lastTradeCount = 0;
+        MerchantOfferInfo latestTrade = null;
+        int latestTradeCount = 0;
         
         for (MerchantOffer offer : villager.getOffers()) {
             if (!hasSpace) break;
@@ -234,8 +264,8 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
                 trading = tryTakeMerchantOffer(offer, tradingDepotBehaviour, filteredCostBSources);
                 
                 if (trading) {
-                    lastTrade = new MerchantOfferInfo(offer);
-                    lastTradeCount++;
+                    latestTrade = new MerchantOfferInfo(offer);
+                    latestTradeCount++;
                 }
                 
                 hadSuccessfulTrade = hadSuccessfulTrade || trading;
@@ -250,8 +280,34 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
             villager.playCelebrateSound();
         }
         
-        notifyUpdate();
+        if (!(lastTrade == null || latestTrade == null) && !Objects.equals(lastTrade, latestTrade)) {
+            lastTrade = latestTrade;
+            currentTradeCount = 0;
+            tradeOutputSum = 0;
+        }
         
+        if (latestTrade != null) {
+            currentTradeCount += latestTradeCount;
+            tradeOutputSum += latestTradeCount * latestTrade.getResult().getCount();
+            
+            lastTradeCount = latestTradeCount;
+        }
+        
+        checkForAwardedAdvancements();
+        
+        notifyUpdate();
+    }
+    
+    private void checkForAwardedAdvancements() {
+        if (lastTrade != null && lastTrade.getResult().is(Items.EMERALD)) {
+            TFAdvancementBehaviour advancementBehaviour = getBehaviour(TFAdvancementBehaviour.TYPE);
+            if (tradeOutputSum >= 64) {
+                advancementBehaviour.awardPlayer(TFAdvancements.BUDDING_CAPITALIST);
+            }
+            if (tradeOutputSum >= 1000) {
+                advancementBehaviour.awardPlayer(TFAdvancements.HAPPY_JEFF);
+            }
+        }
     }
     
     public static boolean satisfiedBaseCostBy(MerchantOffer offer, ItemStack playerOfferA, ItemStack playerOfferB) {
@@ -269,11 +325,31 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
         if (itemstack.getItem().isDamageable(itemstack)) {
             itemstack.setDamageValue(itemstack.getDamageValue());
         }
-        return net.minecraft.world.item.ItemStack.isSameItem(itemstack, cost) && (!cost.hasTag() || itemstack.hasTag() && NbtUtils.compareNbt(cost.getTag(), itemstack.getTag(), false));
+        return ItemStack.isSameItem(itemstack, cost) && (!cost.hasTag() || itemstack.hasTag() && NbtUtils.compareNbt(cost.getTag(), itemstack.getTag(), false));
     }
     
     public boolean hasInputStack() {
         return tradingDepotBehaviour.offer != null && !tradingDepotBehaviour.offer.stack.isEmpty();
+    }
+    
+    public int getEmeraldsProduced() {
+        return emeraldsProduced;
+    }
+    
+    public int getCurrentTradeCount() {
+        return currentTradeCount;
+    }
+    
+    public int getTradeOutputSum() {
+        return tradeOutputSum;
+    }
+    
+    public int getLastTradeCount() {
+        return lastTradeCount;
+    }
+    
+    public @Nullable MerchantOfferInfo getLastTrade() {
+        return lastTrade;
     }
     
 }

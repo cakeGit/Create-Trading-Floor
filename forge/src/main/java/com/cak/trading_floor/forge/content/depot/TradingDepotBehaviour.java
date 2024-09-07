@@ -277,22 +277,22 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
         TFLang.translate("tooltip.trading_depot.contents")
             .forGoggles(tooltip);
         
-        if (!input.stack.isEmpty()) {
+        if (offer != null && !offer.stack.isEmpty()) {
             TFLang.translate("tooltip.trading_depot.contents.input")
                 .style(ChatFormatting.GRAY)
                 .forGoggles(tooltip, 1);
             
-            TFLang.itemStack(input.stack)
+            TFLang.itemStack(offer.stack)
                 .style(ChatFormatting.GRAY)
                 .forGoggles(tooltip, 2);
         }
         
-        if (!output.isEmpty()) {
+        if (!result.isEmpty()) {
             TFLang.translate("tooltip.trading_depot.contents.output")
                 .style(ChatFormatting.GRAY)
                 .forGoggles(tooltip, 1);
             
-            for (ItemStack stack : output) {
+            for (ItemStack stack : result) {
                 TFLang.itemStack(stack)
                     .style(ChatFormatting.GRAY)
                     .forGoggles(tooltip, 2);
