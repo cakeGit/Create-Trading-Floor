@@ -1,12 +1,11 @@
 package com.cak.trading_floor.forge;
 
 import com.cak.trading_floor.TradingFloor;
+import com.cak.trading_floor.forge.foundation.advancement.TFAdvancements;
 import com.cak.trading_floor.forge.foundation.network.TFPackets;
 import com.cak.trading_floor.forge.registry.TFArmInteractionPointTypes;
 import com.cak.trading_floor.forge.registry.TFLangEntries;
 import com.cak.trading_floor.forge.registry.TFRegistry;
-import com.cak.trading_floor.forge.foundation.advancement.TFAdvancements;
-import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import net.minecraftforge.eventbus.api.IEventBus;

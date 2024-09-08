@@ -3,7 +3,7 @@ package com.cak.trading_floor.forge.registry;
 import com.cak.trading_floor.TradingFloor;
 import com.cak.trading_floor.forge.content.depot.TradingDepotBlock;
 import com.cak.trading_floor.forge.content.depot.TradingDepotBlockEntity;
-import com.cak.trading_floor.forge.content.depot.TradingDepotBlockEntityRenderer;
+import com.cak.trading_floor.forge.content.depot.TradingDepotRenderer;
 import com.cak.trading_floor.forge.content.depot.displays.CurrentTradeCompletedCountDisplay;
 import com.cak.trading_floor.forge.content.depot.displays.TradeProductSumDisplay;
 import com.simibubi.create.foundation.data.AssetLookup;
@@ -31,7 +31,7 @@ public class TFRegistry {
 	public static final BlockEntityEntry<TradingDepotBlockEntity> TRADING_DEPOT_BLOCK_ENTITY = REGISTRATE
 		.blockEntity("trading_depot", TradingDepotBlockEntity::new)
 		.validBlocksDeferred(() -> List.of(TRADING_DEPOT))
-		.renderer(() -> TradingDepotBlockEntityRenderer::new)
+		.renderer(() -> TradingDepotRenderer::new)
 		.register();
 	
 	public static void init() {

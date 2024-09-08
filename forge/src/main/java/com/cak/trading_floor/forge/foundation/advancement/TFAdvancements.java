@@ -2,8 +2,6 @@ package com.cak.trading_floor.forge.foundation.advancement;
 
 import com.cak.trading_floor.forge.registry.TFRegistry;
 import com.google.common.collect.Sets;
-import com.simibubi.create.foundation.advancement.AllAdvancements;
-import com.simibubi.create.foundation.advancement.CreateAdvancement;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;

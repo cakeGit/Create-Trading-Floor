@@ -19,9 +19,9 @@ import java.util.Random;
 
 import static com.simibubi.create.content.logistics.depot.DepotRenderer.renderItem;
 
-public class TradingDepotBlockEntityRenderer extends SmartBlockEntityRenderer<TradingDepotBlockEntity> {
+public class TradingDepotRenderer extends SmartBlockEntityRenderer<TradingDepotBlockEntity> {
     
-    public TradingDepotBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+    public TradingDepotRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
     }
     

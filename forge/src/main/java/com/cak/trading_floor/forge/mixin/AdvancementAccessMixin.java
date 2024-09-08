@@ -1,10 +1,8 @@
 package com.cak.trading_floor.forge.mixin;
 
 import com.cak.trading_floor.forge.foundation.access.TFParentableAdvancement;
-import com.simibubi.create.Create;
 import com.simibubi.create.foundation.advancement.CreateAdvancement;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
