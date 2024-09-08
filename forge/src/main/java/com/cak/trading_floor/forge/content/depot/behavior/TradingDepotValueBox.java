@@ -1,7 +1,6 @@
-package com.cak.trading_floor.forge.content.depot;
+package com.cak.trading_floor.forge.content.depot.behavior;
 
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
-import com.simibubi.create.foundation.utility.AngleHelper;
 import com.simibubi.create.foundation.utility.VecHelper;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;

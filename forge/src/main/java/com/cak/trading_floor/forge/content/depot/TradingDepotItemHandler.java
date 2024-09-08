@@ -1,5 +1,6 @@
 package com.cak.trading_floor.forge.content.depot;
 
+import com.cak.trading_floor.forge.content.depot.behavior.TradingDepotBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -17,12 +18,12 @@ public class TradingDepotItemHandler implements IItemHandler {
     
     @Override
     public int getSlots() {
-        return 1 + behaviour.result.size();
+        return 1 + behaviour.getResults().size();
     }
     
     @Override
     public @NotNull ItemStack getStackInSlot(int i) {
-        return i == 0 ? behaviour.getOfferStack() : behaviour.result.get(i - 1);
+        return i == 0 ? behaviour.getOfferStack() : behaviour.getResults().get(i - 1);
     }
     
     @Override
@@ -49,7 +50,7 @@ public class TradingDepotItemHandler implements IItemHandler {
     public @NotNull ItemStack extractItem(int i, int j, boolean bl) {
         if (i == 0) return ItemStack.EMPTY;
         
-        ItemStack currentStack = behaviour.result.get(i - 1);
+        ItemStack currentStack = behaviour.getResults().get(i - 1);
         
         int extractedCount = Math.min(currentStack.getCount(), j);
         
@@ -58,9 +59,9 @@ public class TradingDepotItemHandler implements IItemHandler {
         
         if (!bl) {
             if (remainderStack.isEmpty())
-                this.behaviour.result.remove(i - 1);
+                this.behaviour.getResults().remove(i - 1);
             else
-                this.behaviour.result.set(i, remainderStack);
+                this.behaviour.getResults().set(i, remainderStack);
             behaviour.blockEntity.sendData();
         }
         

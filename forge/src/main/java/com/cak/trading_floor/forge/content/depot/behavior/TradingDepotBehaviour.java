@@ -1,5 +1,6 @@
-package com.cak.trading_floor.forge.content.depot;
+package com.cak.trading_floor.forge.content.depot.behavior;
 
+import com.cak.trading_floor.forge.content.depot.TradingDepotItemHandler;
 import com.cak.trading_floor.forge.foundation.TFLang;
 import com.simibubi.create.content.kinetics.belt.BeltHelper;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
@@ -28,6 +29,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -237,7 +239,12 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
     public void setOfferStack(TransportedItemStack input) {
         this.offer = input;
     }
-
+    
+    public void setOfferStack(ItemStack input) {
+        this.offer.stack = input;
+    }
+    
+    
     public void removeOfferStack() {
         this.offer = null;
     }
@@ -298,6 +305,30 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
                     .forGoggles(tooltip, 2);
             }
         }
+    }
+    
+    public List<ItemStack> getResults() {
+        return result;
+    }
+    
+    public void invalidate() {
+        itemHandlerLazyOptional.invalidate();
+    }
+    
+    public void resetInv() {
+        invVersionTracker.reset();
+    }
+    
+    public TransportedItemStack getOffer() {
+        return offer;
+    }
+    
+    public List<TransportedItemStack> getIncoming() {
+        return incoming;
+    }
+    
+    public TradingDepotItemHandler getRealItemHandler() {
+        return itemHandler;
     }
     
 }

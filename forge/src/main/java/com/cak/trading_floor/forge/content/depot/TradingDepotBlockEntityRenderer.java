@@ -29,7 +29,7 @@ public class TradingDepotBlockEntityRenderer extends SmartBlockEntityRenderer<Tr
     protected void renderSafe(TradingDepotBlockEntity blockEntity, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
         super.renderSafe(blockEntity, partialTicks, ms, buffer, light, overlay);
 
-        TransportedItemStack transported = blockEntity.tradingDepotBehaviour.offer;
+        TransportedItemStack transported = blockEntity.tradingDepotBehaviour.getOffer();
         TransformStack msr = TransformStack.cast(ms);
         Vec3 itemPosition = VecHelper.getCenterOf(blockEntity.getBlockPos());
 
@@ -37,7 +37,7 @@ public class TradingDepotBlockEntityRenderer extends SmartBlockEntityRenderer<Tr
         ms.translate(.5, 1, .5);
         
         List<TransportedItemStack> tisStacks = new ArrayList<>();
-        tisStacks.addAll(blockEntity.tradingDepotBehaviour.incoming);
+        tisStacks.addAll(blockEntity.tradingDepotBehaviour.getIncoming());
         if (transported != null)
             tisStacks.add(transported);
         
@@ -75,8 +75,8 @@ public class TradingDepotBlockEntityRenderer extends SmartBlockEntityRenderer<Tr
         }
 
         // Render output items
-        for (int i = 0; i < blockEntity.tradingDepotBehaviour.itemHandler.behaviour.result.size(); i++) {
-            ItemStack stack = blockEntity.tradingDepotBehaviour.itemHandler.behaviour.result.get(i);
+        for (int i = 0; i < blockEntity.tradingDepotBehaviour.getRealItemHandler().behaviour.getResults().size(); i++) {
+            ItemStack stack = blockEntity.tradingDepotBehaviour.getRealItemHandler().behaviour.getResults().get(i);
             if (stack.isEmpty())
                 continue;
             ms.pushPose();

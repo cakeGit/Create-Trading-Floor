@@ -1,5 +1,7 @@
 package com.cak.trading_floor.forge.content.depot;
 
+import com.cak.trading_floor.forge.content.depot.behavior.TradingDepotBehaviour;
+import com.cak.trading_floor.forge.content.depot.behavior.TradingDepotValueBox;
 import com.cak.trading_floor.forge.foundation.AttachedTradingDepotFinder;
 import com.cak.trading_floor.forge.foundation.MerchantOfferInfo;
 import com.cak.trading_floor.forge.foundation.TFLang;
@@ -122,7 +124,9 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         behaviours.add(tradingDepotBehaviour = new TradingDepotBehaviour(this));
         behaviours.add(filtering = new FilteringBehaviour(this, new TradingDepotValueBox())
-            .withCallback($ -> tradingDepotBehaviour.invVersionTracker.reset()));
+            .withCallback($ -> tradingDepotBehaviour.resetInv()));
+        
+        filtering.setLabel(TFLang.translate("tooltip.trade_depot.filtering.trade_filter").component());
         
         TFAdvancementBehaviour.create(behaviours, this,
             TFAdvancements.MONEY_MONEY_MONEY, TFAdvancements.BUDDING_CAPITALIST, TFAdvancements.HAPPY_JEFF
@@ -142,7 +146,7 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
-        tradingDepotBehaviour.itemHandlerLazyOptional.invalidate();
+        tradingDepotBehaviour.invalidate();
     }
     
     @Override
@@ -177,36 +181,36 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
      * output into the cost A depot
      */
     protected boolean tryTakeMerchantOffer(MerchantOffer offer, TradingDepotBehaviour costASource, List<TradingDepotBehaviour> costBSources) {
-        //Quickly check if the A cost matches, if not dont bother with anything else
-        if (!ItemStack.isSameItem(offer.getBaseCostA(), costASource.offer.stack)) return false;
+        //Quickly check if the A cost matches, if not don't bother with anything else
+        if (!ItemStack.isSameItem(offer.getBaseCostA(), costASource.getOfferStack())) return false;
         
         //Check the second cost if it's there
         ItemStack totalCostBSource = ItemStack.EMPTY;
         if (!offer.getCostB().isEmpty()) {
             costBSources = costBSources.stream()
-                .filter(depot -> ItemStack.isSameItem(offer.getCostB(), depot.offer.stack))
+                .filter(depot -> ItemStack.isSameItem(offer.getCostB(), depot.getOfferStack()))
                 .toList();
             
             if (costBSources.isEmpty()) return false;
             
             int totalCostB = 0;
             for (TradingDepotBehaviour depot : costBSources)
-                totalCostB += depot.offer.stack.getCount();
+                totalCostB += depot.getOfferStack().getCount();
             
             if (offer.getCostB().getCount() > totalCostB) return false;
             
-            totalCostBSource = costBSources.get(0).offer.stack.copyWithCount(totalCostB);
+            totalCostBSource = costBSources.get(0).getOfferStack().copyWithCount(totalCostB);
         }
         
         //Check both match
-        if (!satisfiedBaseCostBy(offer, costASource.offer.stack, totalCostBSource)) return false;
+        if (!satisfiedBaseCostBy(offer, costASource.getOfferStack(), totalCostBSource)) return false;
         
         //Perform transaction
-        costASource.offer.stack = costASource.offer.stack
-            .copyWithCount(costASource.offer.stack.getCount() - offer.getBaseCostA().getCount());
+        costASource.setOfferStack(costASource.getOfferStack()
+            .copyWithCount(costASource.getOfferStack().getCount() - offer.getBaseCostA().getCount()));
         takeTotalFromSources(costBSources, offer.getCostB().getCount());
         
-        costASource.result.add(offer.assemble());
+        costASource.getResults().add(offer.assemble());
         
         return true;
     }
@@ -219,10 +223,10 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
             
             TradingDepotBehaviour costSource = costBSources.get(i);
             
-            int currentCount = costSource.offer.stack.getCount();
+            int currentCount = costSource.getOfferStack().getCount();
             int extractCount = Math.min(totalExtractCount, currentCount);
             
-            costSource.offer.stack = costSource.offer.stack.copyWithCount(currentCount - extractCount);
+            costSource.setOfferStack(costSource.getOfferStack().copyWithCount(currentCount - extractCount));
             
             totalExtractCount -= extractCount;
             i++;
@@ -251,9 +255,9 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
             
             boolean trading = true;
             while (trading) {
-                if (tradingDepotBehaviour.result.size() >= 8) {
+                if (tradingDepotBehaviour.getResults().size() >= 8) {
                     tradingDepotBehaviour.combineOutputs();
-                    if (tradingDepotBehaviour.result.size() >= 8) {
+                    if (tradingDepotBehaviour.getResults().size() >= 8) {
                         hasSpace = false;
                         break;
                     }
@@ -328,11 +332,7 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
     }
     
     public boolean hasInputStack() {
-        return tradingDepotBehaviour.offer != null && !tradingDepotBehaviour.offer.stack.isEmpty();
-    }
-    
-    public int getEmeraldsProduced() {
-        return emeraldsProduced;
+        return tradingDepotBehaviour.getOffer() != null && !tradingDepotBehaviour.getOfferStack().isEmpty();
     }
     
     public int getCurrentTradeCompletedCount() {
@@ -341,10 +341,6 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
     
     public int getTradeOutputSum() {
         return tradeOutputSum;
-    }
-    
-    public int getLastTradeCount() {
-        return lastTradeCount;
     }
     
     public @Nullable MerchantOfferInfo getLastTrade() {

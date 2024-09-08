@@ -1,5 +1,6 @@
 package com.cak.trading_floor.forge.content.depot;
 
+import com.cak.trading_floor.forge.content.depot.behavior.TradingDepotBehaviour;
 import com.cak.trading_floor.forge.foundation.advancement.TFAdvancementBehaviour;
 import com.cak.trading_floor.forge.registry.TFRegistry;
 import com.simibubi.create.AllBlocks;
@@ -7,7 +8,6 @@ import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
-import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
@@ -81,8 +81,8 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
                     1f + world.random.nextFloat());
         }
         if (!behaviour.isOutputEmpty()) {
-            for (int i = 0; i < behaviour.result.size(); i++)
-                player.getInventory().placeItemBackInInventory(behaviour.result.get(i));
+            for (int i = 0; i < behaviour.getResults().size(); i++)
+                player.getInventory().placeItemBackInInventory(behaviour.getResults().get(i));
             world.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, .2f,
                     1f + world.random.nextFloat());
         }
