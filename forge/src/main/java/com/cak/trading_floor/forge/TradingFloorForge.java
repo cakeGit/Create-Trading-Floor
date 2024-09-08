@@ -1,6 +1,7 @@
 package com.cak.trading_floor.forge;
 
 import com.cak.trading_floor.TradingFloor;
+import com.cak.trading_floor.forge.foundation.network.TFPackets;
 import com.cak.trading_floor.forge.registry.TFArmInteractionPointTypes;
 import com.cak.trading_floor.forge.registry.TFLangEntries;
 import com.cak.trading_floor.forge.registry.TFRegistry;
@@ -28,6 +29,7 @@ public class TradingFloorForge {
         TFRegistry.init();
         TFArmInteractionPointTypes.register();
         TFLangEntries.addEntries();
+        TFPackets.registerPackets();
         
         eventBus.addListener(TradingFloorData::gatherData);
         eventBus.addListener(TradingFloorForge::init);

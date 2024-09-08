@@ -4,9 +4,11 @@ import com.cak.trading_floor.forge.content.depot.behavior.TradingDepotBehaviour;
 import com.cak.trading_floor.forge.content.depot.behavior.TradingDepotValueBox;
 import com.cak.trading_floor.forge.foundation.AttachedTradingDepotFinder;
 import com.cak.trading_floor.forge.foundation.MerchantOfferInfo;
+import com.cak.trading_floor.forge.foundation.ParticleEmitter;
 import com.cak.trading_floor.forge.foundation.TFLang;
 import com.cak.trading_floor.forge.foundation.advancement.TFAdvancementBehaviour;
 import com.cak.trading_floor.forge.foundation.advancement.TFAdvancements;
+import com.cak.trading_floor.forge.registry.TFParticleEmitters;
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
@@ -15,9 +17,11 @@ import com.simibubi.create.foundation.utility.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -25,6 +29,8 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -281,6 +287,9 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
             tradingDepotBehaviour.combineOutputs();
             villager.playCelebrateSound();
             getBehaviour(TFAdvancementBehaviour.TYPE).awardPlayer(TFAdvancements.MONEY_MONEY_MONEY);
+            
+            if (level instanceof ServerLevel serverLevel)
+                TFParticleEmitters.TRADE_COMPLETED.emit(serverLevel, Vec3.atCenterOf(getBlockPos()).add(0, 0.4, 0), 4);
         }
         
         if (!(lastTrade == null || latestTrade == null) && !Objects.equals(lastTrade, latestTrade)) {
