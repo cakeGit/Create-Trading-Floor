@@ -1,5 +1,13 @@
 {
+  "advancement.trading_floor.drop_shipper": "Intro to drop-shipping",
+  "advancement.trading_floor.drop_shipper.desc": "Generate 64 emeralds from a single trading depot",
+  "advancement.trading_floor.happy_jeff": "Jeff Bezos would be proud",
+  "advancement.trading_floor.happy_jeff.desc": "Generate 1000 emeralds from a single trading depot",
+  "advancement.trading_floor.money_money_money": "Money Money Money,",
+  "advancement.trading_floor.money_money_money.desc": "Make a trade automatically using a trading depot",
   "block.trading_floor.trading_depot": "Trading Depot",
+  "trading_floor.display_link.trading_depot.no_trade": "No Trade",
+  "trading_floor.display_link.trading_depot.trades_completed": "Trades completed:",
   "trading_floor.tooltip.trading_depot.connected_to_other": "Connected To",
   "trading_floor.tooltip.trading_depot.contents": "Trading Depot Contents:",
   "trading_floor.tooltip.trading_depot.contents.input": "Input (This depot only):",

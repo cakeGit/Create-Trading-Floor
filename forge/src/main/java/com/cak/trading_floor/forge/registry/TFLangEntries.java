@@ -16,10 +16,11 @@ public class TFLangEntries {
             "tooltip.trading_depot.last_trade", "Last Trade:",
             "tooltip.trading_depot.connected_to_other", "Connected To",
             "tooltip.trading_depot.other_trading_depot", "other Trading Depot",
-            "tooltip.trading_depot.other_trading_depots", "other Trading Depots"
+            "tooltip.trading_depot.other_trading_depots", "other Trading Depots",
+            
+            "display_link.trading_depot.no_trade", "No Trade",
+            "display_link.trading_depot.trades_completed", "Trades completed:"
         ));
-        
-        TFAdvancements.provideLang(TFRegistry.REGISTRATE::addRawLang);
     }
 
     public static void addIdLangEntries(Map<String, String> entries) {
