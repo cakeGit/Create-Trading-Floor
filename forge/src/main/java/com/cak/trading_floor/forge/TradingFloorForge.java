@@ -5,12 +5,16 @@ import com.cak.trading_floor.forge.registry.TFArmInteractionPointTypes;
 import com.cak.trading_floor.forge.registry.TFLangEntries;
 import com.cak.trading_floor.forge.registry.TFRegistry;
 import com.cak.trading_floor.forge.foundation.advancement.TFAdvancements;
+import com.simibubi.create.foundation.advancement.AllAdvancements;
+import com.tterrag.registrate.providers.ProviderType;
+import com.tterrag.registrate.providers.RegistrateLangProvider;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(TradingFloor.MOD_ID)
+@SuppressWarnings("unused")
 public class TradingFloorForge {
     
     public TradingFloorForge() {
@@ -18,6 +22,7 @@ public class TradingFloorForge {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         
         TFRegistry.REGISTRATE.registerEventListeners(eventBus);
+        TFRegistry.REGISTRATE.addDataGenerator(ProviderType.LANG, TradingFloorForge::addPostInitLang);
         
         TradingFloor.init();
         TFRegistry.init();
@@ -28,6 +33,10 @@ public class TradingFloorForge {
         eventBus.addListener(TradingFloorForge::init);
         
         TradingFloor.LOGGER.info("Finished Initialisation For Mod: " + TradingFloor.MOD_ID);
+    }
+    
+    private static void addPostInitLang(RegistrateLangProvider registrateLangProvider) {
+        TFAdvancements.provideLang(registrateLangProvider::add);
     }
     
     

@@ -30,7 +30,7 @@ public class TFAdvancements implements DataProvider {
     
     public static final TFAdvancement
         MONEY_MONEY_MONEY = createTF("money_money_money", b -> b.icon(TFRegistry.TRADING_DEPOT)
-            .title("Money Money Money, Must Be Funny")
+            .title("Money Money Money,")
             .description("Make a trade automatically using a trading depot")
             .afterCreateRoot()
         ),

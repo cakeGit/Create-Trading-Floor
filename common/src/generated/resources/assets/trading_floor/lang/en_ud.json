@@ -1,5 +1,13 @@
 {
+  "advancement.trading_floor.drop_shipper": "buıddıɥs-doɹp oʇ oɹʇuI",
+  "advancement.trading_floor.drop_shipper.desc": "ʇodǝp buıpɐɹʇ ǝןbuıs ɐ ɯoɹɟ spןɐɹǝɯǝ ㄣ9 ǝʇɐɹǝuǝ⅁",
+  "advancement.trading_floor.happy_jeff": "pnoɹd ǝq pןnoʍ sozǝᗺ ɟɟǝſ",
+  "advancement.trading_floor.happy_jeff.desc": "ʇodǝp buıpɐɹʇ ǝןbuıs ɐ ɯoɹɟ spןɐɹǝɯǝ 000Ɩ ǝʇɐɹǝuǝ⅁",
+  "advancement.trading_floor.money_money_money": "'ʎǝuoW ʎǝuoW ʎǝuoW",
+  "advancement.trading_floor.money_money_money.desc": "ʇodǝp buıpɐɹʇ ɐ buısn ʎןןɐɔıʇɐɯoʇnɐ ǝpɐɹʇ ɐ ǝʞɐW",
   "block.trading_floor.trading_depot": "ʇodǝᗡ buıpɐɹ⟘",
+  "trading_floor.display_link.trading_depot.no_trade": "ǝpɐɹ⟘ oN",
+  "trading_floor.display_link.trading_depot.trades_completed": ":pǝʇǝןdɯoɔ sǝpɐɹ⟘",
   "trading_floor.tooltip.trading_depot.connected_to_other": "o⟘ pǝʇɔǝuuoƆ",
   "trading_floor.tooltip.trading_depot.contents": ":sʇuǝʇuoƆ ʇodǝᗡ buıpɐɹ⟘",
   "trading_floor.tooltip.trading_depot.contents.input": ":)ʎןuo ʇodǝp sıɥ⟘( ʇnduI",

@@ -276,13 +276,14 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
         if (hadSuccessfulTrade) {
             tradingDepotBehaviour.combineOutputs();
             villager.playCelebrateSound();
+            getBehaviour(TFAdvancementBehaviour.TYPE).awardPlayer(TFAdvancements.MONEY_MONEY_MONEY);
         }
         
         if (!(lastTrade == null || latestTrade == null) && !Objects.equals(lastTrade, latestTrade)) {
-            lastTrade = latestTrade;
             currentTradeCompletedCount = 0;
             tradeOutputSum = 0;
         }
+        lastTrade = latestTrade;
         
         if (latestTrade != null) {
             currentTradeCompletedCount += latestTradeCount;
