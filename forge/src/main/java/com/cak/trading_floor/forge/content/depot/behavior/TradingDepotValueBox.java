@@ -9,7 +9,7 @@ import net.minecraft.world.phys.Vec3;
 import static net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING;
 
 public class TradingDepotValueBox extends ValueBoxTransform.Sided {
-
+    
     @Override
     protected boolean isSideActive(BlockState state, Direction direction) {
         if (direction == state.getValue(FACING).getOpposite()) return false;
@@ -20,5 +20,5 @@ public class TradingDepotValueBox extends ValueBoxTransform.Sided {
     protected Vec3 getSouthLocation() {
         return VecHelper.voxelSpace(8, 4, 16.05);
     }
-
+    
 }

@@ -30,10 +30,11 @@ public class TradingDepotItemHandler implements IItemHandler {
     public @NotNull ItemStack insertItem(int i, @NotNull ItemStack arg, boolean bl) {
         if (i != 0) return arg;
         
-        if (!behaviour.getOfferStack().isEmpty() && !ItemHandlerHelper.canItemStacksStack(behaviour.getOfferStack(), arg)) return arg;
+        if (!behaviour.getOfferStack().isEmpty() && !ItemHandlerHelper.canItemStacksStack(behaviour.getOfferStack(), arg))
+            return arg;
         
         ItemStack incomingStack = behaviour.getOfferStack();
-
+        
         int newCount = Math.min(incomingStack.getMaxStackSize(), incomingStack.getCount() + arg.getCount());
         int added = newCount - incomingStack.getCount();
         int remaining = arg.getCount() - added;

@@ -9,8 +9,8 @@ public class TFPonderTags {
     
     public static final PonderTag
         ALL_TRADING_FLOOR_PONDERS = create("base").item(AllBlocks.COGWHEEL.get())
-            .defaultLang("Create: Trading Floor", "Special trading depot to automatically trade with villagers")
-            .addToIndex();
+        .defaultLang("Create: Trading Floor", "Special trading depot to automatically trade with villagers")
+        .addToIndex();
     
     private static PonderTag create(String id) {
         return new PonderTag(TradingFloor.asResource(id));

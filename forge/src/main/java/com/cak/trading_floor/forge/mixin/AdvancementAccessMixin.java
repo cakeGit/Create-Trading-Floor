@@ -11,9 +11,11 @@ import java.util.function.Consumer;
 @Mixin(value = CreateAdvancement.class, remap = false)
 public abstract class AdvancementAccessMixin implements TFParentableAdvancement {
     
-    @Shadow private Advancement datagenResult;
+    @Shadow
+    private Advancement datagenResult;
     
-    @Shadow abstract void save(Consumer<Advancement> t);
+    @Shadow
+    abstract void save(Consumer<Advancement> t);
     
     @Override
     public Advancement getDatagenResult() {

@@ -51,11 +51,11 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
-
+    
     protected static TradingDepotBehaviour get(BlockGetter worldIn, BlockPos pos) {
         return BlockEntityBehaviour.get(worldIn, pos, TradingDepotBehaviour.TYPE);
     }
-
+    
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
                                  BlockHitResult ray) {
@@ -63,30 +63,30 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
             return InteractionResult.PASS;
         if (world.isClientSide)
             return InteractionResult.SUCCESS;
-
+        
         TradingDepotBehaviour behaviour = get(world, pos);
         if (behaviour == null)
             return InteractionResult.PASS;
-
+        
         ItemStack heldItem = player.getItemInHand(hand);
         boolean wasEmptyHanded = heldItem.isEmpty();
         boolean shouldntPlaceItem = AllBlocks.MECHANICAL_ARM.isIn(heldItem);
-
+        
         ItemStack mainItemStack = behaviour.getOfferStack();
         if (!mainItemStack.isEmpty()) {
             player.getInventory()
-                    .placeItemBackInInventory(mainItemStack);
+                .placeItemBackInInventory(mainItemStack);
             behaviour.removeOfferStack();
             world.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, .2f,
-                    1f + world.random.nextFloat());
+                1f + world.random.nextFloat());
         }
         if (!behaviour.isOutputEmpty()) {
             for (int i = 0; i < behaviour.getResults().size(); i++)
                 player.getInventory().placeItemBackInInventory(behaviour.getResults().get(i));
             world.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, .2f,
-                    1f + world.random.nextFloat());
+                1f + world.random.nextFloat());
         }
-
+        
         if (!wasEmptyHanded && !shouldntPlaceItem) {
             TransportedItemStack transported = new TransportedItemStack(heldItem);
             transported.insertedFrom = player.getDirection();
@@ -96,11 +96,11 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
             player.setItemInHand(hand, ItemStack.EMPTY);
             AllSoundEvents.DEPOT_SLIDE.playOnServer(world, pos);
         }
-
+        
         behaviour.blockEntity.notifyUpdate();
         return InteractionResult.SUCCESS;
     }
-
+    
     public static void onLanded(BlockGetter worldIn, Entity entityIn) {
         if (!(entityIn instanceof ItemEntity))
             return;
@@ -108,10 +108,10 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
             return;
         if (entityIn.level().isClientSide)
             return;
-
+        
         ItemEntity itemEntity = (ItemEntity) entityIn;
         DirectBeltInputBehaviour inputBehaviour =
-                BlockEntityBehaviour.get(worldIn, entityIn.blockPosition(), DirectBeltInputBehaviour.TYPE);
+            BlockEntityBehaviour.get(worldIn, entityIn.blockPosition(), DirectBeltInputBehaviour.TYPE);
         if (inputBehaviour == null)
             return;
         ItemStack remainder = inputBehaviour.handleInsertion(itemEntity.getItem(), Direction.DOWN, false);
@@ -119,8 +119,8 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
         if (remainder.isEmpty())
             itemEntity.discard();
     }
-
-
+    
+    
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         IBE.onRemove(state, level, pos, newState);

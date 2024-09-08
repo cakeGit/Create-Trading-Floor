@@ -16,7 +16,9 @@ import net.minecraftforge.common.util.FakePlayer;
 
 import java.util.*;
 
-/**Mirror of {@link AdvancementBehaviour}, to work with TradingFloor's advancements*/
+/**
+ * Mirror of {@link AdvancementBehaviour}, to work with TradingFloor's advancements
+ */
 public class TFAdvancementBehaviour extends BlockEntityBehaviour {
     
     public static final BehaviourType<TFAdvancementBehaviour> TYPE = new BehaviourType<>();

@@ -17,10 +17,11 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-/**THANK GOD TO SIMI FOR YOUR WONDERFUL MIT LISCENCE I LOVE YOU*/
+/**
+ * THANK GOD TO SIMI FOR YOUR WONDERFUL MIT LISCENCE I LOVE YOU
+ */
 public enum TFPackets {
-    EMIT_PARTICLES_FROM_INSTANCE(EmitParticlesFromInstancePacket.class, EmitParticlesFromInstancePacket::new, NetworkDirection.PLAY_TO_CLIENT)
-    ;
+    EMIT_PARTICLES_FROM_INSTANCE(EmitParticlesFromInstancePacket.class, EmitParticlesFromInstancePacket::new, NetworkDirection.PLAY_TO_CLIENT);
     
     public static final ResourceLocation CHANNEL_NAME = TradingFloor.asResource("main");
     public static final int NETWORK_VERSION = 3;
@@ -56,6 +57,7 @@ public enum TFPackets {
     }
     
     private static class PacketType<T extends SimplePacketBase> {
+        
         private static int index = 0;
         
         private BiConsumer<T, FriendlyByteBuf> encoder;
@@ -84,6 +86,7 @@ public enum TFPackets {
                 .consumerNetworkThread(handler)
                 .add();
         }
+        
     }
     
 }

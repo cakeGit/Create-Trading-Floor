@@ -16,6 +16,7 @@ public class TFArmInteractionPointTypes {
     public static final TradingDepotType TRADING_DEPOT = register("trading_depot", TradingDepotType::new);
     
     public static class TradingDepotType extends ArmInteractionPointType {
+        
         public TradingDepotType(ResourceLocation id) {
             super(id);
         }
@@ -29,6 +30,7 @@ public class TFArmInteractionPointTypes {
         public ArmInteractionPoint createPoint(Level level, BlockPos pos, BlockState state) {
             return new AllArmInteractionPointTypes.DeployerPoint(this, level, pos, state);
         }
+        
     }
     
     private static <T extends ArmInteractionPointType> T register(String id, Function<ResourceLocation, T> factory) {

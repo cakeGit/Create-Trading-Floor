@@ -42,12 +42,12 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
     TransportedItemStack offer;
     List<ItemStack> result;
     List<TransportedItemStack> incoming;
-
+    
     TradingDepotItemHandler itemHandler;
     LazyOptional<TradingDepotItemHandler> itemHandlerLazyOptional;
-
+    
     VersionedInventoryTrackerBehaviour invVersionTracker;
-
+    
     public TradingDepotBehaviour(SmartBlockEntity be) {
         super(be);
         itemHandler = new TradingDepotItemHandler(this);
@@ -55,14 +55,14 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
         result = new ArrayList<>();
         incoming = new ArrayList<>();
     }
-
+    
     @Override
     public void tick() {
         super.tick();
-
+        
         Level world = blockEntity.getLevel();
-
-        for (Iterator<TransportedItemStack> iterator = incoming.iterator(); iterator.hasNext();) {
+        
+        for (Iterator<TransportedItemStack> iterator = incoming.iterator(); iterator.hasNext(); ) {
             TransportedItemStack ts = iterator.next();
             if (!tick(ts))
                 continue;
@@ -81,12 +81,12 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
             iterator.remove();
             blockEntity.notifyUpdate();
         }
-
+        
         if (offer == null)
             return;
         tick(offer);
     }
-
+    
     protected boolean tick(TransportedItemStack input) {
         input.prevBeltPosition = input.beltPosition;
         input.prevSideOffset = input.sideOffset;
@@ -98,90 +98,91 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
         }
         return diff < 1 / 16f;
     }
-
+    
     public void addAdditionalBehaviours(List<BlockEntityBehaviour> behaviours) {
         behaviours.add(new DirectBeltInputBehaviour(blockEntity)
-                .allowingBeltFunnels()
-                .onlyInsertWhen(side -> blockEntity.getBlockState().getValue(FACING).getOpposite() == side)
-                .setInsertionHandler(this::tryInsertingFromSide));
+            .allowingBeltFunnels()
+            .onlyInsertWhen(side -> blockEntity.getBlockState().getValue(FACING).getOpposite() == side)
+            .setInsertionHandler(this::tryInsertingFromSide));
         behaviours.add(invVersionTracker = new VersionedInventoryTrackerBehaviour(blockEntity));
     }
-
+    
     private ItemStack tryInsertingFromSide(TransportedItemStack transportedStack, Direction side, boolean simulate) {
         ItemStack inserted = transportedStack.stack;
-
+        
         int size = transportedStack.stack.getCount();
+        
         transportedStack = transportedStack.copy();
-        transportedStack.beltPosition = side.getAxis()
-                .isVertical() ? .5f : 0;
+        
+        transportedStack.beltPosition = side.getAxis().isVertical() ? .5f : 0;
         transportedStack.insertedFrom = side;
         transportedStack.prevSideOffset = transportedStack.sideOffset;
         transportedStack.prevBeltPosition = transportedStack.beltPosition;
+        
         ItemStack remainder = insert(transportedStack, simulate);
         if (remainder.getCount() != size)
             blockEntity.notifyUpdate();
-
+        
         return remainder;
     }
-
+    
     public int getPresentStackSize() {
         int cumulativeStackSize = 0;
         cumulativeStackSize += getOfferStack().getCount();
         for (ItemStack stack : result)
             cumulativeStackSize += stack
-                    .getCount();
+                .getCount();
         return cumulativeStackSize;
     }
-
+    
     public int getRemainingSpace() {
         int cumulativeStackSize = getPresentStackSize();
         for (TransportedItemStack transportedItemStack : incoming)
             cumulativeStackSize += transportedItemStack.stack.getCount();
         return 64 - cumulativeStackSize;
     }
-
+    
     public ItemStack insert(TransportedItemStack input, boolean simulate) {
-            int remainingSpace = getRemainingSpace();
-            ItemStack inserted = input.stack;
-            if (remainingSpace <= 0)
-                return inserted;
-            if (this.offer != null && !this.offer.stack.isEmpty() && !ItemHandlerHelper.canItemStacksStack(this.offer.stack, inserted))
-                return inserted;
-
-            ItemStack returned = ItemStack.EMPTY;
-            if (remainingSpace < inserted.getCount()) {
-                returned = ItemHandlerHelper.copyStackWithSize(input.stack, inserted.getCount() - remainingSpace);
-                if (!simulate) {
-                    TransportedItemStack copy = input.copy();
-                    copy.stack.setCount(remainingSpace);
-                    if (this.offer != null && !this.offer.stack.isEmpty())
-                        incoming.add(copy);
-                    else
-                        this.offer = copy;
-                }
-            } else {
-                if (!simulate) {
-                    if (this.offer != null && !this.offer.stack.isEmpty())
-                        incoming.add(input);
-                    else
-                        this.offer = input;
-                }
+        int remainingSpace = getRemainingSpace();
+        ItemStack inserted = input.stack;
+        if (remainingSpace <= 0)
+            return inserted;
+        if (this.offer != null && !this.offer.stack.isEmpty() && !ItemHandlerHelper.canItemStacksStack(this.offer.stack, inserted))
+            return inserted;
+        
+        ItemStack returned = ItemStack.EMPTY;
+        if (remainingSpace < inserted.getCount()) {
+            returned = ItemHandlerHelper.copyStackWithSize(input.stack, inserted.getCount() - remainingSpace);
+            if (!simulate) {
+                TransportedItemStack copy = input.copy();
+                copy.stack.setCount(remainingSpace);
+                if (this.offer != null && !this.offer.stack.isEmpty())
+                    incoming.add(copy);
+                else
+                    this.offer = copy;
             }
-            return returned;
+        } else {
+            if (!simulate) {
+                if (this.offer != null && !this.offer.stack.isEmpty())
+                    incoming.add(input);
+                else
+                    this.offer = input;
+            }
+        }
+        return returned;
     }
-
+    
     public boolean isEmpty() {
         return offer == null && isOutputEmpty();
     }
-
+    
     public boolean isOutputEmpty() {
         for (ItemStack stack : result)
             if (!stack.isEmpty())
                 return false;
         return true;
     }
-
-
+    
     @Override
     public void destroy() {
         super.destroy();
@@ -208,7 +209,7 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
         for (int i = 0; i < outputCount; i++) {
             result.add(ItemStack.of(nbt.getCompound("Output" + i)));
         }
-
+        
         ListTag list = nbt.getList("Incoming", Tag.TAG_COMPOUND);
         incoming = NBTHelper.readCompoundList(list, TransportedItemStack::read);
     }
@@ -222,7 +223,7 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
         for (int i = 0; i < result.size(); i++) {
             nbt.put("Output" + i, result.get(i).save(new CompoundTag()));
         }
-
+        
         if (!incoming.isEmpty())
             nbt.put("Incoming", NBTHelper.writeCompoundList(incoming, TransportedItemStack::serializeNBT));
     }
@@ -230,11 +231,11 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
     public LazyOptional<TradingDepotItemHandler> getItemHandler() {
         return itemHandlerLazyOptional;
     }
-
+    
     public ItemStack getOfferStack() {
         return offer == null ? ItemStack.EMPTY : offer.stack;
     }
-
+    
     public void setOfferStack(TransportedItemStack input) {
         this.offer = input;
     }
@@ -247,7 +248,7 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
     public void removeOfferStack() {
         this.offer = null;
     }
-
+    
     @Override
     public BehaviourType<?> getType() {
         return TYPE;
@@ -260,7 +261,7 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
             
             for (ItemStack other : result) {
                 if (!ItemHandlerHelper.canItemStacksStack(stack, other)) continue;
-            
+                
                 int newCount = Math.min(other.getCount() + stack.getCount(), other.getMaxStackSize());
                 int filledCount = newCount - other.getCount();
                 

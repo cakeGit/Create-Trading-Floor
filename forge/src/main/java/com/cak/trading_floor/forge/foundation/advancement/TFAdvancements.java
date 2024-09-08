@@ -28,10 +28,10 @@ public class TFAdvancements implements DataProvider {
     
     public static final TFAdvancement
         MONEY_MONEY_MONEY = createTF("money_money_money", b -> b.icon(TFRegistry.TRADING_DEPOT)
-            .title("Money Money Money,")
-            .description("Make a trade automatically using a trading depot")
-            .afterCreateRoot()
-        ),
+        .title("Money Money Money,")
+        .description("Make a trade automatically using a trading depot")
+        .afterCreateRoot()
+    ),
         BUDDING_CAPITALIST = createTF("drop_shipper", b -> b.icon(Items.EMERALD)
             .title("Intro to drop-shipping")
             .description("Generate 64 emeralds from a single trading depot")

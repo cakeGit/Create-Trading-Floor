@@ -17,25 +17,26 @@ import java.util.List;
 import static com.simibubi.create.content.redstone.displayLink.AllDisplayBehaviours.assignDataBehaviour;
 
 public class TFRegistry {
-	public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(TradingFloor.MOD_ID);
-
-	public static final BlockEntry<TradingDepotBlock> TRADING_DEPOT = REGISTRATE
-		.block("trading_depot", TradingDepotBlock::new)
-		.properties(BlockBehaviour.Properties::noOcclusion)
-		.blockstate((ctx, prov) -> prov.horizontalBlock(ctx.getEntry(), AssetLookup.standardModel(ctx, prov)))
-		.onRegister(assignDataBehaviour(new TradeProductSumDisplay(), "trade_product_sum"))
-		.onRegister(assignDataBehaviour(new CurrentTradeCompletedCountDisplay(), "trade_completed_count"))
-		.simpleItem()
-		.register();
-	
-	public static final BlockEntityEntry<TradingDepotBlockEntity> TRADING_DEPOT_BLOCK_ENTITY = REGISTRATE
-		.blockEntity("trading_depot", TradingDepotBlockEntity::new)
-		.validBlocksDeferred(() -> List.of(TRADING_DEPOT))
-		.renderer(() -> TradingDepotRenderer::new)
-		.register();
-	
-	public static void init() {
-		TradingFloor.LOGGER.info("Registering all " + TradingFloor.NAME + " entries");
-	}
-	
+    
+    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(TradingFloor.MOD_ID);
+    
+    public static final BlockEntry<TradingDepotBlock> TRADING_DEPOT = REGISTRATE
+        .block("trading_depot", TradingDepotBlock::new)
+        .properties(BlockBehaviour.Properties::noOcclusion)
+        .blockstate((ctx, prov) -> prov.horizontalBlock(ctx.getEntry(), AssetLookup.standardModel(ctx, prov)))
+        .onRegister(assignDataBehaviour(new TradeProductSumDisplay(), "trade_product_sum"))
+        .onRegister(assignDataBehaviour(new CurrentTradeCompletedCountDisplay(), "trade_completed_count"))
+        .simpleItem()
+        .register();
+    
+    public static final BlockEntityEntry<TradingDepotBlockEntity> TRADING_DEPOT_BLOCK_ENTITY = REGISTRATE
+        .blockEntity("trading_depot", TradingDepotBlockEntity::new)
+        .validBlocksDeferred(() -> List.of(TRADING_DEPOT))
+        .renderer(() -> TradingDepotRenderer::new)
+        .register();
+    
+    public static void init() {
+        TradingFloor.LOGGER.info("Registering all " + TradingFloor.NAME + " entries");
+    }
+    
 }

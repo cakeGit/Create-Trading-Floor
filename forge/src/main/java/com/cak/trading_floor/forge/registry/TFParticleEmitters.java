@@ -13,9 +13,9 @@ public class TFParticleEmitters {
     
     public static ParticleEmitter
         TRADE_COMPLETED = registerInstance(new ParticleEmitter(ParticleTypes.HAPPY_VILLAGER)
-            .setEmitFromCenterStrength(0.1f)
-            .setRandomVelocityStrength(0.05f)
-            .setVolume(new AABB(-0.5, 0, -0.5, 0.5, 0.25, 0.5)));
+        .setEmitFromCenterStrength(0.1f)
+        .setRandomVelocityStrength(0.05f)
+        .setVolume(new AABB(-0.5, 0, -0.5, 0.5, 0.25, 0.5)));
     
     private static ParticleEmitter registerInstance(ParticleEmitter particleEmitter) {
         INSTANCES_BY_HASH.put(particleEmitter.hashCode(), particleEmitter);

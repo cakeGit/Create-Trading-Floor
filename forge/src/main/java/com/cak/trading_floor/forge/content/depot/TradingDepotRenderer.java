@@ -28,11 +28,11 @@ public class TradingDepotRenderer extends SmartBlockEntityRenderer<TradingDepotB
     @Override
     protected void renderSafe(TradingDepotBlockEntity blockEntity, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
         super.renderSafe(blockEntity, partialTicks, ms, buffer, light, overlay);
-
+        
         TransportedItemStack transported = blockEntity.tradingDepotBehaviour.getOffer();
         TransformStack msr = TransformStack.cast(ms);
         Vec3 itemPosition = VecHelper.getCenterOf(blockEntity.getBlockPos());
-
+        
         ms.pushPose();
         ms.translate(.5, 1, .5);
         
@@ -47,58 +47,58 @@ public class TradingDepotRenderer extends SmartBlockEntityRenderer<TradingDepotB
             msr.nudge(0);
             float offset = Mth.lerp(partialTicks, tis.prevBeltPosition, tis.beltPosition);
             float sideOffset = Mth.lerp(partialTicks, tis.prevSideOffset, tis.sideOffset);
-
+            
             if (tis.insertedFrom.getAxis()
-                    .isHorizontal()) {
+                .isHorizontal()) {
                 Vec3 offsetVec = Vec3.atLowerCornerOf(tis.insertedFrom.getOpposite()
-                        .getNormal()).scale(.5f - offset);
+                    .getNormal()).scale(.5f - offset);
                 ms.translate(offsetVec.x, offsetVec.y, offsetVec.z);
                 boolean alongX = tis.insertedFrom.getClockWise()
-                        .getAxis() == Direction.Axis.X;
+                    .getAxis() == Direction.Axis.X;
             }
             
             boolean renderUpright = BeltHelper.isItemUpright(tis.stack);
             ItemStack itemStack = tis.stack;
             int angle = tis.angle;
             Random r = new Random(0);
-
+            
             TransformStack.cast(ms)
-                    .rotateY(90 - blockEntity.getBlockState().getValue(TradingDepotBlock.FACING).get2DDataValue() * 90);
+                .rotateY(90 - blockEntity.getBlockState().getValue(TradingDepotBlock.FACING).get2DDataValue() * 90);
             if (!renderUpright)
                 TransformStack.cast(ms)
                     .rotateZ(22.5);
             else
                 ms.translate(0, 0.025, 0);
-
+            
             renderItem(blockEntity.getLevel(), ms, buffer, light, overlay, itemStack, angle, r, itemPosition);
             ms.popPose();
         }
-
+        
         // Render output items
         for (int i = 0; i < blockEntity.tradingDepotBehaviour.getRealItemHandler().behaviour.getResults().size(); i++) {
             ItemStack stack = blockEntity.tradingDepotBehaviour.getRealItemHandler().behaviour.getResults().get(i);
             if (stack.isEmpty())
                 continue;
             ms.pushPose();
-
+            
             TransformStack.cast(ms)
-                    .rotateY(90 - blockEntity.getBlockState().getValue(TradingDepotBlock.FACING).get2DDataValue() * 90)
-                    .rotateZ(22.5);
-
+                .rotateY(90 - blockEntity.getBlockState().getValue(TradingDepotBlock.FACING).get2DDataValue() * 90)
+                .rotateZ(22.5);
+            
             msr.nudge(i);
-
+            
             boolean renderUpright = BeltHelper.isItemUpright(stack);
             msr.rotateY(360 / 8f * i);
-            ms.translate(.35, .01/(i+1), 0);
+            ms.translate(.35, .01 / (i + 1), 0);
             if (renderUpright)
                 msr.rotateY(-(360 / 8f * i));
             Random r = new Random(i + 1);
             int angle = (int) (360 * r.nextFloat());
-
+            
             renderItem(blockEntity.getLevel(), ms, buffer, light, overlay, stack, renderUpright ? angle + 90 : angle, r, itemPosition);
             ms.popPose();
         }
-       
+        
         ms.popPose();
     }
     

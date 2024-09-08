@@ -24,12 +24,12 @@ public class TFLangEntries {
             "display_link.trading_depot.trades_completed", "Trades completed:"
         );
     }
-
+    
     public static void addIdLangEntries(String... rawEntries) {
         Map<String, String> entries = new HashMap<>();
         
         for (int i = 0; i < rawEntries.length; i += 2) {
-            entries.put(rawEntries[i], rawEntries[i+1]);
+            entries.put(rawEntries[i], rawEntries[i + 1]);
         }
         
         for (Map.Entry<String, String> entry : entries.entrySet()) {

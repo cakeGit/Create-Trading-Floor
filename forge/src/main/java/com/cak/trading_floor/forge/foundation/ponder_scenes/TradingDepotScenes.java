@@ -1,16 +1,13 @@
 package com.cak.trading_floor.forge.foundation.ponder_scenes;
 
-import com.simibubi.create.foundation.ponder.*;
+import com.simibubi.create.foundation.ponder.ElementLink;
+import com.simibubi.create.foundation.ponder.SceneBuilder;
+import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
 import com.simibubi.create.foundation.ponder.element.EntityElement;
-import com.simibubi.create.foundation.ponder.element.PonderElement;
-import com.simibubi.create.foundation.ponder.instruction.AnimateElementInstruction;
-import com.simibubi.create.foundation.ponder.instruction.TickingInstruction;
-import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
-import net.minecraft.world.phys.Vec3;
 
 public class TradingDepotScenes {
     
