@@ -1,7 +1,6 @@
 package com.cak.trading_floor.forge.foundation;
 
 import com.cak.trading_floor.TradingFloor;
-import com.simibubi.create.Create;
 import com.simibubi.create.foundation.utility.LangBuilder;
 import com.simibubi.create.foundation.utility.LangNumberFormat;
 import net.minecraft.ChatFormatting;

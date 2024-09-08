@@ -4,7 +4,6 @@ import com.cak.trading_floor.forge.foundation.ParticleEmitter;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.phys.AABB;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TFParticleEmitters {

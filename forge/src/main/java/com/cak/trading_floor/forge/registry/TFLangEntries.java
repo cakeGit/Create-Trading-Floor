@@ -1,7 +1,6 @@
 package com.cak.trading_floor.forge.registry;
 
 import com.cak.trading_floor.TradingFloor;
-import com.cak.trading_floor.forge.foundation.advancement.TFAdvancements;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -2,7 +2,6 @@ package com.cak.trading_floor.forge.foundation;
 
 import com.cak.trading_floor.forge.foundation.network.TFPackets;
 import com.cak.trading_floor.forge.foundation.network.packets.EmitParticlesFromInstancePacket;
-import com.cak.trading_floor.forge.registry.TFParticleEmitters;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;

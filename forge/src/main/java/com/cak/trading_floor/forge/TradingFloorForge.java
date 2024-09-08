@@ -1,6 +1,7 @@
 package com.cak.trading_floor.forge;
 
 import com.cak.trading_floor.TradingFloor;
+import com.cak.trading_floor.forge.foundation.advancement.TFAdvancements;
 import com.cak.trading_floor.forge.foundation.network.TFPackets;
 import com.cak.trading_floor.forge.registry.*;
 import com.cak.trading_floor.forge.foundation.advancement.TFAdvancements;

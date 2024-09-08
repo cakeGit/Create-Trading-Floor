@@ -5,7 +5,6 @@ import com.cak.trading_floor.forge.foundation.TFLang;
 import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
 import com.simibubi.create.content.redstone.displayLink.source.DisplaySource;
 import com.simibubi.create.content.redstone.displayLink.target.DisplayTargetStats;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 
