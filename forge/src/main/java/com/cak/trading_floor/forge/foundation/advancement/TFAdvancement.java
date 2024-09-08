@@ -27,7 +27,7 @@ public class TFAdvancement implements TFParentableAdvancement {
     
     static final String LANG = "advancement." + TradingFloor.MOD_ID + ".";
     
-    private Advancement.Builder builder;
+    private final Advancement.Builder builder;
     private SimpleCreateTrigger builtinTrigger;
     
     protected TFParentableAdvancement parent;
@@ -66,7 +66,7 @@ public class TFAdvancement implements TFParentableAdvancement {
     }
     
     public boolean isAlreadyAwardedTo(Player player) {
-        if (!(player instanceof ServerPlayer sp))
+        if (!(player instanceof ServerPlayer sp) || sp.getServer() == null)
             return true;
         Advancement advancement = sp.getServer()
             .getAdvancements()
@@ -115,12 +115,12 @@ public class TFAdvancement implements TFParentableAdvancement {
         
         ;
         
-        private FrameType frame;
-        private boolean toast;
-        private boolean announce;
-        private boolean hide;
+        final FrameType frame;
+        final boolean toast;
+        final boolean announce;
+        final boolean hide;
         
-        private TaskType(FrameType frame, boolean toast, boolean announce, boolean hide) {
+        TaskType(FrameType frame, boolean toast, boolean announce, boolean hide) {
             this.frame = frame;
             this.toast = toast;
             this.announce = announce;

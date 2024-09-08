@@ -39,12 +39,12 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
     public static final BehaviourType<TradingDepotBehaviour> TYPE = new BehaviourType<>();
     public FilteringBehaviour filtering;
     
+    final TradingDepotItemHandler itemHandler;
+    final LazyOptional<TradingDepotItemHandler> itemHandlerLazyOptional;
+    
     TransportedItemStack offer;
     List<ItemStack> result;
     List<TransportedItemStack> incoming;
-    
-    TradingDepotItemHandler itemHandler;
-    LazyOptional<TradingDepotItemHandler> itemHandlerLazyOptional;
     
     VersionedInventoryTrackerBehaviour invVersionTracker;
     
@@ -61,6 +61,7 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour {
         super.tick();
         
         Level world = blockEntity.getLevel();
+        if (world == null) return;
         
         for (Iterator<TransportedItemStack> iterator = incoming.iterator(); iterator.hasNext(); ) {
             TransportedItemStack ts = iterator.next();

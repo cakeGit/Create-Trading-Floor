@@ -10,9 +10,9 @@ import net.minecraftforge.network.NetworkEvent;
 
 public class EmitParticlesFromInstancePacket extends SimplePacketBase {
     
-    ParticleEmitter emitter;
-    Vec3 origin;
-    int count;
+    final ParticleEmitter emitter;
+    final Vec3 origin;
+    final int count;
     
     int emitterHash = -1;
     

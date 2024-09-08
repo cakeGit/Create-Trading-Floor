@@ -20,12 +20,11 @@ import java.util.Objects;
  */
 public class ParticleEmitter {
     
-    SimpleParticleType particleType;
+    final SimpleParticleType particleType;
     
     AABB volume = new AABB(0, 0, 0, 0, 0, 0);
     Vec3 randomVelocityStrength = Vec3.ZERO;
-    
-    float emitFromCenterStrength = 0f;
+    Vec3 emitFromCenterStrength = Vec3.ZERO;
     
     int sendPacketRange = 16;
     
@@ -44,7 +43,7 @@ public class ParticleEmitter {
     
     public void emit(ClientLevel level, Vec3 origin, int count) {
         boolean hasAABB = !volume.equals(new AABB(0, 0, 0, 0, 0, 0));
-        boolean doEmitFromCenter = emitFromCenterStrength != 0f;
+        boolean doEmitFromCenter = !emitFromCenterStrength.equals(Vec3.ZERO);
         boolean hasVelocity = !randomVelocityStrength.equals(Vec3.ZERO);
         
         for (int i = 0; i < count; i++) {
@@ -68,9 +67,9 @@ public class ParticleEmitter {
         if (offset.equals(Vec3.ZERO)) return baseVelocity;
         
         baseVelocity = baseVelocity.add(
-            emitFromCenterStrength / offset.x,
-            emitFromCenterStrength / offset.y,
-            emitFromCenterStrength / offset.z
+            emitFromCenterStrength.x * offset.x,
+            emitFromCenterStrength.y * offset.y,
+            emitFromCenterStrength.z * offset.z
         );
         
         return baseVelocity;
@@ -98,13 +97,21 @@ public class ParticleEmitter {
         return this;
     }
     
-    public ParticleEmitter setRandomVelocityStrength(@NotNull float randomVelocityStrength) {
-        this.randomVelocityStrength = new Vec3(randomVelocityStrength, randomVelocityStrength, randomVelocityStrength);
+    public ParticleEmitter setRandomVelocityStrength(float randomVelocityStrength) {
+        return setRandomVelocityStrength(new Vec3(randomVelocityStrength, randomVelocityStrength, randomVelocityStrength));
+    }
+    
+    public ParticleEmitter setEmitFromCenterStrength(@NotNull Vec3 emitFromCenterStrength) {
+        this.emitFromCenterStrength = emitFromCenterStrength;
         return this;
     }
     
     public ParticleEmitter setEmitFromCenterStrength(float emitFromCenterStrength) {
-        this.emitFromCenterStrength = emitFromCenterStrength;
+        return setRandomVelocityStrength(new Vec3(emitFromCenterStrength, emitFromCenterStrength, emitFromCenterStrength));
+    }
+    
+    public ParticleEmitter setSendPacketRange(int sendPacketRange) {
+        this.sendPacketRange = sendPacketRange;
         return this;
     }
     
@@ -112,7 +119,7 @@ public class ParticleEmitter {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ParticleEmitter that)) return false;
-        return Float.compare(emitFromCenterStrength, that.emitFromCenterStrength) == 0 && sendPacketRange == that.sendPacketRange && Objects.equals(particleType, that.particleType) && Objects.equals(volume, that.volume) && Objects.equals(randomVelocityStrength, that.randomVelocityStrength);
+        return Objects.equals(emitFromCenterStrength, that.emitFromCenterStrength) && sendPacketRange == that.sendPacketRange && Objects.equals(particleType, that.particleType) && Objects.equals(volume, that.volume) && Objects.equals(randomVelocityStrength, that.randomVelocityStrength);
     }
     
     @Override

@@ -28,8 +28,10 @@ public class TradingFloorForge {
         TradingFloor.init();
         TFRegistry.init();
         TFArmInteractionPointTypes.register();
+        TFPackets.register();
+        TFParticleEmitters.register();
+        
         TFLangEntries.addEntries();
-        TFPackets.registerPackets();
         
         eventBus.addListener(TradingFloorData::gatherData);
         eventBus.addListener(TradingFloorForge::init);

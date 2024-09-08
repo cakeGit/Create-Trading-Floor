@@ -35,7 +35,7 @@ public enum TFPackets {
         packetType = new PacketType<>(type, factory, direction);
     }
     
-    public static void registerPackets() {
+    public static void register() {
         channel = NetworkRegistry.ChannelBuilder.named(CHANNEL_NAME)
             .serverAcceptedVersions(NETWORK_VERSION_STR::equals)
             .clientAcceptedVersions(NETWORK_VERSION_STR::equals)
@@ -60,11 +60,11 @@ public enum TFPackets {
         
         private static int index = 0;
         
-        private BiConsumer<T, FriendlyByteBuf> encoder;
-        private Function<FriendlyByteBuf, T> decoder;
-        private BiConsumer<T, Supplier<NetworkEvent.Context>> handler;
-        private Class<T> type;
-        private NetworkDirection direction;
+        private final BiConsumer<T, FriendlyByteBuf> encoder;
+        private final Function<FriendlyByteBuf, T> decoder;
+        private final BiConsumer<T, Supplier<NetworkEvent.Context>> handler;
+        private final Class<T> type;
+        private final NetworkDirection direction;
         
         private PacketType(Class<T> type, Function<FriendlyByteBuf, T> factory, NetworkDirection direction) {
             encoder = T::write;

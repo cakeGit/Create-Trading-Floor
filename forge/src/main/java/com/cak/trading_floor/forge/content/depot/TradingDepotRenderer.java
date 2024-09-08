@@ -36,8 +36,7 @@ public class TradingDepotRenderer extends SmartBlockEntityRenderer<TradingDepotB
         ms.pushPose();
         ms.translate(.5, 1, .5);
         
-        List<TransportedItemStack> tisStacks = new ArrayList<>();
-        tisStacks.addAll(blockEntity.tradingDepotBehaviour.getIncoming());
+        List<TransportedItemStack> tisStacks = new ArrayList<>(blockEntity.tradingDepotBehaviour.getIncoming());
         if (transported != null)
             tisStacks.add(transported);
         

@@ -202,7 +202,7 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
             
             if (offer.getCostB().getCount() > totalCostB) return false;
             
-            totalCostBSource = costBSources.get(0).getOfferStack().copyWithCount(totalCostB);
+            totalCostBSource = costBSources.getFirst().getOfferStack().copyWithCount(totalCostB);
         }
         
         //Check both match
@@ -289,7 +289,7 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
                 TFParticleEmitters.TRADE_COMPLETED.emit(serverLevel, Vec3.atCenterOf(getBlockPos()).add(0, 0.4, 0), 4);
         }
         
-        if (!(lastTrade == null || latestTrade == null) && !Objects.equals(lastTrade, latestTrade)) {
+        if (!Objects.equals(lastTrade, latestTrade)) {
             currentTradeCompletedCount = 0;
             tradeOutputSum = 0;
         }

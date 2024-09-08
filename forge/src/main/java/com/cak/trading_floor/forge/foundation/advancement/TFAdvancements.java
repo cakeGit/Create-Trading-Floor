@@ -1,5 +1,6 @@
 package com.cak.trading_floor.forge.foundation.advancement;
 
+import com.cak.trading_floor.TradingFloor;
 import com.cak.trading_floor.forge.registry.TFRegistry;
 import com.google.common.collect.Sets;
 import net.minecraft.advancements.Advancement;
@@ -88,6 +89,8 @@ public class TFAdvancements implements DataProvider {
             advancement.provideLang(consumer);
     }
     
-    public static void register() {}
+    public static void register() {
+        TradingFloor.LOGGER.info("Registering Advancements for: " + TradingFloor.NAME);
+    }
     
 }

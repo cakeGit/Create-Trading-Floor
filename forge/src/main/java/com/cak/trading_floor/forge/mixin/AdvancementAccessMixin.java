@@ -1,6 +1,6 @@
 package com.cak.trading_floor.forge.mixin;
 
-import com.cak.trading_floor.forge.foundation.access.TFParentableAdvancement;
+import com.cak.trading_floor.forge.foundation.access.TFParentableMixinAdvancement;
 import com.simibubi.create.foundation.advancement.CreateAdvancement;
 import net.minecraft.advancements.Advancement;
 import org.spongepowered.asm.mixin.Mixin;
@@ -9,16 +9,16 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.function.Consumer;
 
 @Mixin(value = CreateAdvancement.class, remap = false)
-public abstract class AdvancementAccessMixin implements TFParentableAdvancement {
+public abstract class AdvancementAccessMixin implements TFParentableMixinAdvancement {
     
     @Shadow
-    private Advancement datagenResult;
+    Advancement datagenResult;
     
     @Shadow
     abstract void save(Consumer<Advancement> t);
     
     @Override
-    public Advancement getDatagenResult() {
+    public Advancement create_trading_floor$getMixinDatagenResult() {
         //Ensure generated
         save((a) -> {});
         

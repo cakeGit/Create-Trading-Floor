@@ -33,6 +33,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE<TradingDepotBlockEntity>, IWrenchable {
@@ -57,8 +58,8 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
     }
     
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
-                                 BlockHitResult ray) {
+    public @NotNull InteractionResult use(BlockState state, @NotNull Level world, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand,
+                                          BlockHitResult ray) {
         if (ray.getDirection() == state.getValue(FACING).getOpposite())
             return InteractionResult.PASS;
         if (world.isClientSide)
@@ -70,7 +71,7 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
         
         ItemStack heldItem = player.getItemInHand(hand);
         boolean wasEmptyHanded = heldItem.isEmpty();
-        boolean shouldntPlaceItem = AllBlocks.MECHANICAL_ARM.isIn(heldItem);
+        boolean skipItemPlacement = AllBlocks.MECHANICAL_ARM.isIn(heldItem);
         
         ItemStack mainItemStack = behaviour.getOfferStack();
         if (!mainItemStack.isEmpty()) {
@@ -87,7 +88,7 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
                 1f + world.random.nextFloat());
         }
         
-        if (!wasEmptyHanded && !shouldntPlaceItem) {
+        if (!wasEmptyHanded && !skipItemPlacement) {
             TransportedItemStack transported = new TransportedItemStack(heldItem);
             transported.insertedFrom = player.getDirection();
             transported.prevBeltPosition = .25f;
@@ -102,14 +103,13 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
     }
     
     public static void onLanded(BlockGetter worldIn, Entity entityIn) {
-        if (!(entityIn instanceof ItemEntity))
+        if (!(entityIn instanceof ItemEntity itemEntity))
             return;
         if (!entityIn.isAlive())
             return;
         if (entityIn.level().isClientSide)
             return;
         
-        ItemEntity itemEntity = (ItemEntity) entityIn;
         DirectBeltInputBehaviour inputBehaviour =
             BlockEntityBehaviour.get(worldIn, entityIn.blockPosition(), DirectBeltInputBehaviour.TYPE);
         if (inputBehaviour == null)
@@ -122,17 +122,17 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
     
     
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+    public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState newState, boolean movedByPiston) {
         IBE.onRemove(state, level, pos, newState);
     }
     
     @Override
-    public VoxelShape getVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public @NotNull VoxelShape getVisualShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
         return Shapes.empty();
     }
     
     @Override
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
+    public boolean propagatesSkylightDown(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
         return true;
     }
     
@@ -147,7 +147,7 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
     }
     
     @Override
-    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
+    public void setPlacedBy(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, LivingEntity pPlacer, @NotNull ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
         TFAdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);
     }

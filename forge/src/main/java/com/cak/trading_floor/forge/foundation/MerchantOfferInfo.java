@@ -9,9 +9,9 @@ import java.util.Objects;
 
 public class MerchantOfferInfo {
     
-    ItemStack costA;
-    ItemStack costB;
-    ItemStack result;
+    final ItemStack costA;
+    final ItemStack costB;
+    final ItemStack result;
     
     public MerchantOfferInfo(MerchantOffer offer) {
         this.costA = offer.getBaseCostA();
