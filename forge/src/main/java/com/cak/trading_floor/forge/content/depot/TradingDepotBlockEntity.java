@@ -126,7 +126,7 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
         behaviours.add(filtering = new FilteringBehaviour(this, new TradingDepotValueBox())
             .withCallback($ -> tradingDepotBehaviour.resetInv()));
         
-        filtering.setLabel(TFLang.translate("tooltip.trade_depot.filtering.trade_filter").component());
+        filtering.setLabel(TFLang.translate("tooltip.trading_depot.filtering.trade_filter").component());
         
         TFAdvancementBehaviour.create(behaviours, this,
             TFAdvancements.MONEY_MONEY_MONEY, TFAdvancements.BUDDING_CAPITALIST, TFAdvancements.HAPPY_JEFF

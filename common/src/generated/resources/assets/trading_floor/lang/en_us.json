@@ -12,6 +12,7 @@
   "trading_floor.tooltip.trading_depot.contents": "Trading Depot Contents:",
   "trading_floor.tooltip.trading_depot.contents.input": "Input (This depot only):",
   "trading_floor.tooltip.trading_depot.contents.output": "Output:",
+  "trading_floor.tooltip.trading_depot.filtering.trade_filter": "Trade Output Filter",
   "trading_floor.tooltip.trading_depot.last_trade": "Last Trade:",
   "trading_floor.tooltip.trading_depot.other_trading_depot": "other Trading Depot",
   "trading_floor.tooltip.trading_depot.other_trading_depots": "other Trading Depots",
