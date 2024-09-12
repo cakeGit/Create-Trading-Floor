@@ -8,8 +8,15 @@
   "block.trading_floor.trading_depot": "Trading Depot",
   "trading_floor.display_link.trading_depot.no_trade": "No Trade",
   "trading_floor.display_link.trading_depot.trades_completed": "Trades completed:",
+  "trading_floor.display_source.trading_depot_source_trade_completed_count": "Trades Completed Count",
+  "trading_floor.display_source.trading_depot_source_trade_product_sum": "Trade Products Total",
   "trading_floor.ponder.tag.base": "Create: Trading Floor",
   "trading_floor.ponder.tag.base.description": "Special trading depot to automatically trade with villagers",
+  "trading_floor.ponder.trading_depot_double_trading.header": "Trading with multiple trading depots",
+  "trading_floor.ponder.trading_depot_double_trading.text_1": "To complete trades with multiple inputs, 2 depots can be used together",
+  "trading_floor.ponder.trading_depot_double_trading.text_2": "While not required, you should set the filter on the first input to avoid other trades",
+  "trading_floor.ponder.trading_depot_double_trading.text_3": "Note that trading depots will only share contents if they have matching filters, or the other is empty",
+  "trading_floor.ponder.trading_depot_double_trading.text_4": "The output then goes to whichever depot has the first item of the trade",
   "trading_floor.ponder.trading_depot_trading.header": "Trading with trading depots",
   "trading_floor.ponder.trading_depot_trading.text_1": "To use a trading depot, attach it to a villager workstation",
   "trading_floor.ponder.trading_depot_trading.text_2": "When a villager next works at their workstation they will trade with the attached depot",
@@ -21,7 +28,5 @@
   "trading_floor.tooltip.trading_depot.last_trade": "Last Trade:",
   "trading_floor.tooltip.trading_depot.other_trading_depot": "other Trading Depot",
   "trading_floor.tooltip.trading_depot.other_trading_depots": "other Trading Depots",
-  "trading_floor.tooltip.trading_depot.trading_depot_info": "Trading Depot Info:",
-  "trading_floor.trading_floor.display_source.trading_depot_source_trade_completed_count": "Trades Completed Count",
-  "trading_floor.trading_floor.display_source.trading_depot_source_trade_product_sum": "Trade Products Total"
+  "trading_floor.tooltip.trading_depot.trading_depot_info": "Trading Depot Info:"
 }

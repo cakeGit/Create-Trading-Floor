@@ -13,7 +13,8 @@ public class TFPonderIndex {
     
     public static void register() {
         HELPER.forComponents(TFRegistry.TRADING_DEPOT)
-            .addStoryBoard("trading_depot_trading", TradingDepotScenes::trading);
+            .addStoryBoard("trading_depot_trading", TradingDepotScenes::trading)
+            .addStoryBoard("trading_depot_double_trading", TradingDepotScenes::trading_double);
     }
     
 }

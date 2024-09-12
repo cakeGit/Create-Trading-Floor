@@ -73,53 +73,37 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
         boolean wasEmptyHanded = heldItem.isEmpty();
         boolean skipItemPlacement = AllBlocks.MECHANICAL_ARM.isIn(heldItem);
         
-        ItemStack mainItemStack = behaviour.getOfferStack();
-        if (!mainItemStack.isEmpty()) {
-            player.getInventory()
-                .placeItemBackInInventory(mainItemStack);
-            behaviour.removeOfferStack();
-            world.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, .2f,
-                1f + world.random.nextFloat());
-        }
-        if (!behaviour.isOutputEmpty()) {
-            for (int i = 0; i < behaviour.getResults().size(); i++)
-                player.getInventory().placeItemBackInInventory(behaviour.getResults().get(i));
-            world.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, .2f,
-                1f + world.random.nextFloat());
-        }
-        
-        if (!wasEmptyHanded && !skipItemPlacement) {
+        if (wasEmptyHanded) {
+            if (!behaviour.getResults().isEmpty()) {
+                for (ItemStack stack : behaviour.getResults()) {
+                    player.getInventory().placeItemBackInInventory(stack);
+                }
+                behaviour.getResults().clear();
+            } else if (!behaviour.getOfferStack().isEmpty()) {
+                player.getInventory().placeItemBackInInventory(behaviour.getOfferStack());
+                behaviour.setOfferStack(ItemStack.EMPTY);
+            }
+        } else if (!skipItemPlacement) {
             TransportedItemStack transported = new TransportedItemStack(heldItem);
+            
             transported.insertedFrom = player.getDirection();
             transported.prevBeltPosition = .25f;
             transported.beltPosition = .25f;
+            
+            if (!behaviour.getOfferStack().isEmpty()) {
+                player.getInventory().placeItemBackInInventory(behaviour.getOfferStack());
+                behaviour.setOfferStack(ItemStack.EMPTY);
+            }
+            
             behaviour.setOfferStack(transported);
             player.setItemInHand(hand, ItemStack.EMPTY);
+            
             AllSoundEvents.DEPOT_SLIDE.playOnServer(world, pos);
         }
         
         behaviour.blockEntity.notifyUpdate();
         return InteractionResult.SUCCESS;
     }
-    
-    public static void onLanded(BlockGetter worldIn, Entity entityIn) {
-        if (!(entityIn instanceof ItemEntity itemEntity))
-            return;
-        if (!entityIn.isAlive())
-            return;
-        if (entityIn.level().isClientSide)
-            return;
-        
-        DirectBeltInputBehaviour inputBehaviour =
-            BlockEntityBehaviour.get(worldIn, entityIn.blockPosition(), DirectBeltInputBehaviour.TYPE);
-        if (inputBehaviour == null)
-            return;
-        ItemStack remainder = inputBehaviour.handleInsertion(itemEntity.getItem(), Direction.DOWN, false);
-        itemEntity.setItem(remainder);
-        if (remainder.isEmpty())
-            itemEntity.discard();
-    }
-    
     
     @Override
     public void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState newState, boolean movedByPiston) {

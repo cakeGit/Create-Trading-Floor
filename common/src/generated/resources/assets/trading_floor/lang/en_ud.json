@@ -8,8 +8,15 @@
   "block.trading_floor.trading_depot": "ʇodǝᗡ buıpɐɹ⟘",
   "trading_floor.display_link.trading_depot.no_trade": "ǝpɐɹ⟘ oN",
   "trading_floor.display_link.trading_depot.trades_completed": ":pǝʇǝןdɯoɔ sǝpɐɹ⟘",
+  "trading_floor.display_source.trading_depot_source_trade_completed_count": "ʇunoƆ pǝʇǝןdɯoƆ sǝpɐɹ⟘",
+  "trading_floor.display_source.trading_depot_source_trade_product_sum": "ןɐʇo⟘ sʇɔnpoɹԀ ǝpɐɹ⟘",
   "trading_floor.ponder.tag.base": "ɹooןℲ buıpɐɹ⟘ :ǝʇɐǝɹƆ",
   "trading_floor.ponder.tag.base.description": "sɹǝbɐןןıʌ ɥʇıʍ ǝpɐɹʇ ʎןןɐɔıʇɐɯoʇnɐ oʇ ʇodǝp buıpɐɹʇ ןɐıɔǝdS",
+  "trading_floor.ponder.trading_depot_double_trading.header": "sʇodǝp buıpɐɹʇ ǝןdıʇןnɯ ɥʇıʍ buıpɐɹ⟘",
+  "trading_floor.ponder.trading_depot_double_trading.text_1": "ɹǝɥʇǝboʇ pǝsn ǝq uɐɔ sʇodǝp ᄅ 'sʇnduı ǝןdıʇןnɯ ɥʇıʍ sǝpɐɹʇ ǝʇǝןdɯoɔ o⟘",
+  "trading_floor.ponder.trading_depot_double_trading.text_2": "sǝpɐɹʇ ɹǝɥʇo pıoʌɐ oʇ ʇnduı ʇsɹıɟ ǝɥʇ uo ɹǝʇןıɟ ǝɥʇ ʇǝs pןnoɥs noʎ 'pǝɹınbǝɹ ʇou ǝןıɥM",
+  "trading_floor.ponder.trading_depot_double_trading.text_3": "ʎʇdɯǝ sı ɹǝɥʇo ǝɥʇ ɹo 'sɹǝʇןıɟ buıɥɔʇɐɯ ǝʌɐɥ ʎǝɥʇ ɟı sʇuǝʇuoɔ ǝɹɐɥs ʎןuo ןןıʍ sʇodǝp buıpɐɹʇ ʇɐɥʇ ǝʇoN",
+  "trading_floor.ponder.trading_depot_double_trading.text_4": "ǝpɐɹʇ ǝɥʇ ɟo ɯǝʇı ʇsɹıɟ ǝɥʇ sɐɥ ʇodǝp ɹǝʌǝɥɔıɥʍ oʇ sǝob uǝɥʇ ʇndʇno ǝɥ⟘",
   "trading_floor.ponder.trading_depot_trading.header": "sʇodǝp buıpɐɹʇ ɥʇıʍ buıpɐɹ⟘",
   "trading_floor.ponder.trading_depot_trading.text_1": "uoıʇɐʇsʞɹoʍ ɹǝbɐןןıʌ ɐ oʇ ʇı ɥɔɐʇʇɐ 'ʇodǝp buıpɐɹʇ ɐ ǝsn o⟘",
   "trading_floor.ponder.trading_depot_trading.text_2": "ʇodǝp pǝɥɔɐʇʇɐ ǝɥʇ ɥʇıʍ ǝpɐɹʇ ןןıʍ ʎǝɥʇ uoıʇɐʇsʞɹoʍ ɹıǝɥʇ ʇɐ sʞɹoʍ ʇxǝu ɹǝbɐןןıʌ ɐ uǝɥM",
@@ -21,7 +28,5 @@
   "trading_floor.tooltip.trading_depot.last_trade": ":ǝpɐɹ⟘ ʇsɐꞀ",
   "trading_floor.tooltip.trading_depot.other_trading_depot": "ʇodǝᗡ buıpɐɹ⟘ ɹǝɥʇo",
   "trading_floor.tooltip.trading_depot.other_trading_depots": "sʇodǝᗡ buıpɐɹ⟘ ɹǝɥʇo",
-  "trading_floor.tooltip.trading_depot.trading_depot_info": ":oɟuI ʇodǝᗡ buıpɐɹ⟘",
-  "trading_floor.trading_floor.display_source.trading_depot_source_trade_completed_count": "ʇunoƆ pǝʇǝןdɯoƆ sǝpɐɹ⟘",
-  "trading_floor.trading_floor.display_source.trading_depot_source_trade_product_sum": "ןɐʇo⟘ sʇɔnpoɹԀ ǝpɐɹ⟘"
+  "trading_floor.tooltip.trading_depot.trading_depot_info": ":oɟuI ʇodǝᗡ buıpɐɹ⟘"
 }

@@ -7,6 +7,8 @@
   ],
   "mixins": [
     "AdvancementAccessMixin",
+    "ChuteBlockEntityMixin",
+    "CreateCreativeModeTabMixin",
     "WorkAtPoiMixin"
   ],
   "injectors": {
