@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "T": {
+      "item": "create:electron_tube"
+    },
+    "D": {
+      "item": "create:depot"
+    }
+  },
+  "pattern": [
+    "TDT"
+  ],
+  "result": {
+    "item": "trading_floor:trading_depot"
+  },
+  "show_notification": true
+}
