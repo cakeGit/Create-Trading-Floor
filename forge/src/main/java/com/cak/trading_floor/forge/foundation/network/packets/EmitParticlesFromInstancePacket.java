@@ -49,7 +49,7 @@ public class EmitParticlesFromInstancePacket extends SimplePacketBase {
         if (emitter == null)
             throw new RuntimeException("Couldn't resolve local emitter instance, expected " + emitterHash);
         
-        emitter.emit(Minecraft.getInstance().level, origin, count);
+        emitter.emitParticles(Minecraft.getInstance().level, origin, count);
         return true;
     }
     

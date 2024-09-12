@@ -11,6 +11,8 @@
   "trading_floor.ponder.tag.base": "Create: Trading Floor",
   "trading_floor.ponder.tag.base.description": "Special trading depot to automatically trade with villagers",
   "trading_floor.ponder.trading_depot_trading.header": "Trading with trading depots",
+  "trading_floor.ponder.trading_depot_trading.text_1": "To use a trading depot, attach it to a villager workstation",
+  "trading_floor.ponder.trading_depot_trading.text_2": "When a villager next works at their workstation they will trade with the attached depot",
   "trading_floor.tooltip.trading_depot.connected_to_other": "Connected To",
   "trading_floor.tooltip.trading_depot.contents": "Trading Depot Contents:",
   "trading_floor.tooltip.trading_depot.contents.input": "Input (This depot only):",
@@ -19,5 +21,7 @@
   "trading_floor.tooltip.trading_depot.last_trade": "Last Trade:",
   "trading_floor.tooltip.trading_depot.other_trading_depot": "other Trading Depot",
   "trading_floor.tooltip.trading_depot.other_trading_depots": "other Trading Depots",
-  "trading_floor.tooltip.trading_depot.trading_depot_info": "Trading Depot Info:"
+  "trading_floor.tooltip.trading_depot.trading_depot_info": "Trading Depot Info:",
+  "trading_floor.trading_floor.display_source.trading_depot_source_trade_completed_count": "Trades Completed Count",
+  "trading_floor.trading_floor.display_source.trading_depot_source_trade_product_sum": "Trade Products Total"
 }

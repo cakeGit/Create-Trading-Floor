@@ -21,7 +21,10 @@ public class TFLangEntries {
             "tooltip.trading_depot.filtering.trade_filter", "Trade Output Filter",
             
             "display_link.trading_depot.no_trade", "No Trade",
-            "display_link.trading_depot.trades_completed", "Trades completed:"
+            "display_link.trading_depot.trades_completed", "Trades completed:",
+            
+            "trading_floor.display_source.trading_depot_source_trade_product_sum", "Trade Products Total",
+            "trading_floor.display_source.trading_depot_source_trade_completed_count", "Trades Completed Count"
         );
     }
     

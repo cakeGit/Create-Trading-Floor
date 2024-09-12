@@ -286,7 +286,7 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
             getBehaviour(TFAdvancementBehaviour.TYPE).awardPlayer(TFAdvancements.MONEY_MONEY_MONEY);
             
             if (level instanceof ServerLevel serverLevel)
-                TFParticleEmitters.TRADE_COMPLETED.emit(serverLevel, Vec3.atCenterOf(getBlockPos()).add(0, 0.4, 0), 4);
+                TFParticleEmitters.TRADE_COMPLETED.emitToClients(serverLevel, Vec3.atCenterOf(getBlockPos()).add(0, 0.4, 0), 4);
         }
         
         if (!Objects.equals(lastTrade, latestTrade)) {

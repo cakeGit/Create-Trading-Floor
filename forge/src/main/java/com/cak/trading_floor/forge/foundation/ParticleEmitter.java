@@ -32,7 +32,7 @@ public class ParticleEmitter {
         this.particleType = particleType;
     }
     
-    public void emit(ServerLevel level, Vec3 origin, int count) {
+    public void emitToClients(ServerLevel level, Vec3 origin, int count) {
         TFPackets.sendToNear(
             level,
             BlockPos.containing(origin),
@@ -41,7 +41,11 @@ public class ParticleEmitter {
         );
     }
     
-    public void emit(ClientLevel level, Vec3 origin, int count) {
+    public void emitParticles(ClientLevel level, Vec3 origin, int count) {
+        emitWithConsumer(level::addParticle, origin, count);
+    }
+    
+    public void emitWithConsumer(ParticleDataConsumer consumer, Vec3 origin, int count) {
         boolean hasAABB = !volume.equals(new AABB(0, 0, 0, 0, 0, 0));
         boolean doEmitFromCenter = !emitFromCenterStrength.equals(Vec3.ZERO);
         boolean hasVelocity = !randomVelocityStrength.equals(Vec3.ZERO);
@@ -50,7 +54,7 @@ public class ParticleEmitter {
             Vec3 position = generateRandomPosition(hasAABB, origin);
             Vec3 velocity = hasVelocity ? generateRandomVelocityOfPosition(doEmitFromCenter, origin, position) : Vec3.ZERO;
             
-            level.addParticle(particleType, position.x, position.y, position.z, velocity.x, velocity.y, velocity.z);
+            consumer.addParticle(particleType, position.x, position.y, position.z, velocity.x, velocity.y, velocity.z);
         }
     }
     
@@ -125,6 +129,10 @@ public class ParticleEmitter {
     @Override
     public int hashCode() {
         return Objects.hash(BuiltInRegistries.PARTICLE_TYPE.getKey(particleType), volume, randomVelocityStrength, emitFromCenterStrength, sendPacketRange);
+    }
+    
+    public interface ParticleDataConsumer {
+        void addParticle(SimpleParticleType particleType, double x, double y, double z, double x1, double y1, double z1);
     }
     
 }

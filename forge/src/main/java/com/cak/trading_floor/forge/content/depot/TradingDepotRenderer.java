@@ -87,10 +87,10 @@ public class TradingDepotRenderer extends SmartBlockEntityRenderer<TradingDepotB
             msr.nudge(i);
             
             boolean renderUpright = BeltHelper.isItemUpright(stack);
-            msr.rotateY(360 / 8f * i);
+            msr.rotateY((215 + 360 / 8f * i) % 360);
             ms.translate(.35, .01 / (i + 1), 0);
             if (renderUpright)
-                msr.rotateY(-(360 / 8f * i));
+                msr.rotateY(-((215 + 360 / 8f * i) % 360));
             Random r = new Random(i + 1);
             int angle = (int) (360 * r.nextFloat());
             

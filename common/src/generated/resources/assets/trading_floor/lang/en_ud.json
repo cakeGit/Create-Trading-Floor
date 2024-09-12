@@ -11,6 +11,8 @@
   "trading_floor.ponder.tag.base": "ɹooןℲ buıpɐɹ⟘ :ǝʇɐǝɹƆ",
   "trading_floor.ponder.tag.base.description": "sɹǝbɐןןıʌ ɥʇıʍ ǝpɐɹʇ ʎןןɐɔıʇɐɯoʇnɐ oʇ ʇodǝp buıpɐɹʇ ןɐıɔǝdS",
   "trading_floor.ponder.trading_depot_trading.header": "sʇodǝp buıpɐɹʇ ɥʇıʍ buıpɐɹ⟘",
+  "trading_floor.ponder.trading_depot_trading.text_1": "uoıʇɐʇsʞɹoʍ ɹǝbɐןןıʌ ɐ oʇ ʇı ɥɔɐʇʇɐ 'ʇodǝp buıpɐɹʇ ɐ ǝsn o⟘",
+  "trading_floor.ponder.trading_depot_trading.text_2": "ʇodǝp pǝɥɔɐʇʇɐ ǝɥʇ ɥʇıʍ ǝpɐɹʇ ןןıʍ ʎǝɥʇ uoıʇɐʇsʞɹoʍ ɹıǝɥʇ ʇɐ sʞɹoʍ ʇxǝu ɹǝbɐןןıʌ ɐ uǝɥM",
   "trading_floor.tooltip.trading_depot.connected_to_other": "o⟘ pǝʇɔǝuuoƆ",
   "trading_floor.tooltip.trading_depot.contents": ":sʇuǝʇuoƆ ʇodǝᗡ buıpɐɹ⟘",
   "trading_floor.tooltip.trading_depot.contents.input": ":)ʎןuo ʇodǝp sıɥ⟘( ʇnduI",
@@ -19,5 +21,7 @@
   "trading_floor.tooltip.trading_depot.last_trade": ":ǝpɐɹ⟘ ʇsɐꞀ",
   "trading_floor.tooltip.trading_depot.other_trading_depot": "ʇodǝᗡ buıpɐɹ⟘ ɹǝɥʇo",
   "trading_floor.tooltip.trading_depot.other_trading_depots": "sʇodǝᗡ buıpɐɹ⟘ ɹǝɥʇo",
-  "trading_floor.tooltip.trading_depot.trading_depot_info": ":oɟuI ʇodǝᗡ buıpɐɹ⟘"
+  "trading_floor.tooltip.trading_depot.trading_depot_info": ":oɟuI ʇodǝᗡ buıpɐɹ⟘",
+  "trading_floor.trading_floor.display_source.trading_depot_source_trade_completed_count": "ʇunoƆ pǝʇǝןdɯoƆ sǝpɐɹ⟘",
+  "trading_floor.trading_floor.display_source.trading_depot_source_trade_product_sum": "ןɐʇo⟘ sʇɔnpoɹԀ ǝpɐɹ⟘"
 }
