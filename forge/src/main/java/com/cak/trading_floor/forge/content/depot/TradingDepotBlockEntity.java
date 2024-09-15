@@ -202,7 +202,7 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
             
             if (offer.getCostB().getCount() > totalCostB) return false;
             
-            totalCostBSource = costBSources.getFirst().getOfferStack().copyWithCount(totalCostB);
+            totalCostBSource = costBSources.get(0).getOfferStack().copyWithCount(totalCostB);
         }
         
         //Check both match
