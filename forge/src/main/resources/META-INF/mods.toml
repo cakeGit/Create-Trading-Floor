@@ -9,7 +9,7 @@ version = "${version}"
 displayName = "Create: Trading Floor"
 authors = "Tazer & Cak"
 description = '''
-This is an example description! Tell everyone what your mod is about!
+Automate trading with villagers using create!!
 '''
 logoFile = "icon.png"
 
