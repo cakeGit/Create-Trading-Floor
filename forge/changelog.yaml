@@ -8,4 +8,7 @@
   - Public release
   - Added item asset
   - Added description details
+1.20.1-1.0.3: |
+  - Added shape
+  - Fixed thrown items not hitting depot
 ...

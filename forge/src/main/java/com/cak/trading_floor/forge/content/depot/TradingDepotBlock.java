@@ -8,6 +8,7 @@ import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import com.simibubi.create.content.logistics.depot.SharedDepotBlockMethods;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
@@ -30,6 +31,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -131,9 +133,38 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
     }
     
     @Override
+    public void updateEntityAfterFallOn(BlockGetter worldIn, Entity entityIn) {
+        super.updateEntityAfterFallOn(worldIn, entityIn);
+        if (!(entityIn instanceof ItemEntity))
+            return;
+        if (!entityIn.isAlive())
+            return;
+        if (entityIn.level().isClientSide)
+            return;
+        
+        ItemEntity itemEntity = (ItemEntity) entityIn;
+        DirectBeltInputBehaviour inputBehaviour =
+            BlockEntityBehaviour.get(worldIn, BlockPos.containing(entityIn.position().subtract(0, 0.1, 0)), DirectBeltInputBehaviour.TYPE);
+        if (inputBehaviour == null)
+            return;
+        ItemStack remainder = inputBehaviour.handleInsertion(itemEntity.getItem(), Direction.DOWN, false);
+        itemEntity.setItem(remainder);
+        if (remainder.isEmpty())
+            itemEntity.discard();
+    }
+    
+    @Override
     public void setPlacedBy(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, LivingEntity pPlacer, @NotNull ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
         TFAdvancementBehaviour.setPlacedBy(pLevel, pPos, pPlacer);
+    }
+    
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return Shapes.or(
+            Block.box(0, 0, 0, 16, 8, 16),
+            Block.box(1, 8, 1, 15, 16, 15)
+        );
     }
     
 }
