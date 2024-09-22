@@ -33,3 +33,9 @@ mandatory=true
 versionRange="${create_version}"
 ordering="NONE"
 side="BOTH"
+[[dependencies.trading_floor]]
+modId="jei"
+mandatory=false
+versionRange="${jei_version}"
+ordering="NONE"
+side="BOTH"
