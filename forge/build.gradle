@@ -171,7 +171,7 @@ publishMods {
 
     def forgeEmoji = "<:forge:1267784983771222088>";
 //    def fabricEmoji = "<:fabric:1267785013936783421>";
-//    def newVersionPing = "<@&1267779725040947243>";
+    def newVersionPing = "<@&1287480930247643147>";
 
     changelog = "Changelog: \n" + changelogText
     type = STABLE
@@ -228,10 +228,9 @@ publishMods {
 //        requires("create-fabric", "fabric-api")
 //    }
 
-    //TODO: uncomment after release
-//    discord("discordUniversal") {
-//        webhookUrl = TOKENS.get("DISCORD_WEBHOOK")
-//        username = "New Version Announcement | Create: Trading Floor"
-//        content = "$newVersionPing\n# Create: Trading Floor has been updated to $mod_version for $minecraft_version ($fabricEmoji / $forgeEmoji)\n " + changelogText
-//    }
+    discord("discordUniversal") {
+        webhookUrl = TOKENS.get("DISCORD_WEBHOOK")
+        username = "New Version Announcement | Create: Trading Floor"
+        content = "$newVersionPing\n# Create: Trading Floor has been updated to $mod_version for $minecraft_version ($fabricEmoji / $forgeEmoji)\n " + changelogText
+    }
 }

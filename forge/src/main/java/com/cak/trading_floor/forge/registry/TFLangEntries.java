@@ -24,7 +24,16 @@ public class TFLangEntries {
             "display_link.trading_depot.trades_completed", "Trades completed:",
             
             "display_source.trading_depot_source_trade_product_sum", "Trade Products Total",
-            "display_source.trading_depot_source_trade_completed_count", "Trades Completed Count"
+            "display_source.trading_depot_source_trade_completed_count", "Trades Completed Count",
+            
+            "jei.potential_trade_type.title", "Villager Trading",
+            
+            "jei.missing_disclaimer", "Some trades may be missing or inaccurate when working with other mods",
+            
+            "jei.note.type_specific", "Villager-type specific",
+            "jei.note.randomised_cost", "Randomised price",
+            "jei.note.randomised_dye", "Randomised dye color",
+            "jei.note.enchanted_variants", "Randomised enchantments"
         );
     }
     

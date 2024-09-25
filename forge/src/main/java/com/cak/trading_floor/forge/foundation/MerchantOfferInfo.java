@@ -19,6 +19,12 @@ public class MerchantOfferInfo {
         this.result = offer.getResult();
     }
     
+    public MerchantOfferInfo(ItemStack costA, ItemStack costB, ItemStack result) {
+        this.costA = costA;
+        this.costB = costB;
+        this.result = result;
+    }
+    
     protected MerchantOfferInfo(CompoundTag tag) {
         this.costA = ItemStack.of(tag.getCompound("CostA"));
         this.costB = ItemStack.of(tag.getCompound("CostB"));

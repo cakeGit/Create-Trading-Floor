@@ -1,5 +1,6 @@
 package com.cak.trading_floor.forge.compat.jei.virtual_recipes.potential_villager_trade;
 
+import com.cak.trading_floor.forge.foundation.MerchantOfferInfo;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
@@ -12,36 +13,37 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PotentialVillagerTrade implements Recipe<RecipeWrapper> {
     
     public static final List<PotentialVillagerTrade> RECIPES = buildPotentialTrades();
-
+    
     private static List<PotentialVillagerTrade> buildPotentialTrades() {
         ArrayList<PotentialVillagerTrade> trades = new ArrayList<>();
+        
+        Set<PotentialMerchantOfferInfo> existingOffers = new HashSet<>();
+        
         for (Map.Entry<VillagerProfession, Int2ObjectMap<VillagerTrades.ItemListing[]>> professionOffers : VillagerTrades.TRADES.entrySet()) {
             for (Int2ObjectMap.Entry<VillagerTrades.ItemListing[]> levelOffers : professionOffers.getValue().int2ObjectEntrySet()) {
                 int index = 0;
                 for (VillagerTrades.ItemListing listing : levelOffers.getValue()) {
-                    try {
-                        MerchantOffer offer = listing.getOffer(null, null);
-                        
-                        if (offer != null) {
-                            trades.add(new PotentialVillagerTrade(
-                                new ResourceLocation("trade_" + professionOffers.getKey().name() + "_level_" + levelOffers.getIntKey() + "_" + index),
-                                levelOffers.getIntKey(),
-                                professionOffers.getKey(),
-                                offer.getBaseCostA(),
-                                offer.getCostB(),
-                                offer.getResult()
-                                ));
-                        }
-                        index++;
-                    } catch (NullPointerException ignored) {}
+                    
+                    @Nullable PotentialMerchantOfferInfo offer = VillagerItemListingResolver.tryResolve(listing);
+                    
+                    if (offer != null && !existingOffers.contains(offer)) {
+                        trades.add(new PotentialVillagerTrade(
+                            new ResourceLocation("trade_" + professionOffers.getKey().name() + "_level_" + levelOffers.getIntKey() + "_" + index),
+                            levelOffers.getIntKey(),
+                            professionOffers.getKey(),
+                            offer
+                        ));
+                        existingOffers.add(offer);
+                    }
+                    
+                    index++;
                 }
             }
         }
@@ -51,22 +53,30 @@ public class PotentialVillagerTrade implements Recipe<RecipeWrapper> {
     ResourceLocation id;
     int villagerLevel;
     VillagerProfession profession;
-    ItemStack costA;
-    ItemStack costB;
-    ItemStack result;
+    PotentialMerchantOfferInfo offer;
     
-    public PotentialVillagerTrade(ResourceLocation id, int villagerLevel, VillagerProfession profession, ItemStack costA, ItemStack costB, ItemStack result) {
+    public PotentialVillagerTrade(ResourceLocation id, int villagerLevel, VillagerProfession profession, PotentialMerchantOfferInfo offer) {
         this.id = id;
         this.villagerLevel = villagerLevel;
         this.profession = profession;
-        this.costA = costA;
-        this.costB = costB;
-        this.result = result;
+        this.offer = offer;
     }
     
     @Override
     public ItemStack getResultItem(RegistryAccess registryAccess) {
-        return result;
+        return ItemStack.EMPTY;
+    }
+    
+    public int getVillagerLevel() {
+        return villagerLevel;
+    }
+    
+    public VillagerProfession getProfession() {
+        return profession;
+    }
+    
+    public PotentialMerchantOfferInfo getOffer() {
+        return offer;
     }
     
     @Override
