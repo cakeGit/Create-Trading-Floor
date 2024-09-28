@@ -231,6 +231,6 @@ publishMods {
     discord("discordUniversal") {
         webhookUrl = TOKENS.get("DISCORD_WEBHOOK")
         username = "New Version Announcement | Create: Trading Floor"
-        content = "$newVersionPing\n# Create: Trading Floor has been updated to $mod_version for $minecraft_version ($fabricEmoji / $forgeEmoji)\n " + changelogText
+        content = "$newVersionPing\n# Create: Trading Floor has been updated to $mod_version for $minecraft_version ($forgeEmoji)\n " + changelogText
     }
 }

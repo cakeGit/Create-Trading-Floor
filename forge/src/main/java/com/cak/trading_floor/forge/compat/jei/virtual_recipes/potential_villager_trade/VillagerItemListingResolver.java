@@ -3,7 +3,6 @@ package com.cak.trading_floor.forge.compat.jei.virtual_recipes.potential_village
 import com.cak.trading_floor.forge.foundation.access.ResolvableItemListing;
 import net.minecraft.world.entity.npc.VillagerTrades;
 
-//Artifact, remove todo migrate to return a potential villager trade
 public class VillagerItemListingResolver {
     
     public static PotentialMerchantOfferInfo tryResolve(VillagerTrades.ItemListing listing) {

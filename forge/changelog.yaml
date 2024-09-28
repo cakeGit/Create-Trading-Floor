@@ -12,5 +12,7 @@
   - Added shape
   - Fixed thrown items not hitting depot
 1.20.1-1.0.4: |
+  - Added JEI view for possible recipes
+1.20.1-1.0.5: |
   - Added forge update checker
 ...
