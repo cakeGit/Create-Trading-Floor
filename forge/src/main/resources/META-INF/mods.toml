@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "[${forge_version},)"
-#issueTrackerURL = ""
+issueTrackerURL = "https://github.com/cakeGit/Create-Trading-Floor/issues"
 license = "MIT"
 
 [[mods]]
@@ -9,9 +9,11 @@ version = "${version}"
 displayName = "Create: Trading Floor"
 authors = "Tazer & Cak"
 description = '''
-Automate trading with villagers using create!!
+Automate trading with villagers using create!
 '''
 logoFile = "icon.png"
+displayURL = "https://modrinth.com/mod/create-trading-floor"
+updateJSONURL = "https://raw.githubusercontent.com/cakeGit/Create-Trading-Floor/refs/heads/1.20.1/forge_updates.json"
 
 [[dependencies.trading_floor]]
 modId = "forge"
