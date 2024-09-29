@@ -17,7 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -171,10 +170,6 @@ public class TFAdvancement implements TFParentableAdvancement {
         Builder description(String description) {
             TFAdvancement.this.description = description;
             return this;
-        }
-        
-        Builder whenBlockPlaced(Block block) {
-            return externalTrigger(ItemUsedOnLocationTrigger.TriggerInstance.placedBlock(block));
         }
         
         Builder whenIconCollected() {

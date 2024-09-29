@@ -1,5 +1,6 @@
 package com.cak.trading_floor.forge.content.depot.displays;
 
+import com.cak.trading_floor.forge.content.depot.ItemCopyWithCount;
 import com.cak.trading_floor.forge.content.depot.TradingDepotBlockEntity;
 import com.cak.trading_floor.forge.foundation.TFLang;
 import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
@@ -20,7 +21,7 @@ public class TradeProductSumDisplay extends DisplaySource {
         if (depot.getLastTrade() == null)
             return List.of(TFLang.translate("display_link.trading_depot.no_trade").component());
         
-        ItemStack stack = depot.getLastTrade().getResult().copyWithCount(depot.getTradeOutputSum());
+        ItemStack stack = ItemCopyWithCount.of(depot.getLastTrade().getResult(), depot.getTradeOutputSum());
         
         return List.of(TFLang.itemStack(stack).component());
     }

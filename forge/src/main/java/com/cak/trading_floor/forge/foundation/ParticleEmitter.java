@@ -5,10 +5,11 @@ import com.cak.trading_floor.forge.foundation.network.packets.EmitParticlesFromI
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -35,7 +36,7 @@ public class ParticleEmitter {
     public void emitToClients(ServerLevel level, Vec3 origin, int count) {
         TFPackets.sendToNear(
             level,
-            BlockPos.containing(origin),
+            new BlockPos(origin),
             sendPacketRange,
             new EmitParticlesFromInstancePacket(this, origin, count)
         );
@@ -128,7 +129,7 @@ public class ParticleEmitter {
     
     @Override
     public int hashCode() {
-        return Objects.hash(BuiltInRegistries.PARTICLE_TYPE.getKey(particleType), volume, randomVelocityStrength, emitFromCenterStrength, sendPacketRange);
+        return Objects.hash(ForgeRegistries.PARTICLE_TYPES.getKey(particleType), volume, randomVelocityStrength, emitFromCenterStrength, sendPacketRange);
     }
     
     public interface ParticleDataConsumer {

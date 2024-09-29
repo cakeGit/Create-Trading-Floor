@@ -4,6 +4,8 @@ import com.cak.trading_floor.TradingFloor;
 import com.cak.trading_floor.forge.compat.jei.TradingFloorJei;
 import com.cak.trading_floor.forge.foundation.TFLang;
 import com.cak.trading_floor.forge.registry.TFRegistry;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.compat.jei.EmptyBackground;
 import com.simibubi.create.compat.jei.ItemIcon;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -14,12 +16,11 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Mutable;
 
 public class PotentialVillagerTradeCategory implements IRecipeCategory<PotentialVillagerTrade> {
     
@@ -57,28 +58,33 @@ public class PotentialVillagerTradeCategory implements IRecipeCategory<Potential
     }
     
     @Override
-    public void draw(PotentialVillagerTrade recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        guiGraphics.blit(TEXTURES, 160, 64, 0, 0, 16, 16);
+    public void draw(PotentialVillagerTrade recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
+        Screen activeScreenGraphics = Minecraft.getInstance().screen;
+        
+        if (activeScreenGraphics == null) return;
+        
+        RenderSystem.setShaderTexture(0, TEXTURES);
+        
+        activeScreenGraphics.blit(stack, 160, 64, 0, 0, 16, 16);
         
         Component tradeNoteTooltip = getTooltipOfTradeNote(recipe.offer);
         if (tradeNoteTooltip != null && mouseX > 132 && mouseX < 140 && mouseY > 53 && mouseY < 61)
-            guiGraphics.renderTooltip(Minecraft.getInstance().font, tradeNoteTooltip, (int) mouseX, (int) mouseY);
+            activeScreenGraphics.renderTooltip(stack, tradeNoteTooltip, (int) mouseX, (int) mouseY);
         
         if (mouseX > 170 && mouseX < 176 && mouseY > 65 && mouseY < 81) {
-            guiGraphics.renderTooltip(Minecraft.getInstance().font, TFLang.translate("jei.missing_disclaimer").component(), (int) mouseX, (int) mouseY);
+            activeScreenGraphics.renderTooltip(stack, TFLang.translate("jei.missing_disclaimer").component(), (int) mouseX, (int) mouseY);
         }
         
-        guiGraphics.blit(TEXTURES, 10, 31, 16, 0, 44, 18);
-        guiGraphics.blit(TEXTURES, 132, 27, 60, 0, 26, 26);
+        activeScreenGraphics.blit(stack, 10, 31, 16, 0, 44, 18);
+        activeScreenGraphics.blit(stack, 132, 27, 60, 0, 26, 26);
         
         Integer tradeNoteUV = getUVXOffsetOfTradeNote(recipe.offer);
         if (tradeNoteUV != null)
-            guiGraphics.blit(TEXTURES, 132, 53, tradeNoteUV, 32, 8, 8);
+            activeScreenGraphics.blit(stack, 132, 53, tradeNoteUV, 32, 8, 8);
         
         if (Minecraft.getInstance().level != null) {
-            CachedVillagerRenderer.renderVillagerForRecipe(guiGraphics, 88, 70, 30, (float) (88 - mouseX), (float) ((20 - mouseY)/3), recipe);
+            CachedVillagerRenderer.renderVillagerForRecipe(88, 70, 30, (float) (88 - mouseX), (float) ((20 - mouseY)/3), recipe);
         }
-        
     }
     
     public static @Nullable Integer getUVXOffsetOfTradeNote(PotentialMerchantOfferInfo merchantOfferInfo) {

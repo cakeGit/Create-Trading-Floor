@@ -5,12 +5,13 @@ import com.cak.trading_floor.forge.registry.TFRegistry;
 import com.google.common.collect.Sets;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.data.CachedOutput;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,15 +53,15 @@ public class TFAdvancements implements DataProvider {
     
     // Datagen
     
-    private final PackOutput output;
+    private final DataGenerator generator;
     
-    public TFAdvancements(PackOutput output) {
-        this.output = output;
+    public TFAdvancements(DataGenerator generator) {
+        this.generator = generator;
     }
     
     @Override
-    public @NotNull CompletableFuture<?> run(@NotNull CachedOutput cache) {
-        PackOutput.PathProvider pathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, "advancements");
+    public void run(@NotNull CachedOutput cache) {
+        DataGenerator.PathProvider pathProvider = generator.createPathProvider(DataGenerator.Target.DATA_PACK, "advancements");
         List<CompletableFuture<?>> futures = new ArrayList<>();
         
         Set<ResourceLocation> set = Sets.newHashSet();
@@ -69,14 +70,16 @@ public class TFAdvancements implements DataProvider {
             if (!set.add(id))
                 throw new IllegalStateException("Duplicate advancement " + id);
             Path path = pathProvider.json(id);
-            futures.add(DataProvider.saveStable(cache, advancement.deconstruct()
-                .serializeToJson(), path));
+            try {
+                DataProvider.saveStable(cache, advancement.deconstruct()
+                    .serializeToJson(), path);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         };
         
         for (TFAdvancement advancement : ENTRIES)
             advancement.save(consumer);
-        
-        return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
     }
     
     @Override

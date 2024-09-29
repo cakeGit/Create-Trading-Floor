@@ -8,13 +8,10 @@ import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
-import com.simibubi.create.content.logistics.depot.SharedDepotBlockMethods;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -31,7 +28,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -139,12 +135,12 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
             return;
         if (!entityIn.isAlive())
             return;
-        if (entityIn.level().isClientSide)
+        if (entityIn.level.isClientSide)
             return;
         
         ItemEntity itemEntity = (ItemEntity) entityIn;
         DirectBeltInputBehaviour inputBehaviour =
-            BlockEntityBehaviour.get(worldIn, BlockPos.containing(entityIn.position().subtract(0, 0.1, 0)), DirectBeltInputBehaviour.TYPE);
+            BlockEntityBehaviour.get(worldIn, new BlockPos(entityIn.position().subtract(0, 0.1, 0)), DirectBeltInputBehaviour.TYPE);
         if (inputBehaviour == null)
             return;
         ItemStack remainder = inputBehaviour.handleInsertion(itemEntity.getItem(), Direction.DOWN, false);

@@ -40,11 +40,11 @@ public class TradingDepotItemHandler implements IItemHandler {
         int remaining = arg.getCount() - added;
         
         if (!bl) {
-            behaviour.setOfferStack(new TransportedItemStack(arg.copyWithCount(newCount)));
+            behaviour.setOfferStack(new TransportedItemStack(ItemCopyWithCount.of(arg, newCount)));
             behaviour.blockEntity.sendData();
         }
         
-        return arg.copyWithCount(remaining);
+        return ItemCopyWithCount.of(arg, remaining);
     }
     
     @Override
@@ -55,8 +55,8 @@ public class TradingDepotItemHandler implements IItemHandler {
         
         int extractedCount = Math.min(currentStack.getCount(), j);
         
-        ItemStack resultStack = currentStack.copyWithCount(extractedCount);
-        ItemStack remainderStack = currentStack.copyWithCount(currentStack.getCount() - extractedCount);
+        ItemStack resultStack = ItemCopyWithCount.of(currentStack, extractedCount);
+        ItemStack remainderStack = ItemCopyWithCount.of(currentStack, currentStack.getCount() - extractedCount);
         
         if (!bl) {
             if (remainderStack.isEmpty())

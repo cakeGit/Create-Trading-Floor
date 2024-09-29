@@ -1,14 +1,11 @@
 package com.cak.trading_floor.forge.mixin.item_listings;
 
 import com.cak.trading_floor.forge.compat.jei.virtual_recipes.potential_villager_trade.PotentialMerchantOfferInfo;
+import com.cak.trading_floor.forge.content.depot.ItemCopyWithCount;
 import com.cak.trading_floor.forge.foundation.access.ResolvableItemListing;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.saveddata.maps.MapDecoration;
-import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,7 +21,7 @@ public class DyedArmorForEmeraldsAccessMixin implements ResolvableItemListing {
     @Override
     public @Nullable PotentialMerchantOfferInfo create_trading_floor$resolve() {
         return new PotentialMerchantOfferInfo(
-            Items.EMERALD.getDefaultInstance().copyWithCount(value),
+            ItemCopyWithCount.of(Items.EMERALD.getDefaultInstance(), value),
             ItemStack.EMPTY,
             item.getDefaultInstance()
         ).noteRandomisedDyeColor();

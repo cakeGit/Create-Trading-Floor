@@ -1,6 +1,6 @@
-// 1.20.1	2024-09-25T19:30:20.5302517	Registrate Provider for trading_floor [Recipes, Advancements, Loot Tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.19.2	2024-09-29T12:36:13.6840609	Registrate Provider for trading_floor [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 d46836c19c0f830ab1803e5f6ee854b101c8915c assets/trading_floor/blockstates/trading_depot.json
 42deb6ab2a3402dc712576a752f413c3b495594a assets/trading_floor/lang/en_ud.json
 d2c7c82f951006f11cecb0ccb71e4c3cb32bb36e assets/trading_floor/lang/en_us.json
 46e37fd4c5ee5233606f3cb960c860a684e37f14 assets/trading_floor/models/item/trading_depot.json
-f47505ed62254967bd490f3b99fa144902c1b5d0 data/trading_floor/loot_tables/blocks/trading_depot.json
+a751cccd0f03faa1dd4952e0241f35d4a56271cd data/trading_floor/loot_tables/blocks/trading_depot.json

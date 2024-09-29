@@ -1,8 +1,6 @@
 package com.cak.trading_floor.forge.registry;
 
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllItems;
-import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import net.minecraft.world.item.Item;
 
@@ -23,7 +21,7 @@ public class TFTabInsertions {
         
         INSERTS_AFTER = new HashMap<>();
         for (Map.Entry<ItemProviderEntry<?>, ItemProviderEntry<?>> entry : REGISTRY_INSERTS_AFTER.entrySet()) {
-            INSERTS_AFTER.put(entry.getKey().asItem(), entry.getValue().asItem());
+            INSERTS_AFTER.put(entry.getKey().get().asItem(), entry.getValue().get().asItem());
         }
         return INSERTS_AFTER;
     }

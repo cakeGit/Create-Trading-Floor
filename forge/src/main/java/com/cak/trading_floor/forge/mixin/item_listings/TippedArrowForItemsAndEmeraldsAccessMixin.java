@@ -2,22 +2,19 @@ package com.cak.trading_floor.forge.mixin.item_listings;
 
 import com.cak.trading_floor.forge.compat.jei.virtual_recipes.potential_villager_trade.PotentialMerchantOfferInfo;
 import com.cak.trading_floor.forge.foundation.access.ResolvableItemListing;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Mixin(targets = "net.minecraft.world.entity.npc.VillagerTrades$TippedArrowForItemsAndEmeralds")
 public class TippedArrowForItemsAndEmeraldsAccessMixin implements ResolvableItemListing {
@@ -34,15 +31,16 @@ public class TippedArrowForItemsAndEmeraldsAccessMixin implements ResolvableItem
     
     @Override
     public @Nullable PotentialMerchantOfferInfo create_trading_floor$resolve() {
-        List<Potion> list = BuiltInRegistries.POTION.stream()
+        List<Potion> list = ForgeRegistries.POTIONS.getValues().stream()
             .filter((potion) -> !potion.getEffects().isEmpty() && PotionBrewing.isBrewablePotion(potion))
             .toList();
         
-        ItemStack toItemBase = toItem.copyWithCount(toCount);
+        ItemStack toItemBase = toItem.copy();
+        toItemBase.setCount(toCount);
         
         return new PotentialMerchantOfferInfo(
-            Items.EMERALD.getDefaultInstance().copyWithCount(emeraldCost),
-            fromItem.getDefaultInstance().copyWithCount(fromCount),
+            create_trading_floor$copy_with_count(Items.EMERALD.getDefaultInstance(), emeraldCost),
+            create_trading_floor$copy_with_count(fromItem.getDefaultInstance(), fromCount),
             list.stream().map(potion -> PotionUtils.setPotion(toItemBase.copy(), potion)).toList()
         );
     }

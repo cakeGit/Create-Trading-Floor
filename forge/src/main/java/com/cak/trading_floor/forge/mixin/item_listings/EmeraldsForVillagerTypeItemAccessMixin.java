@@ -1,6 +1,7 @@
 package com.cak.trading_floor.forge.mixin.item_listings;
 
 import com.cak.trading_floor.forge.compat.jei.virtual_recipes.potential_villager_trade.PotentialMerchantOfferInfo;
+import com.cak.trading_floor.forge.content.depot.ItemCopyWithCount;
 import com.cak.trading_floor.forge.foundation.access.ResolvableItemListing;
 import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.item.Item;
@@ -23,7 +24,7 @@ public class EmeraldsForVillagerTypeItemAccessMixin implements ResolvableItemLis
     @Override
     public @Nullable PotentialMerchantOfferInfo create_trading_floor$resolve() {
         return new PotentialMerchantOfferInfo(
-            Items.EMERALD.getDefaultInstance().copyWithCount(cost),
+            ItemCopyWithCount.of(Items.EMERALD.getDefaultInstance(), cost),
             ItemStack.EMPTY,
             trades.values().stream().map(Item::getDefaultInstance).toList()
         ).noteVillagerTypeSpecific();

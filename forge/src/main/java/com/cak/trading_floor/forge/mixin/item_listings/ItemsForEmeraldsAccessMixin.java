@@ -1,9 +1,7 @@
 package com.cak.trading_floor.forge.mixin.item_listings;
 
 import com.cak.trading_floor.forge.compat.jei.virtual_recipes.potential_villager_trade.PotentialMerchantOfferInfo;
-import com.cak.trading_floor.forge.foundation.MerchantOfferInfo;
 import com.cak.trading_floor.forge.foundation.access.ResolvableItemListing;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;
@@ -23,9 +21,9 @@ public class ItemsForEmeraldsAccessMixin implements ResolvableItemListing {
     @Override
     public @Nullable PotentialMerchantOfferInfo create_trading_floor$resolve() {
         return new PotentialMerchantOfferInfo(
-            Items.EMERALD.getDefaultInstance().copyWithCount(emeraldCost),
+            create_trading_floor$copy_with_count(Items.EMERALD.getDefaultInstance(), emeraldCost),
             ItemStack.EMPTY,
-            itemStack.copyWithCount(numberOfItems)
+            create_trading_floor$copy_with_count(itemStack, numberOfItems)
         );
     }
     

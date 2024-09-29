@@ -2,7 +2,6 @@ package com.cak.trading_floor.forge.compat.jei.virtual_recipes.potential_village
 
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.Villager;
@@ -24,7 +23,7 @@ public class CachedVillagerRenderer {
         VillagerType.TAIGA
     );
     
-    public static void renderVillagerForRecipe(GuiGraphics guiGraphics, int x, int y, int scale, float targetX, float targetY, PotentialVillagerTrade recipe) {
+    public static void renderVillagerForRecipe(int x, int y, int scale, float targetX, float targetY, PotentialVillagerTrade recipe) {
         if (him == null && Minecraft.getInstance().level != null)
             him = new Villager(EntityType.VILLAGER, Minecraft.getInstance().level);
         
@@ -41,7 +40,7 @@ public class CachedVillagerRenderer {
         
         him.setVillagerData(recipeSpecificData);
         
-        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x, y, scale, targetX, targetY, him);
+        InventoryScreen.renderEntityInInventory(x, y, scale, targetX, targetY, him);
         
     }
     

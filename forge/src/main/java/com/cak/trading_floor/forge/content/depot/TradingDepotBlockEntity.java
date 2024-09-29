@@ -185,13 +185,13 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
      */
     protected boolean tryTakeMerchantOffer(MerchantOffer offer, TradingDepotBehaviour costASource, List<TradingDepotBehaviour> costBSources) {
         //Quickly check if the A cost matches, if not don't bother with anything else
-        if (!ItemStack.isSameItem(offer.getBaseCostA(), costASource.getOfferStack())) return false;
+        if (!ItemStack.isSame(offer.getBaseCostA(), costASource.getOfferStack())) return false;
         
         //Check the second cost if it's there
         ItemStack totalCostBSource = ItemStack.EMPTY;
         if (!offer.getCostB().isEmpty()) {
             costBSources = costBSources.stream()
-                .filter(depot -> ItemStack.isSameItem(offer.getCostB(), depot.getOfferStack()))
+                .filter(depot -> ItemStack.isSame(offer.getCostB(), depot.getOfferStack()))
                 .toList();
             
             if (costBSources.isEmpty()) return false;
@@ -202,15 +202,15 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
             
             if (offer.getCostB().getCount() > totalCostB) return false;
             
-            totalCostBSource = costBSources.get(0).getOfferStack().copyWithCount(totalCostB);
+            totalCostBSource = ItemCopyWithCount.of(costBSources.get(0).getOfferStack(), totalCostB);
         }
         
         //Check both match
         if (!satisfiedBaseCostBy(offer, costASource.getOfferStack(), totalCostBSource)) return false;
         
         //Perform transaction
-        costASource.setOfferStack(costASource.getOfferStack()
-            .copyWithCount(costASource.getOfferStack().getCount() - offer.getBaseCostA().getCount()));
+        costASource.setOfferStack(ItemCopyWithCount.of(costASource.getOfferStack(),
+            costASource.getOfferStack().getCount() - offer.getBaseCostA().getCount()));
         takeTotalFromSources(costBSources, offer.getCostB().getCount());
         
         costASource.getResults().add(offer.assemble());
@@ -229,7 +229,7 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
             int currentCount = costSource.getOfferStack().getCount();
             int extractCount = Math.min(totalExtractCount, currentCount);
             
-            costSource.setOfferStack(costSource.getOfferStack().copyWithCount(currentCount - extractCount));
+            costSource.setOfferStack(ItemCopyWithCount.of(costSource.getOfferStack(), currentCount - extractCount));
             
             totalExtractCount -= extractCount;
             i++;
@@ -334,7 +334,7 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
         if (itemstack.getItem().isDamageable(itemstack)) {
             itemstack.setDamageValue(itemstack.getDamageValue());
         }
-        return ItemStack.isSameItem(itemstack, cost) && (!cost.hasTag() || itemstack.hasTag() && NbtUtils.compareNbt(cost.getTag(), itemstack.getTag(), false));
+        return ItemStack.isSame(itemstack, cost) && (!cost.hasTag() || itemstack.hasTag() && NbtUtils.compareNbt(cost.getTag(), itemstack.getTag(), false));
     }
     
     public boolean hasInputStack() {

@@ -1,5 +1,6 @@
 package com.cak.trading_floor.forge.foundation.ponder_scenes;
 
+import com.cak.trading_floor.forge.content.depot.ItemCopyWithCount;
 import com.cak.trading_floor.forge.content.depot.TradingDepotBlockEntity;
 import com.cak.trading_floor.forge.content.depot.behavior.TradingDepotBehaviour;
 import com.cak.trading_floor.forge.registry.TFParticleEmitters;
@@ -8,7 +9,6 @@ import com.simibubi.create.foundation.ponder.ElementLink;
 import com.simibubi.create.foundation.ponder.PonderPalette;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
-import com.simibubi.create.foundation.ponder.element.BeltItemElement;
 import com.simibubi.create.foundation.ponder.element.EntityElement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,7 +17,6 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.phys.Vec3;
 
 public class TradingDepotScenes {
@@ -56,7 +55,7 @@ public class TradingDepotScenes {
         scene.idle(80);
         
         scene.world.modifyBlockEntity(new BlockPos(1, 1, 1), TradingDepotBlockEntity.class, be -> {
-            TransportedItemStack tis = new TransportedItemStack(Items.FLINT.getDefaultInstance().copyWithCount(32));
+            TransportedItemStack tis = new TransportedItemStack(ItemCopyWithCount.of(Items.FLINT.getDefaultInstance(), 32));
             tis.insertedFrom = Direction.SOUTH;
             be.getBehaviour(TradingDepotBehaviour.TYPE).getIncoming()
                 .add(tis);
@@ -109,7 +108,6 @@ public class TradingDepotScenes {
         
         scene.markAsFinished();
     }
-    
     
     public static void trading_double(SceneBuilder scene, SceneBuildingUtil util) {
         scene.title("trading_depot_double_trading", "Trading with multiple trading depots");
@@ -165,7 +163,7 @@ public class TradingDepotScenes {
             new BlockPos(3, 2, 0), Direction.NORTH, Items.EMERALD.getDefaultInstance()
         );
         scene.world.createItemOnBelt(
-            new BlockPos(0, 1, 3), Direction.WEST, Items.GRAVEL.getDefaultInstance().copyWithCount(10)
+            new BlockPos(0, 1, 3), Direction.WEST, ItemCopyWithCount.of(Items.GRAVEL.getDefaultInstance(), 10)
         );
         
         scene.idle(60);
@@ -216,7 +214,7 @@ public class TradingDepotScenes {
             tradingDepotBlockEntity.getBehaviour(TradingDepotBehaviour.TYPE).setOfferStack(ItemStack.EMPTY)
         );
         scene.world.modifyBlockEntity(new BlockPos(3, 2, 2), TradingDepotBlockEntity.class, tradingDepotBlockEntity ->
-            tradingDepotBlockEntity.getBehaviour(TradingDepotBehaviour.TYPE).getResults().add(Items.FLINT.getDefaultInstance().copyWithCount(10))
+            tradingDepotBlockEntity.getBehaviour(TradingDepotBehaviour.TYPE).getResults().add(ItemCopyWithCount.of(Items.FLINT.getDefaultInstance(), 10))
         );
         
         scene.idle(20);
@@ -235,7 +233,7 @@ public class TradingDepotScenes {
         scene.world.modifyBlockEntity(new BlockPos(3, 2, 2), TradingDepotBlockEntity.class, tradingDepotBlockEntity ->
             tradingDepotBlockEntity.getBehaviour(TradingDepotBehaviour.TYPE).getResults().clear()
         );
-        scene.world.createItemOnBelt(new BlockPos(2, 1, 2), Direction.EAST, Items.FLINT.getDefaultInstance().copyWithCount(10));
+        scene.world.createItemOnBelt(new BlockPos(2, 1, 2), Direction.EAST, ItemCopyWithCount.of(Items.FLINT.getDefaultInstance(), 10));
         
         scene.idle(20);
         
