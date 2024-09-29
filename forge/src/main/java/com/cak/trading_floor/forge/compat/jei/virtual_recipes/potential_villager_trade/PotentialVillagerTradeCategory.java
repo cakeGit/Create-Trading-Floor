@@ -64,8 +64,19 @@ public class PotentialVillagerTradeCategory implements IRecipeCategory<Potential
         if (activeScreenGraphics == null) return;
         
         RenderSystem.setShaderTexture(0, TEXTURES);
-        
         activeScreenGraphics.blit(stack, 160, 64, 0, 0, 16, 16);
+        activeScreenGraphics.blit(stack, 10, 31, 16, 0, 44, 18);
+        activeScreenGraphics.blit(stack, 132, 27, 60, 0, 26, 26);
+        
+        Integer tradeNoteUV = getUVXOffsetOfTradeNote(recipe.offer);
+        if (tradeNoteUV != null) {
+            RenderSystem.setShaderTexture(0, TEXTURES);
+            activeScreenGraphics.blit(stack, 132, 53, tradeNoteUV, 32, 8, 8);
+        }
+        
+        if (Minecraft.getInstance().level != null) {
+            CachedVillagerRenderer.renderVillagerForRecipe(88, 70, 30, (float) (88 - mouseX), (float) ((20 - mouseY)/3), recipe, stack);
+        }
         
         Component tradeNoteTooltip = getTooltipOfTradeNote(recipe.offer);
         if (tradeNoteTooltip != null && mouseX > 132 && mouseX < 140 && mouseY > 53 && mouseY < 61)
@@ -73,17 +84,6 @@ public class PotentialVillagerTradeCategory implements IRecipeCategory<Potential
         
         if (mouseX > 170 && mouseX < 176 && mouseY > 65 && mouseY < 81) {
             activeScreenGraphics.renderTooltip(stack, TFLang.translate("jei.missing_disclaimer").component(), (int) mouseX, (int) mouseY);
-        }
-        
-        activeScreenGraphics.blit(stack, 10, 31, 16, 0, 44, 18);
-        activeScreenGraphics.blit(stack, 132, 27, 60, 0, 26, 26);
-        
-        Integer tradeNoteUV = getUVXOffsetOfTradeNote(recipe.offer);
-        if (tradeNoteUV != null)
-            activeScreenGraphics.blit(stack, 132, 53, tradeNoteUV, 32, 8, 8);
-        
-        if (Minecraft.getInstance().level != null) {
-            CachedVillagerRenderer.renderVillagerForRecipe(88, 70, 30, (float) (88 - mouseX), (float) ((20 - mouseY)/3), recipe);
         }
     }
     
