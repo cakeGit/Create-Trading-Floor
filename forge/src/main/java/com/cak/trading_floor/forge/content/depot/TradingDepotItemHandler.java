@@ -51,7 +51,8 @@ public class TradingDepotItemHandler implements IItemHandler {
     public @NotNull ItemStack extractItem(int i, int j, boolean bl) {
         if (i == 0) return ItemStack.EMPTY;
         
-        ItemStack currentStack = behaviour.getResults().get(i - 1);
+        int resultsIndex = i - 1;
+        ItemStack currentStack = behaviour.getResults().get(resultsIndex);
         
         int extractedCount = Math.min(currentStack.getCount(), j);
         
@@ -60,9 +61,9 @@ public class TradingDepotItemHandler implements IItemHandler {
         
         if (!bl) {
             if (remainderStack.isEmpty())
-                this.behaviour.getResults().remove(i - 1);
+                this.behaviour.getResults().remove(resultsIndex);
             else
-                this.behaviour.getResults().set(i, remainderStack);
+                this.behaviour.getResults().set(resultsIndex, remainderStack);
             behaviour.blockEntity.sendData();
         }
         
