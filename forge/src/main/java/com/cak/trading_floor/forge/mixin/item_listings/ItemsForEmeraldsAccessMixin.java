@@ -1,9 +1,7 @@
 package com.cak.trading_floor.forge.mixin.item_listings;
 
-import com.cak.trading_floor.forge.compat.jei.virtual_recipes.potential_villager_trade.PotentialMerchantOfferInfo;
-import com.cak.trading_floor.forge.foundation.MerchantOfferInfo;
-import com.cak.trading_floor.forge.foundation.access.ResolvableItemListing;
-import net.minecraft.world.item.Item;
+import com.cak.trading_floor.compat.jei.virtual_recipes.potential_villager_trade.PotentialMerchantOfferInfo;
+import com.cak.trading_floor.foundation.access.ResolvableItemListing;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;

@@ -2,7 +2,7 @@ package com.cak.trading_floor.forge.mixin;
 
 import com.cak.trading_floor.forge.content.depot.TradingDepotBlockEntity;
 import com.cak.trading_floor.forge.content.depot.behavior.TradingDepotBehaviour;
-import com.cak.trading_floor.forge.foundation.AttachedTradingDepotFinder;
+import com.cak.trading_floor.foundation.AttachedTradingDepotFinder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerLevel;

@@ -1,7 +1,8 @@
 package com.cak.trading_floor.forge.content.depot.behavior;
 
+import com.cak.trading_floor.content.trading_depot.behavior.CommonTradingDepotBehaviorAccess;
 import com.cak.trading_floor.forge.content.depot.TradingDepotItemHandler;
-import com.cak.trading_floor.forge.foundation.TFLang;
+import com.cak.trading_floor.foundation.TFLang;
 import com.simibubi.create.content.kinetics.belt.BeltHelper;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
@@ -34,7 +35,7 @@ import java.util.List;
 
 import static net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING;
 
-public class TradingDepotBehaviour extends BlockEntityBehaviour {
+public class TradingDepotBehaviour extends BlockEntityBehaviour implements CommonTradingDepotBehaviorAccess {
     
     public static final BehaviourType<TradingDepotBehaviour> TYPE = new BehaviourType<>();
     public FilteringBehaviour filtering;

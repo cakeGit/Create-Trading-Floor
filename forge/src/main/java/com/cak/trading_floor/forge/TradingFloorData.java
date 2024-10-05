@@ -1,6 +1,6 @@
 package com.cak.trading_floor.forge;
 
-import com.cak.trading_floor.forge.foundation.advancement.TFAdvancements;
+import com.cak.trading_floor.foundation.advancement.TFAdvancements;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;

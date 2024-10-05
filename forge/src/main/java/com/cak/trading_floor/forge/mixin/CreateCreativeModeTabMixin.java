@@ -1,6 +1,6 @@
 package com.cak.trading_floor.forge.mixin;
 
-import com.cak.trading_floor.forge.registry.TFTabInsertions;
+import com.cak.trading_floor.registry.TFTabInsertions;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;

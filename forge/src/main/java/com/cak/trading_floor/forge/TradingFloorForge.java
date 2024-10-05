@@ -1,9 +1,9 @@
 package com.cak.trading_floor.forge;
 
 import com.cak.trading_floor.TradingFloor;
-import com.cak.trading_floor.forge.foundation.advancement.TFAdvancements;
-import com.cak.trading_floor.forge.foundation.network.TFPackets;
-import com.cak.trading_floor.forge.registry.*;
+import com.cak.trading_floor.foundation.advancement.TFAdvancements;
+import com.cak.trading_floor.forge.network.TFPackets;
+import com.cak.trading_floor.registry.*;
 import com.simibubi.create.foundation.ponder.PonderLocalization;
 import com.simibubi.create.infrastructure.ponder.SharedText;
 import com.tterrag.registrate.providers.ProviderType;

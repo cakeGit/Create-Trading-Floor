@@ -1,13 +1,15 @@
 package com.cak.trading_floor.forge.content.depot;
 
+import com.cak.trading_floor.content.trading_depot.CommonTradingDepotBlockEntity;
+import com.cak.trading_floor.content.trading_depot.behavior.CommonTradingDepotBehaviorAccess;
 import com.cak.trading_floor.forge.content.depot.behavior.TradingDepotBehaviour;
 import com.cak.trading_floor.forge.content.depot.behavior.TradingDepotValueBox;
-import com.cak.trading_floor.forge.foundation.AttachedTradingDepotFinder;
-import com.cak.trading_floor.forge.foundation.MerchantOfferInfo;
-import com.cak.trading_floor.forge.foundation.TFLang;
-import com.cak.trading_floor.forge.foundation.advancement.TFAdvancementBehaviour;
-import com.cak.trading_floor.forge.foundation.advancement.TFAdvancements;
-import com.cak.trading_floor.forge.registry.TFParticleEmitters;
+import com.cak.trading_floor.foundation.AttachedTradingDepotFinder;
+import com.cak.trading_floor.foundation.MerchantOfferInfo;
+import com.cak.trading_floor.foundation.TFLang;
+import com.cak.trading_floor.foundation.advancement.TFAdvancementBehaviour;
+import com.cak.trading_floor.foundation.advancement.TFAdvancements;
+import com.cak.trading_floor.registry.TFParticleEmitters;
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
@@ -38,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
+public class TradingDepotBlockEntity extends CommonTradingDepotBlockEntity {
     
     TradingDepotBehaviour tradingDepotBehaviour;
     FilteringBehaviour filtering;
@@ -351,6 +353,11 @@ public class TradingDepotBlockEntity extends SmartBlockEntity implements IHaveGo
     
     public @Nullable MerchantOfferInfo getLastTrade() {
         return lastTrade;
+    }
+    
+    @Override
+    public CommonTradingDepotBehaviorAccess getCommonTradingDepotBehaviour() {
+        return tradingDepotBehaviour;
     }
     
 }

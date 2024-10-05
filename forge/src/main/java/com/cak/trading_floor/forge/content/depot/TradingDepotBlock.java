@@ -1,20 +1,19 @@
 package com.cak.trading_floor.forge.content.depot;
 
+import com.cak.trading_floor.content.trading_depot.CommonTradingDepotBlock;
+import com.cak.trading_floor.content.trading_depot.CommonTradingDepotBlockEntity;
 import com.cak.trading_floor.forge.content.depot.behavior.TradingDepotBehaviour;
-import com.cak.trading_floor.forge.foundation.advancement.TFAdvancementBehaviour;
-import com.cak.trading_floor.forge.registry.TFRegistry;
+import com.cak.trading_floor.foundation.advancement.TFAdvancementBehaviour;
+import com.cak.trading_floor.registry.TFRegistry;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
-import com.simibubi.create.content.logistics.depot.SharedDepotBlockMethods;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -26,19 +25,17 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE<TradingDepotBlockEntity>, IWrenchable {
+public class TradingDepotBlock extends CommonTradingDepotBlock implements IBE<CommonTradingDepotBlockEntity>, IWrenchable {
     
     public TradingDepotBlock(Properties properties) {
         super(properties);
@@ -123,12 +120,12 @@ public class TradingDepotBlock extends HorizontalDirectionalBlock implements IBE
     }
     
     @Override
-    public Class<TradingDepotBlockEntity> getBlockEntityClass() {
-        return TradingDepotBlockEntity.class;
+    public Class<CommonTradingDepotBlockEntity> getBlockEntityClass() {
+        return CommonTradingDepotBlockEntity.class;
     }
     
     @Override
-    public BlockEntityType<? extends TradingDepotBlockEntity> getBlockEntityType() {
+    public BlockEntityType<? extends CommonTradingDepotBlockEntity> getBlockEntityType() {
         return TFRegistry.TRADING_DEPOT_BLOCK_ENTITY.get();
     }
     
