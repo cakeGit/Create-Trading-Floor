@@ -1,7 +1,7 @@
-package com.cak.trading_floor.forge.mixin;
+package com.cak.trading_floor.mixin;
 
-import com.cak.trading_floor.forge.content.depot.TradingDepotBlockEntity;
-import com.cak.trading_floor.forge.content.depot.behavior.TradingDepotBehaviour;
+import com.cak.trading_floor.content.trading_depot.CommonTradingDepotBlockEntity;
+import com.cak.trading_floor.content.trading_depot.behavior.CommonTradingDepotBehaviorAccess;
 import com.cak.trading_floor.foundation.AttachedTradingDepotFinder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
@@ -39,7 +39,7 @@ public class WorkAtPoiMixin {
         
         for (BlockPos pos : AttachedTradingDepotFinder.lookForTradingDepots(level, jobSitePos)) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof TradingDepotBlockEntity tbe) {
+            if (blockEntity instanceof CommonTradingDepotBlockEntity tbe) {
                 hasReducedCooldown = true;
             }
         }
@@ -64,13 +64,13 @@ public class WorkAtPoiMixin {
         
         List<BlockPos> tradingDepotPositions = AttachedTradingDepotFinder.lookForTradingDepots(level, jobSitePos);
         
-        List<TradingDepotBlockEntity> tradingDepots = tradingDepotPositions.stream()
-            .map(pos -> (TradingDepotBlockEntity) level.getBlockEntity(pos))
+        List<CommonTradingDepotBlockEntity> tradingDepots = tradingDepotPositions.stream()
+            .map(pos -> (CommonTradingDepotBlockEntity) level.getBlockEntity(pos))
             .filter(Objects::nonNull)
-            .filter(TradingDepotBlockEntity::hasInputStack)
+            .filter(CommonTradingDepotBlockEntity::hasInputStack)
             .toList();
-        List<TradingDepotBehaviour> tradingDepotBehaviours = tradingDepots.stream()
-            .map(be -> be.getBehaviour(TradingDepotBehaviour.TYPE))
+        List<CommonTradingDepotBehaviorAccess> tradingDepotBehaviours = tradingDepots.stream()
+            .map(CommonTradingDepotBlockEntity::getCommonTradingDepotBehaviour)
             .toList();
         
         tradingDepots.forEach(depot -> depot.tryTradeWith(villager, tradingDepotBehaviours));

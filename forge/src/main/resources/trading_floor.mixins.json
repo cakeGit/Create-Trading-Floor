@@ -9,17 +9,17 @@
     "AdvancementAccessMixin",
     "ChuteBlockEntityMixin",
     "CreateCreativeModeTabMixin",
-    "WorkAtPoiMixin",
-    "item_listings.DyedArmorForEmeraldsAccessMixin",
-    "item_listings.EmeraldForItemsAccessMixin",
-    "item_listings.EmeraldsForVillagerTypeItemAccessMixin",
-    "item_listings.EnchantBookForEmeraldsAccessMixin",
-    "item_listings.EnchantedItemForEmeraldsAccessMixin",
-    "item_listings.ItemsAndEmeraldsToItemsAccessMixin",
-    "item_listings.ItemsForEmeraldsAccessMixin",
-    "item_listings.SussyStewForEmeraldsAccessMixin",
-    "item_listings.TippedArrowForItemsAndEmeraldsAccessMixin",
-    "item_listings.TreasureMapForEmeraldsAccessMixin"
+    "com.cak.trading_floor.mixin.WorkAtPoiMixin",
+    "com.cak.trading_floor.mixin.item_listings.DyedArmorForEmeraldsAccessMixin",
+    "com.cak.trading_floor.mixin.item_listings.EmeraldForItemsAccessMixin",
+    "com.cak.trading_floor.mixin.item_listings.EmeraldsForVillagerTypeItemAccessMixin",
+    "com.cak.trading_floor.mixin.item_listings.EnchantBookForEmeraldsAccessMixin",
+    "com.cak.trading_floor.mixin.item_listings.EnchantedItemForEmeraldsAccessMixin",
+    "com.cak.trading_floor.mixin.item_listings.ItemsAndEmeraldsToItemsAccessMixin",
+    "com.cak.trading_floor.mixin.item_listings.ItemsForEmeraldsAccessMixin",
+    "com.cak.trading_floor.mixin.item_listings.SussyStewForEmeraldsAccessMixin",
+    "com.cak.trading_floor.mixin.item_listings.TippedArrowForItemsAndEmeraldsAccessMixin",
+    "com.cak.trading_floor.mixin.item_listings.TreasureMapForEmeraldsAccessMixin"
   ],
   "injectors": {
     "defaultRequire": 1

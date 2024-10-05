@@ -26,12 +26,7 @@ public class TradingFloorForge {
         TFRegistry.REGISTRATE.addDataGenerator(ProviderType.LANG, TradingFloorForge::addPostInitLang);
         
         TradingFloor.init();
-        TFRegistry.init();
-        TFArmInteractionPointTypes.register();
         TFPackets.register();
-        TFParticleEmitters.register();
-        
-        TFLangEntries.addEntries();
         
         eventBus.addListener(TradingFloorData::gatherData);
         eventBus.addListener(TradingFloorForge::init);
@@ -53,12 +48,11 @@ public class TradingFloorForge {
     }
     
     public static void init(final FMLCommonSetupEvent event) {
-        event.enqueueWork(TFAdvancements::register);
+        event.enqueueWork(TradingFloor::commonEnqueuedInit);
     }
     
     public static void clientInit(final FMLClientSetupEvent event) {
-        TFPonderTags.register();
-        TFPonderIndex.register();
+        TradingFloor.clientInit();
     }
     
 }

@@ -1,17 +1,15 @@
-package com.cak.trading_floor.forge.content.depot;
+package com.cak.trading_floor.fabric.content.depot;
 
 import com.cak.trading_floor.content.trading_depot.CommonTradingDepotBlockEntity;
 import com.cak.trading_floor.content.trading_depot.behavior.CommonTradingDepotBehaviorAccess;
-import com.cak.trading_floor.forge.content.depot.behavior.TradingDepotBehaviour;
-import com.cak.trading_floor.forge.content.depot.behavior.TradingDepotValueBox;
+import com.cak.trading_floor.fabric.content.depot.behavior.TradingDepotValueBox;
+import com.cak.trading_floor.fabric.content.depot.behavior.TradingDepotBehaviour;
 import com.cak.trading_floor.foundation.AttachedTradingDepotFinder;
 import com.cak.trading_floor.foundation.MerchantOfferInfo;
 import com.cak.trading_floor.foundation.TFLang;
 import com.cak.trading_floor.foundation.advancement.TFAdvancementBehaviour;
 import com.cak.trading_floor.foundation.advancement.TFAdvancements;
 import com.cak.trading_floor.registry.TFParticleEmitters;
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
 import com.simibubi.create.foundation.utility.LangBuilder;
@@ -39,7 +37,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class TradingDepotBlockEntity extends CommonTradingDepotBlockEntity {
     

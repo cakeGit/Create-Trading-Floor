@@ -5,8 +5,11 @@ import com.cak.trading_floor.foundation.MerchantOfferInfo;
 import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.List;
 
 public abstract class CommonTradingDepotBlockEntity extends SmartBlockEntity implements IHaveGoggleInformation {
     
@@ -21,5 +24,9 @@ public abstract class CommonTradingDepotBlockEntity extends SmartBlockEntity imp
     public abstract MerchantOfferInfo getLastTrade();
     
     public abstract int getTradeOutputSum();
+    
+    public abstract boolean hasInputStack();
+    
+    public abstract void tryTradeWith(Villager villager, List<CommonTradingDepotBehaviorAccess> tradingDepotBehaviours);
     
 }

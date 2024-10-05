@@ -18,6 +18,9 @@
   "entrypoints": {
     "main": [
       "com.cak.trading_floor.fabric.TradingFloorFabric"
+    ],
+    "client": [
+      "com.cak.trading_floor.fabric.TradingFloorClientModFabric"
     ]
   },
   "mixins": [
