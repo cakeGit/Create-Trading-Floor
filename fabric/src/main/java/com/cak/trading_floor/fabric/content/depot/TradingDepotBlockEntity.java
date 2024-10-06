@@ -2,8 +2,8 @@ package com.cak.trading_floor.fabric.content.depot;
 
 import com.cak.trading_floor.content.trading_depot.CommonTradingDepotBlockEntity;
 import com.cak.trading_floor.content.trading_depot.behavior.CommonTradingDepotBehaviorAccess;
-import com.cak.trading_floor.fabric.content.depot.behavior.TradingDepotValueBox;
 import com.cak.trading_floor.fabric.content.depot.behavior.TradingDepotBehaviour;
+import com.cak.trading_floor.fabric.content.depot.behavior.TradingDepotValueBox;
 import com.cak.trading_floor.foundation.AttachedTradingDepotFinder;
 import com.cak.trading_floor.foundation.MerchantOfferInfo;
 import com.cak.trading_floor.foundation.TFLang;
@@ -15,7 +15,6 @@ import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringB
 import com.simibubi.create.foundation.utility.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
@@ -28,10 +27,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -137,13 +132,6 @@ public class TradingDepotBlockEntity extends CommonTradingDepotBlockEntity {
         
         tradingDepotBehaviour.filtering = filtering;
         tradingDepotBehaviour.addAdditionalBehaviours(behaviours);
-    }
-    
-    @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER)
-            return tradingDepotBehaviour.getItemHandler().cast();
-        return super.getCapability(cap, side);
     }
     
     @Override
@@ -336,9 +324,6 @@ public class TradingDepotBlockEntity extends CommonTradingDepotBlockEntity {
             return true;
         }
         ItemStack itemstack = available.copy();
-        if (itemstack.getItem().isDamageable(itemstack)) {
-            itemstack.setDamageValue(itemstack.getDamageValue());
-        }
         return ItemStack.isSameItem(itemstack, cost) && (!cost.hasTag() || itemstack.hasTag() && NbtUtils.compareNbt(cost.getTag(), itemstack.getTag(), false));
     }
     

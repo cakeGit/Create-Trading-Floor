@@ -1,4 +1,4 @@
-package com.cak.trading_floor.foundation.forge;
+package com.cak.trading_floor.foundation.fabric;
 
 import com.cak.trading_floor.fabric.network.TFPackets;
 import com.cak.trading_floor.fabric.network.packets.EmitParticlesFromInstancePacket;

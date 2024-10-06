@@ -8,18 +8,7 @@
   "mixins": [
     "AdvancementAccessMixin",
     "ChuteBlockEntityMixin",
-    "CreateCreativeModeTabMixin",
-    "com.cak.trading_floor.mixin.WorkAtPoiMixin",
-    "com.cak.trading_floor.mixin.item_listings.DyedArmorForEmeraldsAccessMixin",
-    "com.cak.trading_floor.mixin.item_listings.EmeraldForItemsAccessMixin",
-    "com.cak.trading_floor.mixin.item_listings.EmeraldsForVillagerTypeItemAccessMixin",
-    "com.cak.trading_floor.mixin.item_listings.EnchantBookForEmeraldsAccessMixin",
-    "com.cak.trading_floor.mixin.item_listings.EnchantedItemForEmeraldsAccessMixin",
-    "com.cak.trading_floor.mixin.item_listings.ItemsAndEmeraldsToItemsAccessMixin",
-    "com.cak.trading_floor.mixin.item_listings.ItemsForEmeraldsAccessMixin",
-    "com.cak.trading_floor.mixin.item_listings.SussyStewForEmeraldsAccessMixin",
-    "com.cak.trading_floor.mixin.item_listings.TippedArrowForItemsAndEmeraldsAccessMixin",
-    "com.cak.trading_floor.mixin.item_listings.TreasureMapForEmeraldsAccessMixin"
+    "CreateCreativeModeTabMixin"
   ],
   "injectors": {
     "defaultRequire": 1

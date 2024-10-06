@@ -6,7 +6,6 @@ import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkEvent;
 
 public class EmitParticlesFromInstancePacket extends SimplePacketBase {
     
@@ -45,7 +44,7 @@ public class EmitParticlesFromInstancePacket extends SimplePacketBase {
     }
     
     @Override
-    public boolean handle(NetworkEvent.Context context) {
+    public boolean handle(Context context) {
         if (emitter == null)
             throw new RuntimeException("Couldn't resolve local emitter instance, expected " + emitterHash);
         

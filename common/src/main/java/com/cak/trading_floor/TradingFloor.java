@@ -22,10 +22,6 @@ public class TradingFloor {
         TFLangEntries.addEntries();
     }
     
-    public static void commonEnqueuedInit() {
-        TFAdvancements.register();
-    }
-    
     public static void clientInit() {
         TFPonderTags.register();
         TFPonderIndex.register();

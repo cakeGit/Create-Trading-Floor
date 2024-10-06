@@ -1,16 +1,18 @@
 package com.cak.trading_floor.fabric.content.depot;
 
 import com.cak.trading_floor.fabric.content.depot.behavior.TradingDepotBehaviour;
-import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
-import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-public class TradingDepotItemHandler implements Storage<ItemStack> {
+public class TradingDepotItemHandler implements Storage<ItemVariant> {
     
     TradingDepotBehaviour behaviour;
     
@@ -63,22 +65,33 @@ public class TradingDepotItemHandler implements Storage<ItemStack> {
 //        return true;
 //    }
     
-    public ItemStack insertItem(TransportedItemStack transportedItemStack, Direction direction, boolean b) {
-        return insertItem(0, transportedItemStack.stack, b);
+//    public ItemStack insertTransportedStack(TransportedItemStack transportedItemStack, Direction direction, boolean b) {
+//        return insert(transportedItemStack.stack, transportedItemStack.stack.getCount(),);
+//    }
+    
+    @Override
+    public long insert(ItemVariant resource, long maxAmount, TransactionContext transaction) {
+        ItemStack currentStack = behaviour.getOfferStack();
+        
+        int resultCount = (int) Math.min(currentStack.getCount() + maxAmount, currentStack.getMaxStackSize());
+        int stackChange = resultCount - currentStack.getCount();
+        
+        ItemStack resultStack = currentStack.copyWithCount(resultCount);
+        transaction.addCloseCallback((context, result) -> {
+            if (result.wasCommitted()) {
+                behaviour.setOfferStack(resultStack);
+                behaviour.blockEntity.sendData();
+            }
+        });
+        
+        return stackChange;
     }
     
     @Override
-    public long insert(ItemStack resource, long maxAmount, TransactionContext transaction) {
-        return 0;
-    }
-    
-    @Override
-    public long extract(ItemStack resource, long maxAmount, TransactionContext transaction) {
+    public long extract(ItemVariant resource, long maxAmount, TransactionContext transaction) {
         int targetIndex = -1;
         for (int i = 0; i < behaviour.getResults().size(); i++) {
-            if (resource.isEmpty())
-                targetIndex = i;
-            if (resource.is(behaviour.getResults().get(i).getItem()))
+            if (resource.matches(behaviour.getResults().get(i)))
                 targetIndex = i;
             
             if (targetIndex != -1)
@@ -106,8 +119,80 @@ public class TradingDepotItemHandler implements Storage<ItemStack> {
     }
     
     @Override
-    public Iterator<StorageView<ItemStack>> iterator() {
-        return null;
+    public Iterator<StorageView<ItemVariant>> iterator() {
+        ArrayList<StorageView<ItemVariant>> combined = new ArrayList<>();
+        combined.add(new StorageViewAccess(behaviour::getOfferStack, behaviour::setOfferStack) {
+            @Override
+            protected void onExtract() {
+                behaviour.blockEntity.sendData();
+            }
+        });
+        for (int i = 0; i < behaviour.getResults().size(); i++) {
+            int finalI = i;
+            combined.add(new StorageViewAccess(() -> behaviour.getResults().get(finalI), (stack) -> behaviour.getResults().set(finalI, stack)) {
+                @Override
+                protected void onExtract() {
+                    behaviour.queueResultStackPrune();
+                    behaviour.blockEntity.sendData();
+                }
+            });
+        }
+        return combined.iterator();
+    }
+    
+    private static class StorageViewAccess implements StorageView<ItemVariant> {
+        
+        Supplier<ItemStack> getter;
+        Consumer<ItemStack> setter;
+        
+        public StorageViewAccess(Supplier<ItemStack> getter, Consumer<ItemStack> setter) {
+            this.getter = getter;
+            this.setter = setter;
+        }
+        
+        
+        @Override
+        public long extract(ItemVariant resource, long maxAmount, TransactionContext transaction) {
+            if (!resource.matches(getter.get()))
+                return 0;
+            
+            ItemStack currentStack = getter.get();
+            
+            int extractedCount = (int) Math.min(currentStack.getCount(), maxAmount);
+            ItemStack remainderStack = currentStack.copyWithCount(currentStack.getCount() - extractedCount);
+            
+            transaction.addCloseCallback((context, result) -> {
+                if (result.wasCommitted()) {
+                    setter.accept(remainderStack);
+                    onExtract();
+                }
+            });
+            
+            return extractedCount;
+        }
+        
+        protected void onExtract() {}
+        
+        @Override
+        public boolean isResourceBlank() {
+            return getter.get().isEmpty();
+        }
+        
+        @Override
+        public ItemVariant getResource() {
+            return ItemVariant.of(getter.get());
+        }
+        
+        @Override
+        public long getAmount() {
+            return getter.get().isEmpty() ? 0 : getter.get().getCount();
+        }
+        
+        @Override
+        public long getCapacity() {
+            return getter.get().isEmpty() ? 64 : getter.get().getMaxStackSize();
+        }
+        
     }
     
 }

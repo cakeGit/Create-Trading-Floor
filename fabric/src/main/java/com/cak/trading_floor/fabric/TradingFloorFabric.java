@@ -2,6 +2,7 @@ package com.cak.trading_floor.fabric;
 
 import com.cak.trading_floor.TradingFloor;
 import com.cak.trading_floor.fabric.network.TFPackets;
+import com.cak.trading_floor.registry.TFRegistry;
 import net.fabricmc.api.ModInitializer;
 
 public class TradingFloorFabric implements ModInitializer {
@@ -9,8 +10,8 @@ public class TradingFloorFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         TradingFloor.init();
-        TFPackets.register();
-        TradingFloor.commonEnqueuedInit();
+        TFRegistry.REGISTRATE.register();
+        TFPackets.registerPackets();
         TradingFloor.LOGGER.info("Finished Initialisation For Mod: " + TradingFloor.MOD_ID);
     }
     

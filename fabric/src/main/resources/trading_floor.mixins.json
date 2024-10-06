@@ -6,6 +6,10 @@
   "client": [
   ],
   "mixins": [
+    "AdvancementAccessMixin",
+    "ChuteBlockEntityMixin",
+    "CreateCreativeModeTabMixin",
+    "RegisterAdditionalMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,4 +1,4 @@
-package com.cak.trading_floor.registry.forge;
+package com.cak.trading_floor.registry.fabric;
 
 import com.cak.trading_floor.content.trading_depot.CommonTradingDepotBlock;
 import com.cak.trading_floor.content.trading_depot.CommonTradingDepotBlockEntity;

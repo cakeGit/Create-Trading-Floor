@@ -1,7 +1,7 @@
-package com.cak.trading_floor.foundation.forge;
+package com.cak.trading_floor.foundation.fabric;
 
+import net.fabricmc.fabric.api.entity.FakePlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.common.util.FakePlayer;
 
 public class TFPlatformPredicatesImpl {
     
