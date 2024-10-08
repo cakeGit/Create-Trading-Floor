@@ -21,6 +21,9 @@
     ],
     "client": [
       "com.cak.trading_floor.fabric.TradingFloorClientModFabric"
+    ],
+    "jei_mod_plugin": [
+      "com.cak.trading_floor.compat.jei.TradingFloorJei"
     ]
   },
   "mixins": [
