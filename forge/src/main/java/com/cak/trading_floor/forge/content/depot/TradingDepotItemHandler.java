@@ -33,14 +33,17 @@ public class TradingDepotItemHandler implements IItemHandler {
         if (!behaviour.getOfferStack().isEmpty() && !ItemHandlerHelper.canItemStacksStack(behaviour.getOfferStack(), arg))
             return arg;
         
-        ItemStack incomingStack = behaviour.getOfferStack();
+        ItemStack existingStack = behaviour.getOfferStack();
         
-        int newCount = Math.min(incomingStack.getMaxStackSize(), incomingStack.getCount() + arg.getCount());
-        int added = newCount - incomingStack.getCount();
+        int oldCount = existingStack.getCount();
+        int newCount = Math.min(existingStack.getMaxStackSize(), oldCount + arg.getCount());
+        int added = newCount - oldCount;
         int remaining = arg.getCount() - added;
         
         if (!bl) {
-            behaviour.setOfferStack(new TransportedItemStack(arg.copyWithCount(newCount)));
+            behaviour.setOfferStack(arg.copyWithCount(newCount));
+            if (newCount != oldCount)
+                behaviour.spinOfferOrSomething();
             behaviour.blockEntity.sendData();
         }
         
@@ -51,7 +54,8 @@ public class TradingDepotItemHandler implements IItemHandler {
     public @NotNull ItemStack extractItem(int i, int j, boolean bl) {
         if (i == 0) return ItemStack.EMPTY;
         
-        ItemStack currentStack = behaviour.getResults().get(i - 1);
+        int listIndex = i - 1;
+        ItemStack currentStack = behaviour.getResults().get(listIndex);
         
         int extractedCount = Math.min(currentStack.getCount(), j);
         
@@ -60,9 +64,9 @@ public class TradingDepotItemHandler implements IItemHandler {
         
         if (!bl) {
             if (remainderStack.isEmpty())
-                this.behaviour.getResults().remove(i - 1);
+                this.behaviour.getResults().remove(listIndex);
             else
-                this.behaviour.getResults().set(i, remainderStack);
+                this.behaviour.getResults().set(listIndex, remainderStack);
             behaviour.blockEntity.sendData();
         }
         

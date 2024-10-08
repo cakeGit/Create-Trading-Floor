@@ -333,4 +333,8 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour implements Commo
         return itemHandler;
     }
     
+    public void spinOfferOrSomething() {
+        offer.angle += (int) ((Math.random() * 10 + 10) * (Math.random() > 0.5f ? -1 : 1));
+    }
+    
 }

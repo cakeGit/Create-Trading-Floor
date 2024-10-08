@@ -168,8 +168,9 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour implements Commo
                 copy.stack.setCount(remainingSpace);
                 if (this.offer != null && !this.offer.stack.isEmpty())
                     incoming.add(copy);
-                else
+                else {
                     this.offer = copy;
+                }
             }
         } else {
             if (!simulate) {
@@ -343,6 +344,10 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour implements Commo
     
     public void queueResultStackPrune() {
         pruneResultStackNextTick = true;
+    }
+    
+    public void spinOfferOrSomething() {
+        offer.angle += (int) ((Math.random() * 10 + 10) * (Math.random() > 0.5f ? -1 : 1));
     }
     
 }

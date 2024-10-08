@@ -73,6 +73,8 @@ public class TradingDepotItemHandler implements Storage<ItemVariant> {
     public long insert(ItemVariant resource, long maxAmount, TransactionContext transaction) {
         ItemStack currentStack = behaviour.getOfferStack();
         
+        int oldCount = currentStack.getCount();
+        
         int resultCount = (int) Math.min(currentStack.getCount() + maxAmount, currentStack.getMaxStackSize());
         int stackChange = resultCount - currentStack.getCount();
         
@@ -80,6 +82,8 @@ public class TradingDepotItemHandler implements Storage<ItemVariant> {
         transaction.addCloseCallback((context, result) -> {
             if (result.wasCommitted()) {
                 behaviour.setOfferStack(resultStack);
+                if (resultCount != oldCount)
+                    behaviour.spinOfferOrSomething();
                 behaviour.blockEntity.sendData();
             }
         });
