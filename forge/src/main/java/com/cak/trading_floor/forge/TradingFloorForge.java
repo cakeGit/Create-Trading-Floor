@@ -29,7 +29,6 @@ public class TradingFloorForge {
         TFPackets.register();
         
         eventBus.addListener(TradingFloorData::gatherData);
-        eventBus.addListener(TradingFloorForge::init);
         eventBus.addListener(TradingFloorForge::clientInit);
         
         TradingFloor.LOGGER.info("Finished Initialisation For Mod: " + TradingFloor.MOD_ID);
@@ -45,10 +44,6 @@ public class TradingFloorForge {
         PonderLocalization.provideLang(TradingFloor.MOD_ID, registrateLangProvider::add);
         
         TFAdvancements.provideLang(registrateLangProvider::add);
-    }
-    
-    public static void init(final FMLCommonSetupEvent event) {
-        event.enqueueWork(TradingFloor::commonEnqueuedInit);
     }
     
     public static void clientInit(final FMLClientSetupEvent event) {
