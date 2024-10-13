@@ -3,16 +3,16 @@
   "id": "trading_floor",
   "version": "${version}",
   "name": "Create: Trading Floor",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "Automate trading with villagers using create!",
   "authors": [
     "Tazer",
     "Cak"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
+    "homepage": "https://modrinth.com/mod/create-trading-floor",
     "sources": "https://github.com/cakeGit/Create-Trading-Floor"
   },
-  "license": "Insert License Here",
+  "license": "MIT",
   "icon": "assets/trading_floor/icon.png",
   "environment": "*",
   "entrypoints": {
@@ -34,6 +34,6 @@
     "minecraft": "${minecraft_version}",
     "fabricloader": ">=${fabric_loader_version}",
     "fabric-api": ">=${fabric_api_version}",
-    "create": "${create_version}"
+    "create": ">=${create_version}"
   }
 }

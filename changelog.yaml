@@ -15,4 +15,6 @@
   - Added JEI view for possible recipes
 1.20.1-1.0.5: |
   - Added forge update checker
+1.20.1-1.1.0: |
+  - Implemented multiloader capabilities (fabric port)
 ...

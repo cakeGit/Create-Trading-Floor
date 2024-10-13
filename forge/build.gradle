@@ -1,17 +1,11 @@
-import org.yaml.snakeyaml.Yaml
-
 buildscript {
     repositories {
         mavenCentral()
-    }
-    dependencies {
-        classpath group: 'org.yaml', name: 'snakeyaml', version: '1.19'
     }
 }
 
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
-    id "me.modmuss50.mod-publish-plugin" version "0.6.3"
 }
 
 architectury {
@@ -149,88 +143,5 @@ publishing {
     // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
         // Add repositories to publish to here.
-    }
-}
-
-publishMods {
-    def TOKENS = new HashMap<String, String>();
-    file("$projectDir/.env").readLines().each() {
-        def (key, value) = it.tokenize('=')
-        TOKENS.put(key, value)
-    }
-
-    def cfg = new Yaml().load(new File("$projectDir/changelog.yaml").newInputStream())
-    def changelogText = cfg[minecraft_version + "-" + mod_version];
-    println("Found Changelog: \n" + changelogText)
-
-    def forgeName = "Create: Trading Floor $mod_version Forge $minecraft_version";
-//    def fabricName = "Create: Trading Floor $mod_version Fabric $minecraft_version";
-
-    def forgeFile = project(":forge").tasks.named("remapJar").get().archiveFile;
-//    def fabricFile = project(":fabric").tasks.named("remapJar").get().archiveFile;
-
-    def forgeEmoji = "<:forge:1267784983771222088>";
-//    def fabricEmoji = "<:fabric:1267785013936783421>";
-    def newVersionPing = "<@&1287480930247643147>";
-
-    changelog = "Changelog: \n" + changelogText
-    type = STABLE
-
-    curseforge("forgeCF") {
-        file = forgeFile
-        displayName = forgeName
-        projectId = "1102591"
-        projectSlug = "create-trading-floor" // Required for discord webhook
-        accessToken = TOKENS.get("CURSEFORGE_PUBLISH_TOKEN")
-        minecraftVersions.add(minecraft_version)
-        announcementTitle = "Curseforge download for $forgeEmoji"
-        modLoaders.add("forge")
-
-        javaVersions.add(JavaVersion.VERSION_17)
-        clientRequired = true
-        serverRequired = true
-        requires("create")
-    }
-    modrinth("forgeMR") {
-        file = forgeFile
-        displayName = forgeName
-        projectId = "WROfLLvn"
-        accessToken = TOKENS.get("MODRINTH_PUBLISH_TOKEN")
-        minecraftVersions.add(minecraft_version)
-        announcementTitle = "Modrinth download for $forgeEmoji"
-        modLoaders.add("forge")
-        requires("create")
-    }
-
-//    curseforge("fabricCF") {
-//        file = fabricFile
-//        displayName = fabricName
-//        projectId = "1072349"
-//        projectSlug = "create-pattern-schematics" // Required for discord webhook
-//        accessToken = TOKENS.get("CURSEFORGE_PUBLISH_TOKEN")
-//        minecraftVersions.add(minecraft_version)
-//        announcementTitle = "Curseforge download for $fabricEmoji"
-//        modLoaders.add("fabric")
-//
-//        javaVersions.add(JavaVersion.VERSION_17)
-//        clientRequired = true
-//        serverRequired = true
-//        requires("create-fabric", "fabric-api")
-//    }
-//    modrinth("fabricMR") {
-//        file = fabricFile
-//        displayName = fabricName
-//        projectId = "cpqKG67r"
-//        accessToken = TOKENS.get("MODRINTH_PUBLISH_TOKEN")
-//        minecraftVersions.add(minecraft_version)
-//        announcementTitle = "Modrinth download for $fabricEmoji"
-//        modLoaders.add("fabric")
-//        requires("create-fabric", "fabric-api")
-//    }
-
-    discord("discordUniversal") {
-        webhookUrl = TOKENS.get("DISCORD_WEBHOOK")
-        username = "New Version Announcement | Create: Trading Floor"
-        content = "$newVersionPing\n# Create: Trading Floor has been updated to $mod_version for $minecraft_version ($forgeEmoji)\n " + changelogText
     }
 }

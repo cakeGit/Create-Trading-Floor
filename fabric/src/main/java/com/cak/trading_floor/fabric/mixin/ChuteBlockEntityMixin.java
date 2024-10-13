@@ -37,7 +37,7 @@ public abstract class ChuteBlockEntityMixin extends SmartBlockEntity {
     }
     @Unique
     StorageProvider<ItemVariant> capBelowBelow;
-    @Inject(method = "setLevel", at = @At("TAIL"))
+    @Inject(method = "setLevel", at = @At("TAIL"), remap = true)
     public void setLevel(Level level, CallbackInfo ci) {
         capBelowBelow = StorageProvider.createForItems(level, worldPosition.below().below());
     }
@@ -53,7 +53,7 @@ public abstract class ChuteBlockEntityMixin extends SmartBlockEntity {
         cir.setReturnValue(capBelowBelow.get(Direction.DOWN));
     }
     
-    @Redirect(method = "handleInput", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/logistics/chute/ChuteBlockEntity;setItem(Lnet/minecraft/world/item/ItemStack;F)V"))
+    @Redirect(method = "handleInput", at = @At(value = "INVOKE", remap = true, target = "Lcom/simibubi/create/content/logistics/chute/ChuteBlockEntity;setItem(Lnet/minecraft/world/item/ItemStack;F)V"))
     private void redirect_handleInputFromBelow(ChuteBlockEntity instance, ItemStack stack, float insertionPos) {
         if (capBelowBelow.get(Direction.DOWN) == null) //If there was an injection, must be colluded with above
             instance.setItem(stack, insertionPos - 1f);
