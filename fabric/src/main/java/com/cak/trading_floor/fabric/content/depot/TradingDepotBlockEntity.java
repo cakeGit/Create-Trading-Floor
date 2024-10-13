@@ -14,8 +14,12 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
 import com.simibubi.create.foundation.utility.LangBuilder;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
@@ -35,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class TradingDepotBlockEntity extends CommonTradingDepotBlockEntity {
+public class TradingDepotBlockEntity extends CommonTradingDepotBlockEntity implements SidedStorageBlockEntity {
     
     TradingDepotBehaviour tradingDepotBehaviour;
     FilteringBehaviour filtering;
@@ -348,6 +352,11 @@ public class TradingDepotBlockEntity extends CommonTradingDepotBlockEntity {
     @Override
     public CommonTradingDepotBehaviorAccess getCommonTradingDepotBehaviour() {
         return tradingDepotBehaviour;
+    }
+    
+    @Override
+    public @Nullable Storage<ItemVariant> getItemStorage(@Nullable Direction side) {
+        return tradingDepotBehaviour.getRealItemHandler();
     }
     
 }

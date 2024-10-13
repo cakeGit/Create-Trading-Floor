@@ -44,7 +44,7 @@ public abstract class ChuteBlockEntityMixin extends SmartBlockEntity {
     
     @Inject(method = "grabCapability", at = @At("RETURN"), cancellable = true)
     public void grabCapability(Direction side, CallbackInfoReturnable<Storage<ItemVariant>> cir) {
-        if (cir.getReturnValue() == null || side != Direction.DOWN)
+        if (level == null || cir.getReturnValue() != null || side != Direction.DOWN)
             return;
         
         BlockEntity be = level.getBlockEntity(getBlockPos().relative(Direction.DOWN, 2));

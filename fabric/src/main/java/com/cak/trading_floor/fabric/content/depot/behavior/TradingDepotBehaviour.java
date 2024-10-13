@@ -29,9 +29,11 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING;
 
@@ -43,7 +45,8 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour implements Commo
     final TradingDepotItemHandler itemHandler;
     final LazyOptional<TradingDepotItemHandler> itemHandlerLazyOptional;
     
-    TransportedItemStack offer;
+    @Nullable
+    TransportedItemStack offer = null;
     List<ItemStack> result;
     List<TransportedItemStack> incoming;
     
@@ -67,9 +70,9 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour implements Commo
         if (world == null) return;
         
         if (pruneResultStackNextTick) {
-            result = result.stream()
+            result = new ArrayList<>(result.stream()
                 .filter(stack -> !stack.isEmpty())
-                .toList();
+                .toList());
         }
         
         for (Iterator<TransportedItemStack> iterator = incoming.iterator(); iterator.hasNext(); ) {
@@ -252,7 +255,10 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour implements Commo
     }
     
     public void setOfferStack(ItemStack input) {
-        this.offer.stack = input;
+        if (this.offer != null)
+            this.offer.stack = input;
+        else
+            this.offer = new TransportedItemStack(input);
     }
     
     
