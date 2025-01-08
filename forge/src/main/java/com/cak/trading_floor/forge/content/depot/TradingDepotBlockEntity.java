@@ -297,7 +297,7 @@ public class TradingDepotBlockEntity extends CommonTradingDepotBlockEntity {
                 TFParticleEmitters.TRADE_COMPLETED.emitToClients(serverLevel, Vec3.atCenterOf(getBlockPos()).add(0, 0.4, 0), 4);
         }
         
-        if (!Objects.equals(lastTrade, latestTrade)) {
+        if (latestTrade != null && !Objects.equals(lastTrade, latestTrade)) {
             currentTradeCompletedCount = 0;
             tradeOutputSum = 0;
         }

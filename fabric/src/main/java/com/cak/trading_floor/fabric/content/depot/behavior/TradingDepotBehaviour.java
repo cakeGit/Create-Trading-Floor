@@ -115,7 +115,6 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour implements Commo
     public void addAdditionalBehaviours(List<BlockEntityBehaviour> behaviours) {
         behaviours.add(new DirectBeltInputBehaviour(blockEntity)
             .allowingBeltFunnels()
-            .onlyInsertWhen(side -> blockEntity.getBlockState().getValue(FACING).getOpposite() == side)
             .setInsertionHandler(this::tryInsertingFromSide));
         behaviours.add(invVersionTracker = new VersionedInventoryTrackerBehaviour(blockEntity));
     }
