@@ -1,6 +1,6 @@
 package com.cak.trading_floor.compat.jei.virtual_recipes.potential_villager_trade;
 
-import com.simibubi.create.foundation.utility.AnimationTickHolder;
+import net.createmod.catnip.utility.AnimationTickHolder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;

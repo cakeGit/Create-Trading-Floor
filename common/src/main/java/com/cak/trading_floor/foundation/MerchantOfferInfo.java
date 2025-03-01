@@ -1,8 +1,6 @@
 package com.cak.trading_floor.foundation;
 
-import io.github.fabricators_of_create.porting_lib.util.NBTSerializer;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;

@@ -4,14 +4,11 @@ import com.cak.trading_floor.TradingFloor;
 import com.cak.trading_floor.foundation.advancement.TFAdvancements;
 import com.cak.trading_floor.forge.network.TFPackets;
 import com.cak.trading_floor.registry.*;
-import com.simibubi.create.foundation.ponder.PonderLocalization;
-import com.simibubi.create.infrastructure.ponder.SharedText;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(TradingFloor.MOD_ID)
@@ -35,13 +32,14 @@ public class TradingFloorForge {
     }
     
     private static void addPostInitLang(RegistrateLangProvider registrateLangProvider) {
-        TFPonderTags.register();
-        TFPonderIndex.register();
-        
-        SharedText.gatherText();
-        PonderLocalization.generateSceneLang();
-        
-        PonderLocalization.provideLang(TradingFloor.MOD_ID, registrateLangProvider::add);
+//        BIG WARNING: good luck if you wanna update lang lol
+//        TFPonderTags.register();
+//        TFPonderIndex.register(helper);
+//
+//        SharedText.gatherText();
+//        PonderLocalization.generateSceneLang();
+//
+//        PonderLocalization.provideLang(TradingFloor.MOD_ID, registrateLangProvider::add);
         
         TFAdvancements.provideLang(registrateLangProvider::add);
     }

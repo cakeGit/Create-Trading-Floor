@@ -2,7 +2,7 @@ package com.cak.trading_floor.content.trading_depot;
 
 import com.cak.trading_floor.content.trading_depot.behavior.CommonTradingDepotBehaviorAccess;
 import com.cak.trading_floor.foundation.MerchantOfferInfo;
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.npc.Villager;

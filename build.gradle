@@ -11,7 +11,7 @@ buildscript {
 
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.5-SNAPSHOT" apply false
+    id "dev.architectury.loom" version "1.9.420" apply false
     id "io.github.p03w.machete" version "1.+" // automatic jar compressing on build
     id "me.modmuss50.mod-publish-plugin" version "0.7.4"
 }
@@ -106,10 +106,10 @@ publishMods {
     def fabricName = "Create: Trading Floor $mod_version Fabric $minecraft_version";
 
     def forgeFile = project(":forge").tasks.named("remapJar").get().archiveFile;
-    def fabricFile = project(":fabric").tasks.named("remapJar").get().archiveFile;
+//    def fabricFile = project(":fabric").tasks.named("remapJar").get().archiveFile;
 
     def forgeEmoji = "<:forge:1267784983771222088>";
-    def fabricEmoji = "<:fabric:1267785013936783421>";
+//    def fabricEmoji = "<:fabric:1267785013936783421>";
     def newVersionPing = "<@&1287480930247643147>";
 
     changelog = "Changelog: \n" + changelogText
@@ -142,33 +142,33 @@ publishMods {
         requires("create")
     }
 
-    curseforge("fabricCF") {
-        file = fabricFile
-        displayName = fabricName
-        projectId = "1102591"
-        projectSlug = "create-trading-floor" // Required for discord webhook
-        accessToken = TOKENS.get("CURSEFORGE_PUBLISH_TOKEN")
-        minecraftVersions.add(minecraft_version)
-        announcementTitle = "Curseforge download for $fabricEmoji"
-        modLoaders.add("fabric")
+//    curseforge("fabricCF") {
+//        file = fabricFile
+//        displayName = fabricName
+//        projectId = "1102591"
+//        projectSlug = "create-trading-floor" // Required for discord webhook
+//        accessToken = TOKENS.get("CURSEFORGE_PUBLISH_TOKEN")
+//        minecraftVersions.add(minecraft_version)
+//        announcementTitle = "Curseforge download for $fabricEmoji"
+//        modLoaders.add("fabric")
+//
+//        javaVersions.add(JavaVersion.VERSION_17)
+//        clientRequired = true
+//        serverRequired = true
+//        requires("create-fabric", "fabric-api")
+//    }
+//    modrinth("fabricMR") {
+//        file = fabricFile
+//        displayName = fabricName
+//        projectId = "WROfLLvn"
+//        accessToken = TOKENS.get("MODRINTH_PUBLISH_TOKEN")
+//        minecraftVersions.add(minecraft_version)
+//        announcementTitle = "Modrinth download for $fabricEmoji"
+//        modLoaders.add("fabric")
+//        requires("create-fabric", "fabric-api")
+//    }
 
-        javaVersions.add(JavaVersion.VERSION_17)
-        clientRequired = true
-        serverRequired = true
-        requires("create-fabric", "fabric-api")
-    }
-    modrinth("fabricMR") {
-        file = fabricFile
-        displayName = fabricName
-        projectId = "WROfLLvn"
-        accessToken = TOKENS.get("MODRINTH_PUBLISH_TOKEN")
-        minecraftVersions.add(minecraft_version)
-        announcementTitle = "Modrinth download for $fabricEmoji"
-        modLoaders.add("fabric")
-        requires("create-fabric", "fabric-api")
-    }
-
-    println("DISCORD MESSAGE:\n\n$newVersionPing\n# Create: Trading Floor has been updated to $mod_version for $minecraft_version ($forgeEmoji / $fabricEmoji)\n " + changelogText)
+    println("DISCORD MESSAGE:\n\n$newVersionPing\n# Create: Trading Floor has been updated to $mod_version for $minecraft_version ($forgeEmoji" + /* "/ $fabricEmoji\" +*/ ")\n " + changelogText)
 
 //    discord("discordUniversal") {
 //        webhookUrl = TOKENS.get("DISCORD_WEBHOOK")

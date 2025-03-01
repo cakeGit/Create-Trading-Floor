@@ -1,10 +1,11 @@
 package com.cak.trading_floor.content.trading_depot;
 
-import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
-import com.simibubi.create.foundation.utility.VecHelper;
+import dev.engine_room.flywheel.lib.transform.PoseTransformStack;
+import dev.engine_room.flywheel.lib.transform.TransformStack;
+import net.createmod.catnip.math.VecHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -31,7 +32,7 @@ public class TradingDepotRenderer extends SmartBlockEntityRenderer<CommonTrading
         super.renderSafe(blockEntity, partialTicks, ms, buffer, light, overlay);
         
         TransportedItemStack transported = blockEntity.getCommonTradingDepotBehaviour().getOffer();
-        TransformStack msr = TransformStack.cast(ms);
+        TransformStack<PoseTransformStack> msr = TransformStack.of(ms);
         Vec3 itemPosition = VecHelper.getCenterOf(blockEntity.getBlockPos());
         
         ms.pushPose();
@@ -61,9 +62,9 @@ public class TradingDepotRenderer extends SmartBlockEntityRenderer<CommonTrading
             int angle = tis.angle;
             Random r = new Random(0);
 
-            TransformStack.cast(ms)
+            TransformStack.of(ms)
                     .rotateY(90 - blockEntity.getBlockState().getValue(CommonTradingDepotBlock.FACING).get2DDataValue() * 90)
-                    .rotateZ(22.5);
+                    .rotateZ(22.5F);
 
             renderItem(blockEntity.getLevel(), ms, buffer, light, overlay, itemStack, angle, r);
             ms.popPose();
@@ -76,9 +77,9 @@ public class TradingDepotRenderer extends SmartBlockEntityRenderer<CommonTrading
                 continue;
             ms.pushPose();
             
-            TransformStack.cast(ms)
+            TransformStack.of(ms)
                 .rotateY(90 - blockEntity.getBlockState().getValue(CommonTradingDepotBlock.FACING).get2DDataValue() * 90)
-                .rotateZ(22.5);
+                .rotateZ(22.5F);
             
             msr.nudge(i);
 
@@ -97,7 +98,7 @@ public class TradingDepotRenderer extends SmartBlockEntityRenderer<CommonTrading
     public static void renderItem(Level level, PoseStack ms, MultiBufferSource buffer, int light, int overlay, ItemStack itemStack, int angle, Random r) {
         ItemRenderer itemRenderer = Minecraft.getInstance()
                 .getItemRenderer();
-        TransformStack msr = TransformStack.cast(ms);
+        TransformStack<PoseTransformStack> msr = TransformStack.of(ms);
         int count = Mth.log2(itemStack.getCount()) / 2;
         boolean blockItem = itemRenderer.getModel(itemStack, null, null, 0)
                 .isGui3d();

@@ -1,9 +1,9 @@
 package com.cak.trading_floor.compat.jei.virtual_recipes.potential_villager_trade;
 
-import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class PotentialVillagerTrade implements Recipe<RecipeWrapper> {
+public class PotentialVillagerTrade implements Recipe<Container> {
     
     public static final List<PotentialVillagerTrade> RECIPES = buildPotentialTrades();
     
@@ -95,12 +95,12 @@ public class PotentialVillagerTrade implements Recipe<RecipeWrapper> {
     }
     
     @Override
-    public boolean matches(RecipeWrapper container, Level level) {
+    public boolean matches(Container container, Level level) {
         return false;
     }
     
     @Override
-    public ItemStack assemble(RecipeWrapper container, RegistryAccess registryAccess) {
+    public ItemStack assemble(Container container, RegistryAccess registryAccess) {
         return null;
     }
     

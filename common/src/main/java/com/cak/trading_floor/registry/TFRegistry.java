@@ -6,14 +6,18 @@ import com.cak.trading_floor.content.trading_depot.CommonTradingDepotBlockEntity
 import com.cak.trading_floor.content.trading_depot.TradingDepotRenderer;
 import com.cak.trading_floor.content.trading_depot.displays.CurrentTradeCompletedCountDisplay;
 import com.cak.trading_floor.content.trading_depot.displays.TradeProductSumDisplay;
-import com.simibubi.create.content.redstone.displayLink.AllDisplayBehaviours;
+import com.simibubi.create.AllDisplaySources;
+import com.simibubi.create.api.behaviour.display.DisplaySource;
 import com.simibubi.create.foundation.data.AssetLookup;
+import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import java.util.List;
+
+import static com.simibubi.create.api.behaviour.display.DisplaySource.displaySource;
 
 public class TFRegistry {
     
@@ -22,9 +26,9 @@ public class TFRegistry {
     public static final BlockEntry<CommonTradingDepotBlock> TRADING_DEPOT = REGISTRATE
         .block("trading_depot", TFPlatformRegistry.getTradingDepotBlock())
         .properties(BlockBehaviour.Properties::noOcclusion)
-        .blockstate((ctx, prov) -> prov.horizontalBlock(ctx.getEntry(), AssetLookup.standardModel(ctx, prov)))
-        .onRegister(AllDisplayBehaviours.assignDataBehaviour(new TradeProductSumDisplay(), "trade_product_sum"))
-        .onRegister(AllDisplayBehaviours.assignDataBehaviour(new CurrentTradeCompletedCountDisplay(), "trade_completed_count"))
+        .blockstate(BlockStateGen.horizontalBlockProvider(false))
+        .transform(displaySource(TFDisplaySources.TRADE_COMPLETED_COUNT))
+        .transform(displaySource(TFDisplaySources.TRADE_PRODUCT_SUM))
         .simpleItem()
         .register();
     

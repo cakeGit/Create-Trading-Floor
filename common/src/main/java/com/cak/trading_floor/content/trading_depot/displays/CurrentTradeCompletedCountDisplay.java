@@ -2,8 +2,8 @@ package com.cak.trading_floor.content.trading_depot.displays;
 
 import com.cak.trading_floor.content.trading_depot.CommonTradingDepotBlockEntity;
 import com.cak.trading_floor.foundation.TFLang;
+import com.simibubi.create.api.behaviour.display.DisplaySource;
 import com.simibubi.create.content.redstone.displayLink.DisplayLinkContext;
-import com.simibubi.create.content.redstone.displayLink.source.DisplaySource;
 import com.simibubi.create.content.redstone.displayLink.target.DisplayTargetStats;
 import net.minecraft.network.chat.MutableComponent;
 

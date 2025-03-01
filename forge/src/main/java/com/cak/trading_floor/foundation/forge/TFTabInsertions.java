@@ -1,5 +1,6 @@
-package com.cak.trading_floor.registry;
+package com.cak.trading_floor.foundation.forge;
 
+import com.cak.trading_floor.registry.TFRegistry;
 import com.simibubi.create.AllBlocks;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import net.minecraft.world.item.Item;

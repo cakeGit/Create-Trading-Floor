@@ -3,11 +3,12 @@ package com.cak.trading_floor.foundation.ponder_scenes;
 import com.cak.trading_floor.content.trading_depot.CommonTradingDepotBlockEntity;
 import com.cak.trading_floor.registry.TFParticleEmitters;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
-import com.simibubi.create.foundation.ponder.ElementLink;
-import com.simibubi.create.foundation.ponder.PonderPalette;
-import com.simibubi.create.foundation.ponder.SceneBuilder;
-import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
-import com.simibubi.create.foundation.ponder.element.EntityElement;
+import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
+import net.createmod.ponder.api.PonderPalette;
+import net.createmod.ponder.api.element.ElementLink;
+import net.createmod.ponder.api.element.EntityElement;
+import net.createmod.ponder.api.scene.SceneBuilder;
+import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntityType;
@@ -26,11 +27,11 @@ public class TradingDepotScenes {
         
         scene.idle(10);
         
-        scene.world.showSection(util.select.position(1, 1, 1), Direction.DOWN);
+        scene.world().showSection(util.select().position(1, 1, 1), Direction.DOWN);
         
         scene.idle(10);
         
-        scene.overlay.showText(80)
+        scene.overlay().showText(80)
             .placeNearTarget()
             .pointAt(new Vec3(1.5, 1.5, 1.5))
             .text("To use a trading depot, attach it to a villager workstation");
@@ -39,20 +40,20 @@ public class TradingDepotScenes {
         
         scene.idle(80);
         
-        scene.world.showSection(util.select.position(1, 1, 2), Direction.DOWN);
+        scene.world().showSection(util.select().position(1, 1, 2), Direction.DOWN);
         
         scene.idle(40);
         
-        scene.overlay.showOutline(PonderPalette.GREEN, "Depot Highlight", util.select.position(1, 1, 1), 30);
+        scene.overlay().showOutline(PonderPalette.GREEN, "Depot Highlight", util.select().position(1, 1, 1), 30);
         
         scene.idle(1);
         
-        scene.overlay.showOutline(PonderPalette.WHITE, "Workstation Highlight", util.select.position(1, 1, 2), 28);
+        scene.overlay().showOutline(PonderPalette.WHITE, "Workstation Highlight", util.select().position(1, 1, 2), 28);
         
         scene.addKeyframe();
         scene.idle(80);
         
-        scene.world.modifyBlockEntity(new BlockPos(1, 1, 1), CommonTradingDepotBlockEntity.class, be -> {
+        scene.world().modifyBlockEntity(new BlockPos(1, 1, 1), CommonTradingDepotBlockEntity.class, be -> {
             TransportedItemStack tis = new TransportedItemStack(Items.FLINT.getDefaultInstance().copyWithCount(32));
             tis.insertedFrom = Direction.SOUTH;
             be.getCommonTradingDepotBehaviour().getIncoming()
@@ -61,7 +62,7 @@ public class TradingDepotScenes {
         
         scene.idle(20);
         
-        ElementLink<EntityElement> villager = scene.world.createEntity(level -> {
+        ElementLink<EntityElement> villager = scene.world().createEntity(level -> {
             Villager newEntity = new Villager(EntityType.VILLAGER, level);
             newEntity.setPos(2.5, 1, 2.5);
             newEntity.setYHeadRot(90f);
@@ -74,7 +75,7 @@ public class TradingDepotScenes {
         
         scene.idle(40);
         
-        scene.overlay.showText(80)
+        scene.overlay().showText(80)
             .placeNearTarget()
             .pointAt(new Vec3(1.5, 1.5, 1.5))
             .text("When a villager next works at their workstation they will trade with the attached depot");
@@ -83,12 +84,12 @@ public class TradingDepotScenes {
         scene.idle(40);
         
         // "smoothly" look at the table
-        scene.world.modifyEntity(villager, entity -> {
+        scene.world().modifyEntity(villager, entity -> {
             Villager villagerEntity = (Villager) entity;
             villagerEntity.setXRot(10f);
         });
         scene.idle(1);
-        scene.world.modifyEntity(villager, entity -> {
+        scene.world().modifyEntity(villager, entity -> {
             Villager villagerEntity = (Villager) entity;
             villagerEntity.setXRot(20f);
         });
@@ -99,75 +100,77 @@ public class TradingDepotScenes {
             TFParticleEmitters.TRADE_COMPLETED.emitWithConsumer(activeScene.getWorld()::addParticle, new Vec3(1.5, 1.9, 1.5), 4);
         });
         
-        scene.world.modifyBlockEntity(new BlockPos(1, 1, 1), CommonTradingDepotBlockEntity.class, be -> {
+        scene.world().modifyBlockEntity(new BlockPos(1, 1, 1), CommonTradingDepotBlockEntity.class, be -> {
             be.getCommonTradingDepotBehaviour().setOfferStack(ItemStack.EMPTY);
             be.getCommonTradingDepotBehaviour().getResults().add(Items.EMERALD.getDefaultInstance());
         });
         
         scene.markAsFinished();
     }
-    
-    
-    public static void trading_double(SceneBuilder scene, SceneBuildingUtil util) {
+
+
+    public static void trading_double(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+
         scene.title("trading_depot_double_trading", "Trading with multiple trading depots");
         scene.configureBasePlate(0, 0, 6);
         scene.showBasePlate();
         
         scene.idle(20);
         
-        scene.world.showSection(
-            util.select.fromTo(6, 0, 0, 6, 2, 5),
+        scene.world().showSection(
+            util.select().fromTo(6, 0, 0, 6, 2, 5),
             Direction.WEST
         );
         
         scene.idle(20);
         
-        scene.world.showSection(util.select.layer(1)
-            .substract(util.select.fromTo(6, 0, 0, 6, 2, 5))
-            .substract(util.select.position(0, 1, 3)), Direction.DOWN
+        scene.world().showSection(util.select().layer(1)
+            .substract(util.select().fromTo(6, 0, 0, 6, 2, 5))
+            .substract(util.select().position(0, 1, 3)), Direction.DOWN
         );
         
         scene.idle(20);
         
-        scene.world.showSection(util.select.layer(2)
-                .substract(util.select.fromTo(6, 0, 0, 6, 2, 5))
-                .substract(util.select.position(2, 2, 2))
-                .substract(util.select.position(1, 2, 3)),
+        scene.world().showSection(util.select().layer(2)
+                .substract(util.select().fromTo(6, 0, 0, 6, 2, 5))
+                .substract(util.select().position(2, 2, 2))
+                .substract(util.select().position(1, 2, 3)),
             Direction.DOWN
         );
         
-        scene.world.showSection(util.select.position(0, 1, 3)
-                .add(util.select.position(1, 2, 3)),
+        scene.world().showSection(util.select().position(0, 1, 3)
+                .add(util.select().position(1, 2, 3)),
             Direction.DOWN
         );
         
         scene.addKeyframe();
         scene.idle(20);
         
-        scene.overlay.showText(80)
+        scene.overlay().showText(80)
             .placeNearTarget()
             .pointAt(new Vec3(3.5, 2.5, 3.5))
             .text("To complete trades with multiple inputs, 2 depots can be used together");
         
         scene.idle(90);
         
-        scene.overlay.showText(80)
+        scene.overlay().showText(80)
             .placeNearTarget()
             .pointAt(new Vec3(3.5, 2.5, 2.5))
             .text("While not required, you should set the filter on the first input to avoid other trades");
         
         scene.idle(90);
-        
-        scene.world.createItemOnBelt(
+
+        scene.world().createItemOnBelt(
             new BlockPos(3, 2, 0), Direction.NORTH, Items.EMERALD.getDefaultInstance()
         );
-        scene.world.createItemOnBelt(
+        scene.world().createItemOnBelt(
             new BlockPos(0, 1, 3), Direction.WEST, Items.GRAVEL.getDefaultInstance().copyWithCount(10)
         );
         
         scene.idle(60);
         
-        ElementLink<EntityElement> villager = scene.world.createEntity(level -> {
+        ElementLink<EntityElement> villager = scene.world().createEntity(level -> {
             Villager newEntity = new Villager(EntityType.VILLAGER, level);
             newEntity.setPos(4.5, 2, 4.5);
             newEntity.setYHeadRot(135f);
@@ -181,7 +184,7 @@ public class TradingDepotScenes {
         scene.addKeyframe();
         scene.idle(20);
         
-        scene.overlay.showText(80)
+        scene.overlay().showText(80)
             .placeNearTarget()
             .pointAt(new Vec3(3.5, 2.5, 2.5))
             .text("Note that trading depots will only share contents if they have matching filters, or the other is empty");
@@ -189,12 +192,12 @@ public class TradingDepotScenes {
         scene.idle(90);
         
         // "smoothly" look at the table
-        scene.world.modifyEntity(villager, entity -> {
+        scene.world().modifyEntity(villager, entity -> {
             Villager villagerEntity = (Villager) entity;
             villagerEntity.setXRot(10f);
         });
         scene.idle(1);
-        scene.world.modifyEntity(villager, entity -> {
+        scene.world().modifyEntity(villager, entity -> {
             Villager villagerEntity = (Villager) entity;
             villagerEntity.setXRot(20f);
         });
@@ -206,33 +209,33 @@ public class TradingDepotScenes {
             TFParticleEmitters.TRADE_COMPLETED.emitWithConsumer(activeScene.getWorld()::addParticle, new Vec3(3.5, 2.9, 2.5), 4);
         });
         
-        scene.world.modifyBlockEntity(new BlockPos(3, 2, 2), CommonTradingDepotBlockEntity.class, tradingDepotBlockEntity ->
+        scene.world().modifyBlockEntity(new BlockPos(3, 2, 2), CommonTradingDepotBlockEntity.class, tradingDepotBlockEntity ->
             tradingDepotBlockEntity.getCommonTradingDepotBehaviour().setOfferStack(ItemStack.EMPTY)
         );
-        scene.world.modifyBlockEntity(new BlockPos(2, 2, 3), CommonTradingDepotBlockEntity.class, tradingDepotBlockEntity ->
+        scene.world().modifyBlockEntity(new BlockPos(2, 2, 3), CommonTradingDepotBlockEntity.class, tradingDepotBlockEntity ->
             tradingDepotBlockEntity.getCommonTradingDepotBehaviour().setOfferStack(ItemStack.EMPTY)
         );
-        scene.world.modifyBlockEntity(new BlockPos(3, 2, 2), CommonTradingDepotBlockEntity.class, tradingDepotBlockEntity ->
+        scene.world().modifyBlockEntity(new BlockPos(3, 2, 2), CommonTradingDepotBlockEntity.class, tradingDepotBlockEntity ->
             tradingDepotBlockEntity.getCommonTradingDepotBehaviour().getResults().add(Items.FLINT.getDefaultInstance().copyWithCount(10))
         );
         
         scene.idle(20);
         
-        scene.overlay.showText(80)
+        scene.overlay().showText(80)
             .placeNearTarget()
             .pointAt(new Vec3(3.5, 2.5, 2.5))
             .text("The output then goes to whichever depot has the first item of the trade");
         
         scene.idle(90);
         
-        scene.world.showSection(util.select.position(2, 2, 2), Direction.DOWN);
+        scene.world().showSection(util.select().position(2, 2, 2), Direction.DOWN);
         
         scene.idle(20);
         
-        scene.world.modifyBlockEntity(new BlockPos(3, 2, 2), CommonTradingDepotBlockEntity.class, tradingDepotBlockEntity ->
+        scene.world().modifyBlockEntity(new BlockPos(3, 2, 2), CommonTradingDepotBlockEntity.class, tradingDepotBlockEntity ->
             tradingDepotBlockEntity.getCommonTradingDepotBehaviour().getResults().clear()
         );
-        scene.world.createItemOnBelt(new BlockPos(2, 1, 2), Direction.EAST, Items.FLINT.getDefaultInstance().copyWithCount(10));
+        scene.world().createItemOnBelt(new BlockPos(2, 1, 2), Direction.EAST, Items.FLINT.getDefaultInstance().copyWithCount(10));
         
         scene.idle(20);
         
