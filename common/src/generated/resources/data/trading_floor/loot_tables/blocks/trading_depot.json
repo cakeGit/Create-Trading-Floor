@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "trading_floor:trading_depot"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "trading_floor:blocks/trading_depot"
+}

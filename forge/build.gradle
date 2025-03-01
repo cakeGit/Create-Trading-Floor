@@ -62,7 +62,7 @@ repositories {
 
 dependencies {
 //    compileOnly project(":common")
-//    annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
+    annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
 
     compileOnly ("com.simibubi.create:create-${minecraft_version}:${create_version}")
     compileOnly (("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}"))

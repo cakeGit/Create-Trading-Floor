@@ -31,4 +31,6 @@
   - Fixed trade product count not tracking properly
 1.20.1-1.1.7: |
   - Fixed fabric trade particles
+1.20.1-2.0.0: |
+  - (Potentially unstable) Port to create 6.0.0
 ...
