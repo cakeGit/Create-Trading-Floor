@@ -7,7 +7,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -84,12 +83,12 @@ public class ParticleEmitter {
         return origin.add(offset);
     }
     
-    public ParticleEmitter setVolume(@NotNull AABB volume) {
+    public ParticleEmitter setVolume(AABB volume) {
         this.volume = volume;
         return this;
     }
     
-    public ParticleEmitter setRandomVelocityStrength(@NotNull Vec3 randomVelocityStrength) {
+    public ParticleEmitter setRandomVelocityStrength(Vec3 randomVelocityStrength) {
         this.randomVelocityStrength = randomVelocityStrength;
         return this;
     }
@@ -98,7 +97,7 @@ public class ParticleEmitter {
         return setRandomVelocityStrength(new Vec3(randomVelocityStrength, randomVelocityStrength, randomVelocityStrength));
     }
     
-    public ParticleEmitter setEmitFromCenterStrength(@NotNull Vec3 emitFromCenterStrength) {
+    public ParticleEmitter setEmitFromCenterStrength(Vec3 emitFromCenterStrength) {
         this.emitFromCenterStrength = emitFromCenterStrength;
         return this;
     }

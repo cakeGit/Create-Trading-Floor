@@ -11,7 +11,6 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 @JeiPlugin
@@ -37,7 +36,7 @@ public class TradingFloorJei implements IModPlugin {
     }
     
     @Override
-    public @NotNull ResourceLocation getPluginUid() {
+    public ResourceLocation getPluginUid() {
         return ID;
     }
     

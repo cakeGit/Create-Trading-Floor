@@ -28,7 +28,7 @@
   },
   "mixins": [
     "trading_floor.mixins.json",
-    "trading_floor-common.mixins.json"
+    "trading_floor.mixins.json"
   ],
   "depends": {
     "minecraft": "${minecraft_version}",

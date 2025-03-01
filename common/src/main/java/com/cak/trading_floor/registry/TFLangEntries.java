@@ -23,9 +23,6 @@ public class TFLangEntries {
             "display_link.trading_depot.no_trade", "No Trade",
             "display_link.trading_depot.trades_completed", "Trades completed:",
             
-            "display_source.trading_depot_source_trade_product_sum", "Trade Products Total",
-            "display_source.trading_depot_source_trade_completed_count", "Trades Completed Count",
-            
             "jei.potential_trade_type.title", "Villager Trading",
             
             "jei.missing_disclaimer", "Some trades may be missing or inaccurate when working with other mods",
@@ -34,6 +31,11 @@ public class TFLangEntries {
             "jei.note.randomised_cost", "Randomised price",
             "jei.note.randomised_dye", "Randomised dye color",
             "jei.note.enchanted_variants", "Randomised enchantments"
+        );
+
+        addLangEntries(
+            "create.display_source.trade_product_sum", "Trade Products Total",
+            "create.display_source.trade_completed_count", "Trades Completed Count"
         );
     }
     
@@ -46,6 +48,18 @@ public class TFLangEntries {
         
         for (Map.Entry<String, String> entry : entries.entrySet()) {
             TFRegistry.REGISTRATE.addRawLang(TradingFloor.MOD_ID + "." + entry.getKey(), entry.getValue());
+        }
+    }
+
+    public static void addLangEntries(String... rawEntries) {
+        Map<String, String> entries = new HashMap<>();
+
+        for (int i = 0; i < rawEntries.length; i += 2) {
+            entries.put(rawEntries[i], rawEntries[i + 1]);
+        }
+
+        for (Map.Entry<String, String> entry : entries.entrySet()) {
+            TFRegistry.REGISTRATE.addRawLang(entry.getKey(), entry.getValue());
         }
     }
     

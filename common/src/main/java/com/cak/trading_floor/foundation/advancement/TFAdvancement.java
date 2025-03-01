@@ -6,11 +6,11 @@ import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.advancement.AllTriggers;
 import com.simibubi.create.foundation.advancement.SimpleCreateTrigger;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
-import net.createmod.catnip.utility.lang.Components;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.*;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
@@ -50,8 +50,8 @@ public class TFAdvancement implements TFParentableAdvancement {
             builder.addCriterion("0", builtinTrigger.instance());
         }
         
-        builder.display(t.icon, Components.translatable(titleKey()),
-            Components.translatable(descriptionKey()).withStyle(s -> s.withColor(0xDBA213)),
+        builder.display(t.icon, Component.translatable(titleKey()),
+            Component.translatable(descriptionKey()).withStyle(s -> s.withColor(0xDBA213)),
             null, t.type.frame, t.type.toast, t.type.announce, t.type.hide);
         
         TFAdvancements.ENTRIES.add(this);

@@ -1,151 +1,87 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-}
-
 plugins {
-    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id 'multiloader-loader'
+    id 'net.neoforged.moddev.legacyforge'
 }
 
-architectury {
-    platformSetupLoomIde()
-    forge()
+mixin {
+    add(sourceSets.main, "${mod_id}.refmap.json")
+
+    config("${mod_id}.mixins.json")
+    config("${mod_id}.forge.mixins.json")
 }
 
-loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
+legacyForge {
+    version = "${minecraft_version}-${forge_version}"
 
-    forge {
-        convertAccessWideners = true
-        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
+    validateAccessTransformers = true
+
+    def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (at.exists()) {
+        accessTransformers = ["src/main/resources/META-INF/accesstransformer.cfg"]
+    }
+    def genResources = project(':common').file('src/generated/resources')
+    def atResources = project(':common').file('src/main/resources')
+    parchment {
+        minecraftVersion = parchment_minecraft
+        mappingsVersion = parchment_version
+    }
+    runs {
+        client {
+            client()
+        }
+        data {
+            data()
+            programArguments.addAll "--all", "--mod", "trading_floor"
+            programArguments.addAll "--output", genResources.absolutePath
+            programArguments.addAll "--existing", atResources.absolutePath
+        }
+        server {
+            server()
+        }
     }
 
-    runs {
-        create("datagen") {
-            name = "Minecraft Data"
-            data()
-            programArgs "--all", "--mod", "trading_floor"
-            programArgs "--output", project(":common").file("src/generated/resources").absolutePath
-            programArgs "--existing", file("src/main/resources").absolutePath
-
-            environmentVariable("DATAGEN", "TRUE")
-            //
-//            // example of overriding the workingDirectory set in configureEach above
-//            workingDirectory project.file('run-data')
-//
-//            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-//            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
         }
     }
 }
 
-configurations {
-    common
-    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
-    compileClasspath.extendsFrom common
-    runtimeClasspath.extendsFrom common
-    developmentForge.extendsFrom common
-}
+sourceSets.main.resources.srcDir project(":common").file('src/generated/resources')
 
 repositories {
-    // mavens for Forge-exclusives
-    maven { url = "https://maven.theillusivec4.top/" } // Curios
-    maven { // Create Forge and Registrate Forge
+    maven {
         url = "https://maven.tterrag.com/"
         content {
             includeGroup("com.tterrag.registrate")
             includeGroup("com.simibubi.create")
         }
     }
-    maven { url = "https://maven.createmod.net/" } // creates new bitch ass shit
+    maven { url = "https://maven.createmod.net/" }
 }
 
 dependencies {
-    forge("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
-    common(project(path: ":common", configuration: "namedElements")) { transitive = false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+//    compileOnly project(":common")
+//    annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
 
-    // Create and its dependencies
-    modImplementation("com.simibubi.create:create-${minecraft_version}:${create_forge_version}") { transitive = false }
-    modImplementation("com.tterrag.registrate:Registrate:${registrate_forge_version}")
-    modApi "dev.engine-room.flywheel:flywheel-fabric-api-${minecraft_version}:${flywheel_version}"
-    modImplementation "dev.engine-room.flywheel:flywheel-fabric-${minecraft_version}:${flywheel_version}"
-    modImplementation("net.createmod.catnip:Catnip-Forge-${minecraft_version}:${catnip_forge_version}") { transitive = false }
-    modImplementation("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_forge_version}") { transitive = false }
+    compileOnly ("com.simibubi.create:create-${minecraft_version}:${create_version}")
+    compileOnly (("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}"))
+    compileOnly (("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_version}"))
+    compileOnly (("com.tterrag.registrate:Registrate:${registrate_version}"))
+    compileOnly ("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
 
-    // Development QOL
-    modLocalRuntime("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") { transitive = false }
 
-    // if you would like to add integration with JEI, uncomment this line.
-    modCompileOnly("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
-}
+    modImplementation ("com.simibubi.create:create-${minecraft_version}:${create_version}")
+    modImplementation (("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}"))
+    modImplementation (("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_version}"))
+    modImplementation (("com.tterrag.registrate:Registrate:${registrate_version}"))
+    modImplementation ("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
 
-processResources {
-    // set up properties for filling into metadata
-    Map<String, String> properties = Map.of(
-            "version", version as String,
-            "forge_version", forge_version.split("\\.")[0], // only specify major version of forge
-            "minecraft_version", minecraft_version,
-            "create_version", create_forge_version.split("-")[0], // cut off build number
-            "jei_version", jei_version
-    )
-    properties.forEach((k, v) -> inputs.property(k, v))
-
-    filesMatching("META-INF/mods.toml") {
-        expand properties
-    }
-}
-
-loom {
-    forge {
-        mixinConfig(
-                "trading_floor-common.mixins.json",
-                "trading_floor.mixins.json"
-        )
-    }
-}
-
-shadowJar {
-    exclude "fabric.mod.json"
-    exclude "architectury.common.json"
-
-    configurations = [project.configurations.shadowCommon]
-    archiveClassifier = "dev-shadow"
-}
-
-remapJar {
-    input.set shadowJar.archiveFile
-    dependsOn shadowJar
-    archiveClassifier = null
 }
 
 jar {
-    archiveClassifier = "dev"
-}
-
-sourcesJar {
-    def commonSources = project(":common").sourcesJar
-    dependsOn commonSources
-    from commonSources.archiveFile.map { zipTree(it) }
-}
-
-components.java {
-    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
-        skip()
-    }
-}
-
-publishing {
-    publications {
-        mavenForge(MavenPublication) {
-            artifactId = rootProject.archives_base_name + "-" + project.name
-            from components.java
-        }
-    }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-    }
+    finalizedBy('reobfJar')
+    manifest.attributes([
+            "MixinConfigs": "${mod_id}.mixins.json,${mod_id}.forge.mixins.json"
+    ])
 }

@@ -63,8 +63,8 @@ public class TradingDepotRenderer extends SmartBlockEntityRenderer<CommonTrading
             Random r = new Random(0);
 
             TransformStack.of(ms)
-                    .rotateY(90 - blockEntity.getBlockState().getValue(CommonTradingDepotBlock.FACING).get2DDataValue() * 90)
-                    .rotateZ(22.5F);
+                    .rotateYDegrees(90 - blockEntity.getBlockState().getValue(CommonTradingDepotBlock.FACING).get2DDataValue() * 90)
+                    .rotateZDegrees(22.5F);
 
             renderItem(blockEntity.getLevel(), ms, buffer, light, overlay, itemStack, angle, r);
             ms.popPose();
@@ -78,12 +78,12 @@ public class TradingDepotRenderer extends SmartBlockEntityRenderer<CommonTrading
             ms.pushPose();
             
             TransformStack.of(ms)
-                .rotateY(90 - blockEntity.getBlockState().getValue(CommonTradingDepotBlock.FACING).get2DDataValue() * 90)
-                .rotateZ(22.5F);
+                .rotateYDegrees(90 - blockEntity.getBlockState().getValue(CommonTradingDepotBlock.FACING).get2DDataValue() * 90)
+                .rotateZDegrees(22.5F);
             
             msr.nudge(i);
 
-            msr.rotateY((215 + 360 / 8f * i) % 360);
+            msr.rotateYDegrees((215 + 360 / 8f * i) % 360);
             ms.translate(.35, .01 / (i + 1), 0);
             Random r = new Random(i + 1);
             int angle = (int) (360 * r.nextFloat());
@@ -104,7 +104,7 @@ public class TradingDepotRenderer extends SmartBlockEntityRenderer<CommonTrading
                 .isGui3d();
 
         ms.pushPose();
-        msr.rotateY(angle);
+        msr.rotateYDegrees(angle);
 
         for (int i = 0; i <= count; i++) {
             ms.pushPose();
@@ -113,13 +113,13 @@ public class TradingDepotRenderer extends SmartBlockEntityRenderer<CommonTrading
             ms.scale(.5f, .5f, .5f);
             if (!blockItem) {
                 ms.translate(0, -3 / 16f, 0);
-                msr.rotateX(90);
+                msr.rotateXDegrees(90);
             }
             itemRenderer.renderStatic(itemStack, ItemDisplayContext.FIXED, light, overlay, ms, buffer, level, 0);
             ms.popPose();
 
             if (!blockItem)
-                msr.rotateY(10);
+                msr.rotateYDegrees(10);
             ms.translate(0, blockItem ? 1 / 64d : 1 / 16d, 0);
         }
         

@@ -1,78 +1,52 @@
-architectury {
-    common(rootProject.enabled_platforms.split(","))
+plugins {
+    id 'multiloader-common'
+    id 'net.neoforged.moddev.legacyforge'
 }
 
-loom {
-    accessWidenerPath = file("src/main/resources/trading_floor.accesswidener")
+legacyForge {
+    mcpVersion = minecraft_version
+    if (file("src/main/resources/META-INF/accesstransformer.cfg").exists()) {
+        accessTransformers = ["src/main/resources/META-INF/accesstransformer.cfg"]
+    }
+    parchment {
+        minecraftVersion = parchment_minecraft
+        mappingsVersion = parchment_version
+    }
 }
 
 repositories {
-    // mavens for Create Fabric and dependencies
-    maven { url = "https://api.modrinth.com/maven" } // LazyDFU
-    maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
-    maven { url = "https://mvn.devos.one/snapshots/" } // Create Fabric, Porting Lib, Forge Tags, Milk Lib, Registrate Fabric
-    maven { url = "https://mvn.devos.one/releases/" } // Porting Lib Releases
-    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge Config API Port
-    maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
-    maven { url = "https://jitpack.io/" } // Mixin Extras, Fabric ASM
-    maven { // Create Forge and Registrate Forge
+    maven {
         url = "https://maven.tterrag.com/"
         content {
             includeGroup("com.tterrag.registrate")
             includeGroup("com.simibubi.create")
         }
     }
-    maven { // Create Forge and Registrate Forge
-        url = "https://maven.createmod.net/"
-    }
-    maven { // Create Forge and Registrate Forge
-        url = "https://repo.spongepowered.org/repository/maven-public/"
-    }
-    maven { url = "https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305/" } // dark fuckery cause idek
+    maven { url = "https://maven.createmod.net/" }
 }
 
 dependencies {
-    // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
-    // Do NOT use other classes from fabric loader
-    modImplementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
     compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
-//    modImplementation("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
-    // Compile against Create ~~Fabric~~ forge in common
-    // beware of differences across platforms!
-    // dependencies must also be pulled in to minimize problems, from remapping issues to compile errors.
-    // All dependencies except Flywheel and Registrate are NOT safe to use!
-    // Flywheel and Registrate must also be used carefully due to differences.
-//    modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}") { transitive = false }
-    modCompileOnly("com.simibubi.create:create-${minecraft_version}:${create_forge_version}") { transitive = false }
-    modCompileOnly("com.tterrag.registrate:Registrate:${registrate_forge_version}")
-    modApi "dev.engine-room.flywheel:flywheel-fabric-api-${minecraft_version}:${flywheel_version}"
-    modImplementation "dev.engine-room.flywheel:flywheel-fabric-${minecraft_version}:${flywheel_version}"
-    modCompileOnly("net.createmod.catnip:Catnip-Forge-${minecraft_version}:${catnip_forge_version}") { transitive = false }
-    modCompileOnly("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_forge_version}") { transitive = false }
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
-    // if you would like to add integration with JEI, uncomment this line.
-    modCompileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
-    modCompileOnly 'com.google.code.findbugs:jsr305:1.3.9' //try as provided
+    compileOnly("com.simibubi.create:create-${minecraft_version}:${create_version}")
+    compileOnly(("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}"))
+    compileOnly(("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_version}"))
+    compileOnly(("com.tterrag.registrate:Registrate:${registrate_version}"))
+    compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
 }
 
-sourceSets.main {
-    resources { // include generated resources in resources
-        srcDir("src/generated/resources")
-        exclude(".cache/**")
-        exclude("assets/create/**")
+configurations {
+    commonJava {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+    commonResources {
+        canBeResolved = false
+        canBeConsumed = true
     }
 }
-
-publishing {
-    publications {
-        mavenCommon(MavenPublication) {
-            artifactId = rootProject.archives_base_name
-            from components.java
-        }
-    }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-    }
+artifacts {
+    commonJava sourceSets.main.java.sourceDirectories.singleFile
+    commonResources sourceSets.main.resources.sourceDirectories.singleFile
 }

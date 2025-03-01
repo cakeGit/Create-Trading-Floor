@@ -4,19 +4,22 @@ import com.cak.trading_floor.content.trading_depot.CommonTradingDepotBlock;
 import com.cak.trading_floor.content.trading_depot.CommonTradingDepotBlockEntity;
 import com.tterrag.registrate.builders.BlockEntityBuilder;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class TFPlatformRegistry {
-    
-    @ExpectPlatform
+
+    public static TFPlatformRegistryImplementor PLATFORM;
+
     public static NonNullFunction<BlockBehaviour.Properties, CommonTradingDepotBlock> getTradingDepotBlock() {
-        throw new AssertionError();
+        return PLATFORM.getTradingDepotBlock();
     }
-    
-    @ExpectPlatform
+
     public static BlockEntityBuilder.BlockEntityFactory<CommonTradingDepotBlockEntity> getTradingDepotBlockEntity() {
-        throw new AssertionError();
+        return PLATFORM.getTradingDepotBlockEntity();
     }
-    
+
+    public interface TFPlatformRegistryImplementor {
+        NonNullFunction<BlockBehaviour.Properties, CommonTradingDepotBlock> getTradingDepotBlock();
+        BlockEntityBuilder.BlockEntityFactory<CommonTradingDepotBlockEntity> getTradingDepotBlockEntity();
+    }
 }

@@ -1,12 +1,9 @@
 package com.cak.trading_floor.registry;
 
-import com.cak.trading_floor.TradingFloor;
 import com.simibubi.create.AllBlocks;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.createmod.catnip.platform.CatnipServices;
 import net.createmod.ponder.api.registration.PonderTagRegistrationHelper;
-import net.createmod.ponder.foundation.PonderTag;
-import net.createmod.ponder.foundation.registration.PonderTagRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
 

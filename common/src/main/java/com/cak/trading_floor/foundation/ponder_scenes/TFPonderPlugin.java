@@ -3,8 +3,6 @@ package com.cak.trading_floor.foundation.ponder_scenes;
 import com.cak.trading_floor.TradingFloor;
 import com.cak.trading_floor.registry.TFPonderIndex;
 import com.cak.trading_floor.registry.TFPonderTags;
-import com.simibubi.create.infrastructure.ponder.AllCreatePonderScenes;
-import com.simibubi.create.infrastructure.ponder.AllCreatePonderTags;
 import net.createmod.ponder.api.registration.PonderPlugin;
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
 import net.createmod.ponder.api.registration.PonderTagRegistrationHelper;
