@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[${forge_version},)"
+loaderVersion = "${forge_loader_version_range}"
 issueTrackerURL = "https://github.com/cakeGit/Create-Trading-Floor/issues"
 license = "MIT"
 
@@ -7,7 +7,7 @@ license = "MIT"
 modId = "trading_floor"
 version = "${version}"
 displayName = "Create: Trading Floor"
-authors = "Tazer & Cak"
+authors = "Cake, Tazer"
 description = '''
 Automate trading with villagers using create!
 '''
@@ -32,9 +32,10 @@ side = "BOTH"
 [[dependencies.trading_floor]]
 modId="create"
 mandatory=true
-versionRange="${create_version}"
+versionRange="[6.0.0,)"
 ordering="NONE"
 side="BOTH"
+
 [[dependencies.trading_floor]]
 modId="jei"
 mandatory=false

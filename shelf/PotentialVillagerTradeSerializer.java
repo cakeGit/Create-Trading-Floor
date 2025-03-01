@@ -5,7 +5,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 /**I WORKED SO HARD ON THIS AND I REALISED ITS USELESS*/
 public class PotentialVillagerTradeSerializer implements RecipeSerializer<PotentialVillagerTrade> {

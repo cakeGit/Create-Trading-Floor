@@ -6,7 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-import org.jetbrains.annotations.NotNull;
+import org.antlr.v4.runtime.misc.NotNull;
 
 public class TradingDepotItemHandler implements IItemHandler {
     
@@ -22,12 +22,12 @@ public class TradingDepotItemHandler implements IItemHandler {
     }
     
     @Override
-    public @NotNull ItemStack getStackInSlot(int i) {
+    public ItemStack getStackInSlot(int i) {
         return i == 0 ? behaviour.getOfferStack() : behaviour.getResults().get(i - 1);
     }
     
     @Override
-    public @NotNull ItemStack insertItem(int i, @NotNull ItemStack arg, boolean bl) {
+    public ItemStack insertItem(int i, ItemStack arg, boolean bl) {
         if (i != 0) return arg;
         
         if (!behaviour.getOfferStack().isEmpty() && !ItemHandlerHelper.canItemStacksStack(behaviour.getOfferStack(), arg))
@@ -51,7 +51,7 @@ public class TradingDepotItemHandler implements IItemHandler {
     }
     
     @Override
-    public @NotNull ItemStack extractItem(int i, int j, boolean bl) {
+    public ItemStack extractItem(int i, int j, boolean bl) {
         if (i == 0) return ItemStack.EMPTY;
         
         int listIndex = i - 1;
@@ -79,7 +79,7 @@ public class TradingDepotItemHandler implements IItemHandler {
     }
     
     @Override
-    public boolean isItemValid(int i, @NotNull ItemStack arg) {
+    public boolean isItemValid(int i, ItemStack arg) {
         return true;
     }
     
