@@ -37,6 +37,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class TradingDepotBlock extends CommonTradingDepotBlock implements IBE<CommonTradingDepotBlockEntity>, IWrenchable {
     
+    public static final VoxelShape SHAPE = Shapes.or(
+        Block.box(0, 0, 0, 16, 8, 16),
+        Block.box(1, 8, 1, 15, 16, 15)
+    );
+    
     public TradingDepotBlock(Properties properties) {
         super(properties);
     }
@@ -158,10 +163,7 @@ public class TradingDepotBlock extends CommonTradingDepotBlock implements IBE<Co
     
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return Shapes.or(
-            Block.box(0, 0, 0, 16, 8, 16),
-            Block.box(1, 8, 1, 15, 16, 15)
-        );
+        return SHAPE;
     }
     
 }
