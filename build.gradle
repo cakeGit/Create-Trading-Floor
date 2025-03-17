@@ -15,89 +15,88 @@ plugins {
     id 'net.neoforged.moddev.legacyforge' version '2.0.77' apply(false)
 }
 
-//publishMods {
-//    def TOKENS = new HashMap<String, String>();
-//    file("$projectDir/.env").readLines().each() {
-//        def (key, value) = it.tokenize('=')
-//        TOKENS.put(key, value)
-//    }
-//
-//    def cfg = new Yaml().load(new File("$projectDir/changelog.yaml").newInputStream())
-//    def changelogText = cfg[minecraft_version + "-" + project.version];
-//    println("Found Changelog: \n" + changelogText)
-//
-//    def forgeName = "Create: Trading Floor $project.version Forge $minecraft_version";
-//    def fabricName = "Create: Trading Floor $project.version Fabric $minecraft_version";
-//    println(project(":forge").getArtifacts().properties)
-////    def forgeFile = project(":forge").file("/build"
-////    def fabricFile = project(":fabric").tasks.named("remapJar").get().archiveFile;
-//
-//    def forgeEmoji = "<:forge:1267784983771222088>";
-////    def fabricEmoji = "<:fabric:1267785013936783421>";
-//    def newVersionPing = "<@&1287480930247643147>";
-//
-//    changelog = "Changelog: \n" + changelogText
-//    type = STABLE
-//    version = project.version
+publishMods {
+    def TOKENS = new HashMap<String, String>();
+    file("$projectDir/.env").readLines().each() {
+        def (key, value) = it.tokenize('=')
+        TOKENS.put(key, value)
+    }
+
+    def cfg = new Yaml().load(new File("$projectDir/changelog.yaml").newInputStream())
+    def changelogText = cfg[minecraft_version + "-" + project.version];
+    println("Found Changelog: \n" + changelogText)
+
+    def forgeName = "Create: Trading Floor $project.version Forge $minecraft_version";
+    def fabricName = "Create: Trading Floor $project.version Fabric $minecraft_version";
+    def forgeFile = project(":forge").file("build/libs/trading_floor-forge-${minecraft_version}-${project.version}.jar");
+//    def fabricFile = project(":fabric").tasks.named("remapJar").get().archiveFile;
+
+    def forgeEmoji = "<:forge:1267784983771222088>";
+//    def fabricEmoji = "<:fabric:1267785013936783421>";
+    def newVersionPing = "<@&1287480930247643147>";
+
+    changelog = "Changelog: \n" + changelogText
+    type = STABLE
+    version = project.version
 //    dryRun = true
-//
-//    curseforge("forgeCF") {
-//        file = forgeFile
-//        displayName = forgeName
+
+    curseforge("forgeCF") {
+        file = forgeFile
+        displayName = forgeName
+        projectId = "1102591"
+        projectSlug = "create-trading-floor" // Required for discord webhook
+        accessToken = TOKENS.get("CURSEFORGE_PUBLISH_TOKEN")
+        minecraftVersions.add(minecraft_version)
+        announcementTitle = "Curseforge download for $forgeEmoji"
+        modLoaders.add("forge")
+
+        javaVersions.add(JavaVersion.VERSION_17)
+        clientRequired = true
+        serverRequired = true
+        requires("create")
+    }
+    modrinth("forgeMR") {
+        file = forgeFile
+        displayName = forgeName
+        projectId = "WROfLLvn"
+        accessToken = TOKENS.get("MODRINTH_PUBLISH_TOKEN")
+        minecraftVersions.add(minecraft_version)
+        announcementTitle = "Modrinth download for $forgeEmoji"
+        modLoaders.add("forge")
+        requires("create")
+    }
+
+//    curseforge("fabricCF") {
+//        file = fabricFile
+//        displayName = fabricName
 //        projectId = "1102591"
 //        projectSlug = "create-trading-floor" // Required for discord webhook
 //        accessToken = TOKENS.get("CURSEFORGE_PUBLISH_TOKEN")
 //        minecraftVersions.add(minecraft_version)
-//        announcementTitle = "Curseforge download for $forgeEmoji"
-//        modLoaders.add("forge")
+//        announcementTitle = "Curseforge download for $fabricEmoji"
+//        modLoaders.add("fabric")
 //
 //        javaVersions.add(JavaVersion.VERSION_17)
 //        clientRequired = true
 //        serverRequired = true
-//        requires("create")
+//        requires("create-fabric", "fabric-api")
 //    }
-//    modrinth("forgeMR") {
-//        file = forgeFile
-//        displayName = forgeName
+//    modrinth("fabricMR") {
+//        file = fabricFile
+//        displayName = fabricName
 //        projectId = "WROfLLvn"
 //        accessToken = TOKENS.get("MODRINTH_PUBLISH_TOKEN")
 //        minecraftVersions.add(minecraft_version)
-//        announcementTitle = "Modrinth download for $forgeEmoji"
-//        modLoaders.add("forge")
-//        requires("create")
+//        announcementTitle = "Modrinth download for $fabricEmoji"
+//        modLoaders.add("fabric")
+//        requires("create-fabric", "fabric-api")
 //    }
-//
-////    curseforge("fabricCF") {
-////        file = fabricFile
-////        displayName = fabricName
-////        projectId = "1102591"
-////        projectSlug = "create-trading-floor" // Required for discord webhook
-////        accessToken = TOKENS.get("CURSEFORGE_PUBLISH_TOKEN")
-////        minecraftVersions.add(minecraft_version)
-////        announcementTitle = "Curseforge download for $fabricEmoji"
-////        modLoaders.add("fabric")
-////
-////        javaVersions.add(JavaVersion.VERSION_17)
-////        clientRequired = true
-////        serverRequired = true
-////        requires("create-fabric", "fabric-api")
-////    }
-////    modrinth("fabricMR") {
-////        file = fabricFile
-////        displayName = fabricName
-////        projectId = "WROfLLvn"
-////        accessToken = TOKENS.get("MODRINTH_PUBLISH_TOKEN")
-////        minecraftVersions.add(minecraft_version)
-////        announcementTitle = "Modrinth download for $fabricEmoji"
-////        modLoaders.add("fabric")
-////        requires("create-fabric", "fabric-api")
-////    }
-//
-//    println("DISCORD MESSAGE:\n\n$newVersionPing\n# Create: Trading Floor has been updated to $project.version for $minecraft_version ($forgeEmoji" + /* "/ $fabricEmoji\" +*/ ")\n " + changelogText)
-//
-////    discord("discordUniversal") {
-////        webhookUrl = TOKENS.get("DISCORD_WEBHOOK")
-////        username = "New Version Announcement | Create: Trading Floor"
-////        content =
-////    }
-//}
+
+    println("DISCORD MESSAGE:\n\n$newVersionPing\n# Create: Trading Floor has been updated to $project.version for $minecraft_version ($forgeEmoji" + /* "/ $fabricEmoji\" +*/ ")\n " + changelogText)
+
+//    discord("discordUniversal") {
+//        webhookUrl = TOKENS.get("DISCORD_WEBHOOK")
+//        username = "New Version Announcement | Create: Trading Floor"
+//        content =
+//    }
+}

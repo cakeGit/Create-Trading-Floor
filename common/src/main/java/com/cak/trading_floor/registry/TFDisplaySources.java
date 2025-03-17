@@ -7,15 +7,13 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 
 import java.util.function.Supplier;
 
-import static com.simibubi.create.Create.REGISTRATE;
-
 public class TFDisplaySources {
 
     public static final RegistryEntry<CurrentTradeCompletedCountDisplay> TRADE_COMPLETED_COUNT = simple("trade_completed_count", CurrentTradeCompletedCountDisplay::new);
     public static final RegistryEntry<TradeProductSumDisplay> TRADE_PRODUCT_SUM = simple("trade_product_sum", TradeProductSumDisplay::new);
 
     private static <T extends DisplaySource> RegistryEntry<T> simple(String name, Supplier<T> supplier) {
-        return REGISTRATE.displaySource(name, supplier).register();
+        return TFRegistry.REGISTRATE.displaySource(name, supplier).register();
     }
 
     public static void register() {
