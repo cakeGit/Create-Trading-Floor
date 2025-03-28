@@ -30,13 +30,14 @@ public class TFLangEntries {
             "jei.note.type_specific", "Villager-type specific",
             "jei.note.randomised_cost", "Randomised price",
             "jei.note.randomised_dye", "Randomised dye color",
-            "jei.note.enchanted_variants", "Randomised enchantments"
+            "jei.note.enchanted_variants", "Randomised enchantments",
+
+            "display_source.trade_product_sum", "Trade Products Total",
+            "display_source.trade_completed_count", "Trades Completed Count"
         );
 
-        addLangEntries(
-            "create.display_source.trade_product_sum", "Trade Products Total",
-            "create.display_source.trade_completed_count", "Trades Completed Count"
-        );
+//        addLangEntries(
+//        );
     }
     
     public static void addIdLangEntries(String... rawEntries) {
