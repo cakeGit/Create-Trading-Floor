@@ -31,4 +31,9 @@
   - Fixed trade product count not tracking properly
 1.20.1-1.1.7: |
   - Fixed fabric trade particles
+1.20.1-1.1.8: |
+  - Fixed fabric trade particle crash with C2ME
+  - Added tooltips for the depot
+1.20.1-1.1.9: |
+  - Reduced frequency of trading depot checking
 ...

@@ -2,9 +2,12 @@ package com.cak.trading_floor.registry;
 
 import com.cak.trading_floor.content.trading_depot.CommonTradingDepotBlock;
 import com.cak.trading_floor.content.trading_depot.CommonTradingDepotBlockEntity;
+import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.BlockEntityBuilder;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
@@ -19,5 +22,10 @@ public class TFPlatformRegistry {
     public static BlockEntityBuilder.BlockEntityFactory<CommonTradingDepotBlockEntity> getTradingDepotBlockEntity() {
         throw new AssertionError();
     }
-    
+
+    @ExpectPlatform
+    public static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> transformBlockState() {
+        throw new AssertionError();
+    }
+
 }

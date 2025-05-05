@@ -5,6 +5,7 @@ import com.cak.trading_floor.registry.TFParticleEmitters;
 import com.simibubi.create.foundation.networking.SimplePacketBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.PacketUtils;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -48,8 +49,10 @@ public class EmitParticlesFromInstancePacket extends SimplePacketBase {
     public boolean handle(NetworkEvent.Context context) {
         if (emitter == null)
             throw new RuntimeException("Couldn't resolve local emitter instance, expected " + emitterHash);
-        
-        emitter.emitParticles(Minecraft.getInstance().level, origin, count);
+
+        context.enqueueWork(() -> {
+            emitter.emitParticles(Minecraft.getInstance().level, origin, count);
+        });
         return true;
     }
     

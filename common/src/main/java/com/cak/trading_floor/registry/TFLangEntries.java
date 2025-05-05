@@ -35,6 +35,12 @@ public class TFLangEntries {
             "jei.note.randomised_dye", "Randomised dye color",
             "jei.note.enchanted_variants", "Randomised enchantments"
         );
+
+        addLangEntries(
+            "trading_floor.display_source.trade_product_sum", "Trade Products Total",
+            "trading_floor.display_source.trade_completed_count", "Trades Completed Count",
+            "block.trading_floor.trading_depot.tooltip.summary", "Trade with Villagers, note that villagers will _only trade during normal working times of day_."
+        );
     }
     
     public static void addIdLangEntries(String... rawEntries) {
@@ -48,5 +54,16 @@ public class TFLangEntries {
             TFRegistry.REGISTRATE.addRawLang(TradingFloor.MOD_ID + "." + entry.getKey(), entry.getValue());
         }
     }
-    
+
+    public static void addLangEntries(String... rawEntries) {
+        Map<String, String> entries = new HashMap<>();
+
+        for (int i = 0; i < rawEntries.length; i += 2) {
+            entries.put(rawEntries[i], rawEntries[i + 1]);
+        }
+
+        for (Map.Entry<String, String> entry : entries.entrySet()) {
+            TFRegistry.REGISTRATE.addRawLang(entry.getKey(), entry.getValue());
+        }
+    }
 }
