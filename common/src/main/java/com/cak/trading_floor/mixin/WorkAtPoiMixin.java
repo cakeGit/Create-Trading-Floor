@@ -24,31 +24,32 @@ import java.util.Optional;
 
 @Mixin(WorkAtPoi.class)
 public class WorkAtPoiMixin {
-    
+
     @Shadow
     private long lastCheck;
-    
-    @Inject(method = "checkExtraStartConditions(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/npc/Villager;)Z", at = @At("TAIL"))
+
+    @Inject(method = "checkExtraStartConditions(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/npc/Villager;)Z", at = @At("RETURN"))
     public void checkExtraStartConditions(ServerLevel level, Villager owner, CallbackInfoReturnable<Boolean> cir) {
+        if (!cir.getReturnValueZ()) return;
+
         boolean hasReducedCooldown = false;
-        
+
         Optional<GlobalPos> jobSite = owner.getBrain().getMemory(MemoryModuleType.JOB_SITE);
         if (jobSite.isEmpty()) return;
-        
+
         BlockPos jobSitePos = jobSite.get().pos();
-        
+
         for (BlockPos pos : AttachedTradingDepotFinder.lookForTradingDepots(level, jobSitePos)) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof CommonTradingDepotBlockEntity tbe) {
                 hasReducedCooldown = true;
             }
         }
-        
+
         if (hasReducedCooldown) {
-            lastCheck -= 2000;
+            lastCheck -= 250;
         }
     }
-    
     
     @Inject(method = "useWorkstation", at = @At("HEAD"))
     public void useWorkstation(ServerLevel level, Villager villager, CallbackInfo ci) {

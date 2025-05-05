@@ -36,8 +36,9 @@ public class TFLangEntries {
             "display_source.trade_completed_count", "Trades Completed Count"
         );
 
-//        addLangEntries(
-//        );
+        addLangEntries(
+            "block.trading_floor.trading_depot.tooltip.summary", "Trade with Villagers, note that villagers will _only trade during normal working times of day_."
+        );
     }
     
     public static void addIdLangEntries(String... rawEntries) {

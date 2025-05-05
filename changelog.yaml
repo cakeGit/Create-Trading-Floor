@@ -37,4 +37,6 @@
   - Fixed wrong registrate import
 1.20.1-2.0.2: |
   - Added ru_ru localisation thank you @best_jaro!!
+1.20.1-2.0.3: |
+  - Added item tooltip and trading check cooldown from fabric 1.1.9
 ...
