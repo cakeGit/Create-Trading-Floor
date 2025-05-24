@@ -116,31 +116,31 @@ publishMods {
     type = STABLE
     version = mod_version
 
-    curseforge("forgeCF") {
-        file = forgeFile
-        displayName = forgeName
-        projectId = "1102591"
-        projectSlug = "create-trading-floor" // Required for discord webhook
-        accessToken = TOKENS.get("CURSEFORGE_PUBLISH_TOKEN")
-        minecraftVersions.add(minecraft_version)
-        announcementTitle = "Curseforge download for $forgeEmoji"
-        modLoaders.add("forge")
-
-        javaVersions.add(JavaVersion.VERSION_17)
-        clientRequired = true
-        serverRequired = true
-        requires("create")
-    }
-    modrinth("forgeMR") {
-        file = forgeFile
-        displayName = forgeName
-        projectId = "WROfLLvn"
-        accessToken = TOKENS.get("MODRINTH_PUBLISH_TOKEN")
-        minecraftVersions.add(minecraft_version)
-        announcementTitle = "Modrinth download for $forgeEmoji"
-        modLoaders.add("forge")
-        requires("create")
-    }
+//    curseforge("forgeCF") {
+//        file = forgeFile
+//        displayName = forgeName
+//        projectId = "1102591"
+//        projectSlug = "create-trading-floor" // Required for discord webhook
+//        accessToken = TOKENS.get("CURSEFORGE_PUBLISH_TOKEN")
+//        minecraftVersions.add(minecraft_version)
+//        announcementTitle = "Curseforge download for $forgeEmoji"
+//        modLoaders.add("forge")
+//
+//        javaVersions.add(JavaVersion.VERSION_17)
+//        clientRequired = true
+//        serverRequired = true
+//        requires("create")
+//    }
+//    modrinth("forgeMR") {
+//        file = forgeFile
+//        displayName = forgeName
+//        projectId = "WROfLLvn"
+//        accessToken = TOKENS.get("MODRINTH_PUBLISH_TOKEN")
+//        minecraftVersions.add(minecraft_version)
+//        announcementTitle = "Modrinth download for $forgeEmoji"
+//        modLoaders.add("forge")
+//        requires("create")
+//    }
 
     curseforge("fabricCF") {
         file = fabricFile
@@ -168,7 +168,7 @@ publishMods {
         requires("create-fabric", "fabric-api")
     }
 
-    println("DISCORD MESSAGE:\n\n$newVersionPing\n# Create: Trading Floor has been updated to $mod_version for $minecraft_version ($forgeEmoji / $fabricEmoji)\n " + changelogText)
+    println("DISCORD MESSAGE:\n\n$newVersionPing\n# Create: Trading Floor has been updated to $mod_version for $minecraft_version ($fabricEmoji)\n " + changelogText)
 
 //    discord("discordUniversal") {
 //        webhookUrl = TOKENS.get("DISCORD_WEBHOOK")
