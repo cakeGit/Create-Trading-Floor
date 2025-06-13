@@ -24,7 +24,8 @@ public class TradingDepotItemHandler implements IItemHandler {
     
     @Override
     public @NotNull ItemStack getStackInSlot(int i) {
-        return i == 0 ? behaviour.getOfferStack() : behaviour.getResults().get(i - 1);
+        return i == 0 ? behaviour.getOfferStack() :
+            (i - 1 < behaviour.getResults().size() ? behaviour.getResults().get(i - 1) : ItemStack.EMPTY);
     }
     
     @Override
