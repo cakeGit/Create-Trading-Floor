@@ -39,4 +39,6 @@
   - Added ru_ru localisation thank you @best_jaro!!
 1.20.1-2.0.3: |
   - Added item tooltip and trading check cooldown from fabric 1.1.9
+1.20.1-2.0.4: |
+  - Tom's Simple Storage crash fix
 ...
