@@ -1,5 +1,6 @@
 package com.cak.trading_floor.compat.jei.virtual_recipes.potential_villager_trade;
 
+import com.cak.trading_floor.TradingFloor;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
@@ -33,7 +34,7 @@ public class PotentialVillagerTrade implements Recipe<Container> {
                     
                     if (offer != null && !existingOffers.contains(offer)) {
                         trades.add(new PotentialVillagerTrade(
-                            new ResourceLocation("trade_" + professionOffers.getKey().name() + "_level_" + levelOffers.getIntKey() + "_" + index),
+                            TradingFloor.asResource("trade_" + professionOffers.getKey().name().replace(":", "_") + "_level_" + levelOffers.getIntKey() + "_" + index),
                             levelOffers.getIntKey(),
                             professionOffers.getKey(),
                             offer

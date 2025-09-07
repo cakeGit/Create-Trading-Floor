@@ -143,19 +143,14 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour implements Commo
     }
     
     public int getPresentStackSize() {
-        int cumulativeStackSize = 0;
-        cumulativeStackSize += getOfferStack().getCount();
-        for (ItemStack stack : result)
-            cumulativeStackSize += stack
-                .getCount();
-        return cumulativeStackSize;
+        return getOfferStack().getCount();
     }
     
     public int getRemainingSpace() {
         int cumulativeStackSize = getPresentStackSize();
         for (TransportedItemStack transportedItemStack : incoming)
             cumulativeStackSize += transportedItemStack.stack.getCount();
-        return 64 - cumulativeStackSize;
+        return getOfferStack().getMaxStackSize() - cumulativeStackSize;
     }
     
     public ItemStack insert(TransportedItemStack input, boolean simulate) {
@@ -163,7 +158,7 @@ public class TradingDepotBehaviour extends BlockEntityBehaviour implements Commo
         ItemStack inserted = input.stack;
         if (remainingSpace <= 0)
             return inserted;
-        if (this.offer != null && !this.offer.stack.isEmpty() && !ItemHandlerHelper.canItemStacksStack(this.offer.stack, inserted))
+        if (this.offer != null && !this.offer.stack.isEmpty() && !ItemStack.isSameItemSameTags(this.offer.stack, inserted))
             return inserted;
         
         ItemStack returned = ItemStack.EMPTY;
